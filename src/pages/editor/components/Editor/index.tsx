@@ -37,7 +37,10 @@ const OurEditor = ({lang, onChange}: EditorProps) => {
             suggestOnTriggerCharacters: false,
             tabCompletion: "off",
             wordBasedSuggestions: "off",
-            contextmenu: false
+            contextmenu: false,
+            minimap: {
+                enabled: false
+            },
           }}
           />
     );

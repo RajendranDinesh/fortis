@@ -1,6 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import styles from './testcase.module.css';
+
+
 
 type testCases = {
     id: number;
@@ -16,11 +18,21 @@ type props = {
 
 const TestCase = ({ testCases, setTestCases }: props) => {
     const [activeTab, setActiveTab] = useState(0);
+    useEffect(() => {}, [activeTab]);
 
     const handleRemoveTestCase = (id: number) => {
-        const newTestCases = testCases.filter((testCase) => testCase.id !== id);
-        setTestCases(newTestCases);
-        setActiveTab(newTestCases[newTestCases.length - 1].id);
+
+        const modifiedTestCases = testCases.filter((testCase) => testCase.id !== id).map((testCase, index) => {
+            return {
+                ...testCase,
+                id: index,
+                name: `Case ${index + 1}`
+            };
+        });
+
+        setActiveTab(Math.min(activeTab, modifiedTestCases.length - 1));
+
+        setTestCases(modifiedTestCases);
     };
 
     const handleAddTestCase = () => {
@@ -64,7 +76,7 @@ const TestCase = ({ testCases, setTestCases }: props) => {
                         </div>
                     ))}
                     <div>
-                        <button onClick={handleAddTestCase}>+</button>
+                        {testCases.length <= 4 && <button onClick={handleAddTestCase}>+</button> }
                     </div>
                 </div>
                 <div className={styles.inputs}>

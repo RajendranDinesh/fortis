@@ -1,25 +1,42 @@
-import { useState, ChangeEvent, useEffect, useLayoutEffect, Dispatch, SetStateAction } from "react";
+// Module imports
+import { useState, ChangeEvent, useEffect, useLayoutEffect } from "react";
 import * as monaco from 'monaco-editor';
-import { CiBookmark } from "react-icons/ci";
+import { CiBookmark, CiCircleChevUp, CiCircleChevDown, CiMaximize1 } from "react-icons/ci";
+import { ToastContainer, toast } from "react-toastify";
 
+// Component imports
 import OurEditor from "../Editor";
 import { Request } from "../../../../networking";
 import TestCase from "./components/TestCase";
 import Result from "./components/Result";
 
+// Asset imports
 import styles from './right.module.css';
 
+
+
+// Change the languages variable if using a different api provider
+
+// const languages = [
+//     { id: 92, name: 'Python', value: 'python' },
+//     { id: 50, name: 'C', value: 'c' },
+//     { id: 54, name: 'C++', value: 'c++' },
+//     { id: 91, name: 'Java', value: 'java' },
+//     { id: 93, name: 'JavaScript', value: 'javascript' },
+// ];
+
 const languages = [
-    { id: 92, name: 'Python', value: 'python' },
+    { id: 71, name: 'Python', value: 'python' },
     { id: 50, name: 'C', value: 'c' },
-    { id: 54, name: 'C++', value: 'c++' },
-    { id: 91, name: 'Java', value: 'java' },
-    { id: 93, name: 'JavaScript', value: 'javascript' },
+    { id: 54, name: 'C++', value: 'cpp' },
+    { id: 62, name: 'Java', value: 'java' },
+    { id: 63, name: 'JavaScript', value: 'javascript' },
 ];
 
 const RightContainer = () => {
     const [lang, setLang] = useState([languages[0].value, languages[0].id.toString()]);
     const [code, setCode] = useState('');
+    const [isFullScreen, setIsFullScreen] = useState(false);
 
     const [isTestTabActive, setIsTestTabActive] = useState(true);
     const [isResultTabActive, setIsResultTabActive] = useState(false);
@@ -29,10 +46,10 @@ const RightContainer = () => {
     const [consoleHeight, setConsoleHeight] = useState("7%");
 
     const [testCases, setTestCases] = useState([
-        { id: 0, name: "Case 1", input: "1 2", output: "3" },
-        { id: 1, name: "Case 2", input: "2 3", output: "5" },
-        { id: 2, name: "Case 3", input: "3 4", output: "7" },
+        { id: 0, name: "Case 1", input: "", output: "" },
     ]);
+
+    const [token, setToken] = useState([]);
     
     const consoleVisible = Number(consoleHeight.replace("%", "")) > 7 ? true : false;
 
@@ -62,6 +79,25 @@ const RightContainer = () => {
 
     const handleSubmitPublicTestCase = async () => {
 
+        if (!code) {
+            toast.error("Please write some code to run", {
+                autoClose: 2000,
+                theme: "dark",
+                hideProgressBar: true,
+            });
+            return;
+        }
+
+        const invalidTestCases = testCases.filter((testCase) => testCase.output === "");
+        if (invalidTestCases.length > 0) {
+            toast.warn("Consider removing test cases with unspecified output.", {
+                autoClose: 2000,
+                theme: "dark",
+                hideProgressBar: true,
+            });
+            return;
+        }
+
         const body = {
             "source_code": code,
             "language_id": lang[1],
@@ -70,7 +106,13 @@ const RightContainer = () => {
 
         try {
             const response = await Request('POST', '/submission', body);
+            
+            if (response.status === 201) {
+                setToken(response.data.tokens);
 
+                setIsTestTabActive(false);
+                setIsResultTabActive(true);
+            }
 
         } catch (error) {
             console.log(error)
@@ -84,14 +126,21 @@ const RightContainer = () => {
             } else {
                 console.log('hidden');
             }
-        }
+        };
+
+        const onFullScreenChange = () => {
+            setIsFullScreen(Boolean(document.fullscreenElement));
+            console.log(isFullScreen);
+        };
 
         document.addEventListener('visibilitychange', onVisibilityChange);
+        document.addEventListener('fullscreenchange', onFullScreenChange);
 
         return () => {
             document.removeEventListener('visibilitychange', onVisibilityChange);
+            document.removeEventListener('fullscreenchange', onFullScreenChange);
         };
-    })
+    });
 
     useEffect(() => {
         const handleKeyboardEvent = (event: KeyboardEvent) => {
@@ -116,15 +165,15 @@ const RightContainer = () => {
                 return;
             }
 
-            // else if (event.ctrlKey && event.shiftKey && event.key === "I" || event.ctrlKey && event.shiftKey && event.key === "i") {
-            //     event.preventDefault();
-            //     return;
-            // }
+            else if ((event.ctrlKey && event.shiftKey && event.key === "I") || (event.ctrlKey && event.shiftKey && event.key === "i")) {
+                event.preventDefault();
+                return;
+            }
         };
 
         const handleContextMenu = (event: MouseEvent) => {
             event.preventDefault();
-        }
+        };
 
         document.addEventListener('contextmenu', handleContextMenu);
         document.addEventListener('keydown', handleKeyboardEvent);
@@ -148,8 +197,9 @@ const RightContainer = () => {
                         </select>
                     </div>
                 </div>
-                <div>
-                    <CiBookmark color="#a3a3a3" strokeWidth={'1px'} onClick={handleFullScreen}/>
+                <div className={styles.option_container}>
+                    <CiMaximize1 className={styles.option} onClick={handleFullScreen}/>
+                    <CiBookmark className={styles.option}/>
                 </div>
             </div>
 
@@ -188,14 +238,14 @@ const RightContainer = () => {
             <div style={consoleVisible ? { display: "block" } : { display: "none" }} className={styles.middle_container}>
                 <div style={{ height: "100%"}}>
                     { isTestTabActive && <TestCase testCases={testCases} setTestCases={setTestCases}/> }
-                    { isResultTabActive && <Result /> }
+                    { isResultTabActive && <Result testCases={testCases} token={token}/> }
                 </div>
             </div>
 
             {/* Bottom Container in the Console */}
             <div style={consoleVisible ? { height: "8%" } : { height: "100%" }} className={styles.bottom_container}>
                 <div>
-                    <button className={styles.console_button} onClick={handleConsoleToggle}>Console</button>
+                    <button className={styles.console_button} onClick={handleConsoleToggle}>Console {consoleVisible ? <CiCircleChevDown color="#a3a3a3" strokeWidth={'1px'}/> : <CiCircleChevUp color="#a3a3a3" strokeWidth={'1px'}/>} </button>
                 </div>
                 <div>
                     <button className={styles.run_button} onClick={handleSubmitPublicTestCase}>Run</button>
@@ -203,6 +253,7 @@ const RightContainer = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
         </>
     )
 }
