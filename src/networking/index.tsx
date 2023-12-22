@@ -27,11 +27,12 @@ const RemoveHeader = (key: string) => {
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-const Request = async (method: RequestMethod, url: string, body?: any) => {
+const Request = async (method: RequestMethod, url: string, body?: any, params?: any) => {
     const requestOptions = {
         method: method,
         url: url,
         data: body,
+        params: params,
     };
 
     try {

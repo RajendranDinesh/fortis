@@ -1,0 +1,98 @@
+/* #2cb75c => Green*/
+/* #e24441 => Red */
+/* #f39b18 => Yellow */
+.main_container {
+    width: 100%;
+    height: 100%;
+    color: #a3a3a3;
+}
+
+.result_container {
+    padding: 24px;
+    height: 100%;
+}
+
+.verdict_container {
+    display: flex;
+    align-items: center;
+
+    color: #a3a3a3;
+    gap: 16px;
+}
+
+.verdict_container div:first-child {
+    font-size: 24px;
+}
+
+.tab_container {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.tab_container button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+
+    font-size: 16px;
+    color: #a3a3a3;
+
+    padding: 5px 16px;
+}
+
+.tab_container .active_tab {
+    background-color: #3f3f3f;
+    color: #f8f8f8;
+}
+
+.tab_container > div:hover > button {
+    background-color: #3f3f3f;
+    cursor: pointer;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    width: 100%;
+    height: 70%;
+    margin-top: 16px;
+}
+
+.input_container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    width: 100%;
+    height: 30%;
+}
+
+.input_container > label {
+    color: #a3a3a3;
+    font-size: 16px;
+}
+
+.input_container > textarea {
+    background-color: #4f4f4f;
+    color: #f8f8f8;
+    
+    font-size: large;
+    
+    resize: none;
+    border: none;
+
+    height: 100%;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.input_container > textarea:focus {
+    outline: 0;
+}

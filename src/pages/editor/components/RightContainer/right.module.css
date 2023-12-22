@@ -40,6 +40,21 @@
         .select_container:hover {
             cursor: pointer;
         }
+
+        .option_container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .option {
+                color: #a3a3a3;
+                stroke-width: 1px;
+            }
+
+            .option:hover {
+                cursor: pointer;
+            }
+        }
     }
 
     .editor_container {
@@ -149,6 +164,10 @@
 }
 
 .console_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
     font-size: medium;
     color: #efefef;
 
