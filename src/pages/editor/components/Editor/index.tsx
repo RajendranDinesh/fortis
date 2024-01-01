@@ -21,6 +21,12 @@ loader.init().then((monaco) => {
     
 });
 
+loader.config({
+    paths: {
+        vs: '/monaco-editor/min/vs'
+    }
+});
+
 const OurEditor = ({lang, onChange}: EditorProps) => {
     return (
         <Editor

@@ -104,14 +104,14 @@ const RightContainer = () => {
             "test_case": testCases,
         }
 
+        setIsTestTabActive(false);
+        setIsResultTabActive(true);
+
         try {
             const response = await Request('POST', '/submission', body);
             
             if (response.status === 201) {
                 setToken(response.data.tokens);
-
-                setIsTestTabActive(false);
-                setIsResultTabActive(true);
             }
 
         } catch (error) {
@@ -259,3 +259,5 @@ const RightContainer = () => {
 }
 
 export default RightContainer;
+
+//https://reactjsexample.com/resizable-split-panes-for-react-js/

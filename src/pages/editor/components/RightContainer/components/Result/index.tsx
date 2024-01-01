@@ -53,7 +53,7 @@ const Result = ({ token }: props) => {
 
         const params = { "tokens": tokenString };
         
-        const getResults = async () => { 
+        const getResults = async () => {
             try {
                 const response = await Request("GET", `/submission`, null, params);
                 setResults(response.data.submissions);
@@ -77,7 +77,7 @@ const Result = ({ token }: props) => {
     return (
         <div className={styles.result_container}>
             <SkeletonTheme baseColor="#272727" highlightColor="#3f3f3f">
-                {results[activeTab].status.id === 0 ? 
+                {token.length === 0 ? 
                 <div className={styles.main_container}>You must run your code first</div> :
                 <div className={styles.main_container}>
                     <div className={styles.verdict_container}>
@@ -99,7 +99,8 @@ const Result = ({ token }: props) => {
                     </div>
 
                     <div className={styles.tab_container}>
-                        {results.map((result, index) => (
+                        { results[activeTab].status.description.length === 0 ?
+                        <Skeleton height={"30px"} width={"100px"} /> : results.map((result, index) => (
                             <div key={index}>
                                 <button
                                     className={ activeTab === index ? styles.active_tab : ""}
