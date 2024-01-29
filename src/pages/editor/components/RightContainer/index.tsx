@@ -1,7 +1,7 @@
 // Module imports
 import { useState, ChangeEvent, useEffect, useLayoutEffect } from "react";
 import * as monaco from 'monaco-editor';
-import { CiBookmark, CiCircleChevUp, CiCircleChevDown, CiMaximize1 } from "react-icons/ci";
+import { CiCircleChevUp, CiCircleChevDown, CiMaximize1 } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 
 // Component imports
@@ -199,7 +199,6 @@ const RightContainer = () => {
                 </div>
                 <div className={styles.option_container}>
                     <CiMaximize1 className={styles.option} onClick={handleFullScreen}/>
-                    <CiBookmark className={styles.option}/>
                 </div>
             </div>
 

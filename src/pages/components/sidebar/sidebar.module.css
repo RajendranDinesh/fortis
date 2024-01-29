@@ -1,0 +1,35 @@
+.sidebar_closed{
+    display: none;
+    left: -100%;
+    transition: left 1s ease-in-out;
+}
+
+.sidebar_open{
+    left: 0%;
+    transition: left 1s ease-in-out;
+}
+
+.sidebar {
+    background-color: grey;
+    width: 20vw;
+    transition: left 1s ease-in-out;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    width: 1.8em;
+    height: 1.8em;
+    stroke-width: 1;
+    color: #efefef;
+}
+
+.menu:hover {
+    cursor: pointer;
+}
