@@ -4,8 +4,9 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Modal from "../../components/Modal";
-import TextField from '@mui/material/TextField';
+import { HttpStatusCode } from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { Request } from "../../../networking";
 
 //Styles
 
@@ -13,22 +14,31 @@ import styles from "./StaffDashboard.module.css";
 
 //Components
 
+import Body from "./body";
+
 //Assets
 
-import { FaSpotify } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
-import { MdDeleteOutline } from "react-icons/md";
+import { FaSpotify } from "react-icons/fa";
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import AddClassroomModal from "./addUserModal";
+
+interface ClassRoom {
+    classroom_id: number
+    name: string
+    description: string
+    updated_at: Date
+    created_at: Date
+}
 
 function StaffDashboard () {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [modelOpen, setModelOpen] = React.useState(false)
-    const [classroomName, setClassroomName] = React.useState("");
-    const [classroomDescription, setClassroomDescription] = React.useState("");
+    const [modelOpen, setModelOpen] = React.useState(false);
+    const [classroomList, setClassroomList] = React.useState<ClassRoom[]>([]);
 
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -43,13 +53,37 @@ function StaffDashboard () {
         setModelOpen(!modelOpen);
     }
 
-    const handleClassroomNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setClassroomName(event.target.value);
-    };
+    const handleLogout = () => {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
+        setAnchorEl(null);
+        window.location.reload();
+    }
 
-    const handleClassroomDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setClassroomDescription(event.target.value);
-    };
+    const getClassrooms = async () => {
+        try {
+            const response = await Request("GET", "/classroom/user/me");
+
+            if (response.status === HttpStatusCode.Ok) {
+                setClassroomList(response.data);
+            }
+
+        } catch (error) {
+            if ((error as any).response) {
+                toast.error((error as any).response.data.message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+            } else {
+                toast.error((error as Error).message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+            }
+        }
+    }
 
     return (
         <div className={styles.DashBoard_container}>
@@ -119,7 +153,7 @@ function StaffDashboard () {
                         My account
                         </MenuItem>
                         <Divider />
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={handleLogout}>
                         Logout
                         </MenuItem>
                     </Menu>
@@ -129,48 +163,9 @@ function StaffDashboard () {
                 <div className={styles.Add_classroom} onClick={handleModalClick}>
                     <IoIosAddCircle />
                 </div> 
-                <div className={styles.Classroom_display}>
-                    <div className={styles.Classroom_display_header}>
-                        <h1>Classroom Title</h1>
-                    </div>
-                    <div className={styles.Classroom_display_footer}>
-                        <MdDeleteOutline id={styles.bin} />
-                    </div>
-                </div>  
+                <Body classroomList={classroomList} getClassrooms={getClassrooms} />
             </div>
-            <Modal isOpen={modelOpen} onClose={handleModalClick} title="Add Classroom">
-                <div className={styles.Modal_content}>
-                    <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '40ch' },
-                    }}
-                    autoComplete="off"
-                    >
-                        <TextField
-                            required
-                            id={styles.text_field}
-                            label="Classroom Name"
-                            variant="standard"
-                            onChange={handleClassroomNameChange}
-                        />
-                        <TextField 
-                            id={styles.text_field} 
-                            label="Description (optional)" 
-                            variant="standard"
-                            onChange={handleClassroomDescriptionChange} 
-                        />
-                    </Box>
-                    <div className={styles.Modal_buttons}>
-                        <button className={styles.save_button}>
-                            <span>Add</span>
-                        </button>
-                        <button className={styles.cancel_button} onClick={handleModalClick}>
-                            <span>Cancel</span>
-                        </button>
-                    </div>
-                </div>
-            </Modal>
+            <AddClassroomModal modelOpen={modelOpen} handleModalClick={handleModalClick} getClassrooms={getClassrooms}/>
         </div>
     );
 };
