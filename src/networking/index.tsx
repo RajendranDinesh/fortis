@@ -1,6 +1,15 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:5000/api/';
+interface urlCollection {
+    [key: string]: string | undefined
+}
+
+const IgressURLs: urlCollection = {
+    "dev": "http://127.0.0.1:5000/api/",
+    "prod": "something_soon",
+}
+
+const BASE_URL = process.env.REACT_APP_ENV ? IgressURLs[process.env.REACT_APP_ENV] : IgressURLs["dev"];
 
 const instance = axios.create({
   baseURL: BASE_URL,
