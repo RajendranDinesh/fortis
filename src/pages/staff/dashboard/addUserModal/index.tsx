@@ -4,7 +4,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Modal from "../../../components/Modal";
 import TextField from '@mui/material/TextField';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { HttpStatusCode } from 'axios';
 import { Request } from '../../../../networking';
 
@@ -91,7 +91,6 @@ export default function AddClassroomModal({ modelOpen, handleModalClick, getClas
                     </div>
                 </div>
             </Modal>
-            <ToastContainer />
         </>
     )
 }

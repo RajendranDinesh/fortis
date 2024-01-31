@@ -1,7 +1,7 @@
 // Dependencies
 
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { HttpStatusCode } from "axios";
 import { Request } from "../../../../networking";
 
@@ -71,7 +71,6 @@ function Body({ classroomList, getClassrooms }: Props) {
                     </div>
                 </div>
                 )})}
-            <ToastContainer />
         </React.Fragment>
     );
 }

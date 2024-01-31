@@ -166,6 +166,7 @@ function StaffDashboard () {
                 <Body classroomList={classroomList} getClassrooms={getClassrooms} />
             </div>
             <AddClassroomModal modelOpen={modelOpen} handleModalClick={handleModalClick} getClassrooms={getClassrooms}/>
+            <ToastContainer />
         </div>
     );
 };
