@@ -17,7 +17,7 @@ const Login = () => {
                 break;
 
             case "teacher":
-                window.location.href = "/teacher";
+                window.location.href = "/staff";
                 break;
 
             case "supervisor":
