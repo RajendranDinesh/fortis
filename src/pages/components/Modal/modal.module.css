@@ -1,4 +1,10 @@
 .top_container {
+    --text: #f2d5f9;
+    --background: #1c0523;
+    --primary: #d082ed;
+    --secondary: #738c14;
+    --accent: #4ce443;
+
     position: fixed;
     top: 0;
     left: 0;
@@ -12,23 +18,38 @@
     align-items: center;
 
     z-index:100;
+    overflow: hidden;
 }
 
 .children_container {
     padding: 20px;
     border-radius: 4px;
 
-    height: 400px;
-    width: 550px;
+    height: 50vh;
+    width: 50vw;
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     background-color: #f8f8f8;
 
     flex-direction: column;
+    overflow: hidden;
 }
 
 .title_container {
     width: 100%;
     justify-content: space-between;
     flex-direction: row;
+    color: var(--background );
+}
+
+.modal_body {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }

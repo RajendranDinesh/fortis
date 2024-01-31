@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         // <h1>Admin Dashboard</h1>
         <>
         <button onClick={() => setIsOpen(true)}>Show</button>
-        <Modal isOpen={isOpen} onClose={handleClose}>
+        <Modal isOpen={isOpen} onClose={handleClose} title="Admin">
             <h1>Hi there</h1>
         </Modal>
         </>
