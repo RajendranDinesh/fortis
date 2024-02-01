@@ -17,21 +17,21 @@ import styles from './right.module.css';
 
 // Change the languages variable if using a different api provider
 
-// const languages = [
-//     { id: 92, name: 'Python', value: 'python' },
-//     { id: 50, name: 'C', value: 'c' },
-//     { id: 54, name: 'C++', value: 'c++' },
-//     { id: 91, name: 'Java', value: 'java' },
-//     { id: 93, name: 'JavaScript', value: 'javascript' },
-// ];
-
 const languages = [
-    { id: 71, name: 'Python', value: 'python' },
+    { id: 92, name: 'Python', value: 'python' },
     { id: 50, name: 'C', value: 'c' },
-    { id: 54, name: 'C++', value: 'cpp' },
-    { id: 62, name: 'Java', value: 'java' },
-    { id: 63, name: 'JavaScript', value: 'javascript' },
+    { id: 54, name: 'C++', value: 'c++' },
+    { id: 91, name: 'Java', value: 'java' },
+    { id: 93, name: 'JavaScript', value: 'javascript' },
 ];
+
+// const languages = [
+//     { id: 71, name: 'Python', value: 'python' },
+//     { id: 50, name: 'C', value: 'c' },
+//     { id: 54, name: 'C++', value: 'cpp' },
+//     { id: 62, name: 'Java', value: 'java' },
+//     { id: 63, name: 'JavaScript', value: 'javascript' },
+// ];
 
 const RightContainer = () => {
     const [lang, setLang] = useState([languages[0].value, languages[0].id.toString()]);

@@ -39,10 +39,11 @@ const Login = () => {
     }
 
     useEffect(() => {
+        const authToken = localStorage.getItem("authToken");
         const userRole = localStorage.getItem("userRole");
         document.title = "Login Page"
 
-        if (userRole !== null){
+        if (userRole !== null && authToken !== null){
             redirect({userRole});
         }
     });
