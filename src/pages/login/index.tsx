@@ -21,7 +21,7 @@ const Login = () => {
                 window.location.href = "/admin";
                 break;
 
-            case "teacher":
+            case "staff":
                 window.location.href = "/staff";
                 break;
 
@@ -62,8 +62,8 @@ const Login = () => {
             localStorage.setItem("authToken", token);
             localStorage.setItem("userRole", userRole);
 
-            
             SetHeader("Authorization ", `Bearer ${token}`);
+
             toast.success('Login Successfull!', {
                 position: "top-right",
                 autoClose: 5000,

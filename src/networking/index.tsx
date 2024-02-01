@@ -44,6 +44,12 @@ const Request = async (method: RequestMethod, url: string, body?: any, params?: 
         params: params,
     };
 
+
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        SetHeader('Authorization', `Bearer ${token}`);
+    }
+
     try {
         const response = await instance.request(requestOptions);
         return response;
