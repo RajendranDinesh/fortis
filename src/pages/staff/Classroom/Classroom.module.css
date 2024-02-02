@@ -1,0 +1,373 @@
+.Classroom_container {
+    --text: #f2d5f9;
+    --background: #1c0523;
+    --primary: #d082ed;
+    --secondary: #738c14;
+    --accent: #4ce443;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--background);
+}
+
+.Classroom_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 30vh;
+}
+
+.Classroom_title_box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 95vw;
+    height: 25vh;
+    border-radius: 1em;
+    background-image: repeating-radial-gradient(  #f8f1f1ee 87%,#3fa7b4 90%);
+    background-size: 50px 50px;
+}
+
+.Classroom_title_container {
+    width: 100%;
+    height: 70%;
+    border-radius: 1em 1em 0 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.Classroom_title_container h1 {
+    font-size: 3em;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--background);
+    margin: 5vh 0 0 3vw;
+    letter-spacing: .1em;
+}
+
+.Classroom_description_container {
+    width: 100%;
+    height: 30%;
+    border-radius: 0 0 1em 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.Classroom_description_container p {
+    font-size: 1.5em;
+    color: var(--background);
+    margin: 0 3vw 3vh 0;
+}
+
+.Classroom_body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100vw;
+    height: 70vh;
+    color: var(--text);
+}
+
+.Classroom_tabs_container {
+    width: 95%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 0 0 2.8vw;
+}
+
+.Classroom_List_Container {
+    width: 95%;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0 0 0 2.8vw;
+    border: 1px dashed var(--primary);
+    border-radius: 0 1em 1em 1em;
+}
+
+.Classroom_students {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 1em 1em 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.Add_students_container {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Add_students {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 3.5vw;
+  height: 7vh;
+  margin: 0 1vw 0 0;
+  font-size: 5em;
+  color: var(--secondary);
+  border-radius: 10em;
+  cursor: pointer;
+  transition: all ease-in-out .5s;
+}
+
+.Add_students:hover {
+  transform: scale(1.05);
+}
+
+.Students_list_container {
+  width: 100%;
+  height: 90vh;
+  border-radius: 0 0 1em 1em;
+  margin: 0 0 1vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+/* Student Details header grid */
+
+.Student_header_grid {
+  width: 100%;
+  height: 10vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  border-bottom: 1px solid var(--secondary);
+}
+
+.Student_grid_title {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 3vh;
+  font-weight: 700;
+}
+
+.Student_list_grid {
+  width: 100%;
+  height: 10vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.Classroom_teachers {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 1em 1em 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.Add_teachers_container {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Add_teachers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 3.5vw;
+  height: 7vh;
+  margin: 0 1vw 0 0;
+  font-size: 5em;
+  color: var(--secondary);
+  border-radius: 10em;
+  cursor: pointer;
+  transition: all ease-in-out .5s;
+}
+
+.Add_teachers:hover {
+  transform: scale(1.05);
+}
+
+.Student_modal_content {
+  width: 100%;
+  height: 90%;
+  margin: -13vh 0 0 -3vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.Student_modal_reciever_container {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
+.Student_mail_display {
+  width: auto;
+  height: auto;
+  padding: .5em .5em;
+  margin: 0 1vw 0 0;
+  border-radius: 2em;
+  font-size: 1.2em;
+  background: var(--primary);
+  color: var(--background);
+  cursor: pointer;
+}
+
+.input_wrapper {
+  position: relative;
+  width: 20vw;
+}
+
+.input_box {
+  font-size: 1.2em;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  color: #08AEEA;
+  width: 100%;
+  background-color: transparent;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #08AEEA;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.input_box:focus {
+  border-color: #08AEEA;
+  outline: none;
+}
+
+.input_box:focus + .underline {
+  transform: scaleX(1);
+}
+
+.custum_file_upload {
+  height: 200px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #cacaca;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0px 48px 35px -48px rgba(0,0,0,0.1);
+}
+
+.custum_file_upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum_file_upload .icon svg {
+  height: 80px;
+  fill: rgba(75, 85, 99, 1);
+}
+
+.custum_file_upload .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum_file_upload .text span {
+  font-weight: 400;
+  color: rgba(75, 85, 99, 1);
+}
+
+.custum_file_upload input {
+  display: none;
+}
+
+.Teachers_list_container {
+  width: 100%;
+  height: 90vh;
+  border-radius: 0 0 1em 1em;
+  margin: 0 0 1vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+.Teacher_header_grid {
+  width: 100%;
+  height: 10vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  border-bottom: 1px solid var(--secondary);
+}
+
+.Teacher_grid_title {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 3vh;
+  font-weight: 700;
+}
+
+.Teacher_list_grid {
+  width: 100%;
+  height: 10vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+
+::-webkit-scrollbar {
+  display: none;
+}
