@@ -26,6 +26,10 @@ function Classroom() {
     const [studentEmails, setStudentEmails] = useState<string[]>([]);
     const [fileName, setFileName] = useState('');
     const [data, setData] = useState<string[][]>([]);
+    const [teacherModalOpen, setTeacherModalOpen] = useState(false);
+    const [teacherTabValue, setTeacherTabValue] = useState("Mail");
+    const [teacherEmailInput, setTeacherEmailInput] = useState('');
+    const [teacherEmails, setTeacherEmails] = useState<string[]>([]);
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -66,6 +70,24 @@ function Classroom() {
             };
             reader.readAsText(file);
         }
+    };
+
+    const handleTeacherModalClick = () => {
+        setTeacherModalOpen(!teacherModalOpen);
+    };
+
+    const handleTeacherKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === ',') {
+            event.preventDefault();
+            if (teacherEmailInput) {
+                setTeacherEmails([...teacherEmails, teacherEmailInput]);
+                setTeacherEmailInput('');
+            }
+        }
+    };
+
+    const handleTeacherEmailClick = (email: string) => {
+        setTeacherEmails(teacherEmails.filter(e => e !== email));
     };
 
     return(
@@ -175,9 +197,10 @@ function Classroom() {
                         </>
                     }
                     {value === "2" && 
+                        <>
                         <div className={styles.Classroom_teachers}>
                             <div className={styles.Add_teachers_container}>
-                                <div className={styles.Add_teachers} onClick={handleStudentModalClick}>
+                                <div className={styles.Add_teachers} onClick={handleTeacherModalClick}>
                                     <IoIosAddCircle />
                                 </div> 
                             </div>
@@ -189,7 +212,7 @@ function Classroom() {
                                     <div className={styles.Teacher_grid_title}>Email</div>
                                 </div>
 
-                                {/* Map this shit */}
+                                {/* Map below this shit */}
                                 
                                 <div className={styles.Teacher_list_grid}>
                                     <div className={styles.Teacher_grid_title}>01</div>
@@ -199,6 +222,39 @@ function Classroom() {
                                 </div>
                             </div>
                         </div>
+
+                        <Modal isOpen = {teacherModalOpen} onClose={handleTeacherModalClick} title="Add Teachers">
+                            <div className={styles.Teacher_modal_content}>
+                                <Box sx={{ width: '100%', typography: 'body1' }}>
+                                    <TabContext value={teacherTabValue}>
+                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                        <TabList aria-label="lab API tabs example">
+                                            <Tab label="By Mail" value="Mail" style={{fontSize: "1.2em"}} />
+                                        </TabList>
+                                        </Box>
+                                    </TabContext>
+                                </Box>
+                                <div className={styles.Teacher_modal_reciever_container}>
+                                    {teacherEmails.map(email => (
+                                        <div className={styles.Teacher_mail_display} key={email} onClick={() => handleTeacherEmailClick(email)}>
+                                            {email}
+                                        </div>
+                                    ))}
+                                    <div className={styles.input_wrapper}>
+                                        <input 
+                                            className={styles.input_box} 
+                                            type="text"
+                                            value={teacherEmailInput}
+                                            onChange={e => setTeacherEmailInput(e.target.value)}
+                                            onKeyDown={handleTeacherKeyDown}
+                                            placeholder="Type email and press comma..."
+                                        />
+                                        <span className={styles.underline}></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </Modal>
+                        </>
                     }
                     {value === "3" && <h1>Tests</h1>}
                 </div>
