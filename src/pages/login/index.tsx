@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { Request, SetHeader } from "../../networking";
-import { toast , Bounce, ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 //Assest Imports
 import styles from "./login.module.css"
-
 
 interface redirectParams {
     userRole: string
@@ -13,7 +12,6 @@ interface redirectParams {
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
     const redirect = ({userRole}: redirectParams) => {
         switch (userRole) {
@@ -48,15 +46,32 @@ const Login = () => {
         }
     });
 
+    const handlePasswordChange = (e: any) => {
+        if (e.target.key === "Enter") {
+            handleLogin(e);
+        } else {
+            setPassword(e.target.value);
+        }
+    }
+
     const handleLogin = async (e: any) => {
         e.preventDefault();
 
         try {
-            const response = await Request(
+            const response = await toast.promise(
+                Request(
                 "POST",
                 "/auth/login",
                 {email, password},
-            );
+            ), {
+                pending: "Logging in...",
+                success: "Login Successfull!",
+                error: "Something went wrong",
+            });
+
+            if (response.status !== 200) {
+                throw new Error("Something went wrong");
+            }
 
             const { token, userRole } = response.data;
 
@@ -65,22 +80,10 @@ const Login = () => {
 
             SetHeader("Authorization ", `Bearer ${token}`);
 
-            toast.success('Login Successfull!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-                });
-
             redirect({userRole});
     
         } catch (error: any) {
-            setErrorMessage(error.response.data.message || 'Login failed');
+            console.log(`[Login] ${error.message}`);
         }
 
     };
@@ -93,7 +96,6 @@ const Login = () => {
                 <div className={styles.heading}>Spotify</div>
                 <div className={styles.sub_heading}>Login to your account</div>
             </div>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             <div className={styles.input_area}>
 
                 <div className={styles.form_inp}>
@@ -110,13 +112,13 @@ const Login = () => {
                         type="password" 
                         value={password} 
                         placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)} 
+                        onChange={handlePasswordChange} 
                         required 
                     />
                 </div>
                 </div>
                 <div className={styles.submit_button_cvr}>
-                <button className={styles.submit_button} type="submit">Login</button>
+                    <button className={styles.submit_button} type="submit">Login</button>
                 </div>
 
                 <div className={styles.forgot_pass}>

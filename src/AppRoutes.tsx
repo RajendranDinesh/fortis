@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
 
 import Editor from "./pages/editor";

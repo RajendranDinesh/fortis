@@ -54,6 +54,13 @@ const Request = async (method: RequestMethod, url: string, body?: any, params?: 
         const response = await instance.request(requestOptions);
         return response;
     } catch (error) {
+
+        if ((error as any).response && (error as any).response.status === 498) {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userRole');
+            window.location.href = '/login';
+        }
+
         throw error;
     }
 }

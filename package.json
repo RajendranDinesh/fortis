@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "@types/papaparse": "^5.3.14"
+    "@types/papaparse": "^5.3.14",
+    "@svgr/webpack": "^8.1.0"
   }
 }
