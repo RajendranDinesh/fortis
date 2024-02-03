@@ -4,6 +4,7 @@ import React, { useState, KeyboardEvent } from "react";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabList, TabContext } from '@mui/lab';
+import TextField from '@mui/material/TextField';
 import Modal from "../../components/Modal";
 import Papa from 'papaparse';
 
@@ -30,6 +31,10 @@ function Classroom() {
     const [teacherTabValue, setTeacherTabValue] = useState("Mail");
     const [teacherEmailInput, setTeacherEmailInput] = useState('');
     const [teacherEmails, setTeacherEmails] = useState<string[]>([]);
+    const [testsModalOpen, setTestsModalOpen] = useState(false);
+    const [testTitle, setTestTitle] = useState('');
+    const [testDescription, setTestDescription] = useState('');
+    const [testDuration, setTestDuration] = useState('');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -66,10 +71,18 @@ function Classroom() {
                 const contents = e.target?.result as string;
                 const result = Papa.parse(contents, { header: false });
                 setData(result.data as string[][]);
-                console.log(result.data); // Log the parsed CSV data
             };
             reader.readAsText(file);
         }
+    };
+
+    const handleStudentAddClick = () => {
+        if (studentTabValue === "Mail") {
+            console.log(studentEmails);
+        } else {
+            console.log(data);
+        }
+        setStudentModelOpen(!studentModelOpen);
     };
 
     const handleTeacherModalClick = () => {
@@ -88,6 +101,20 @@ function Classroom() {
 
     const handleTeacherEmailClick = (email: string) => {
         setTeacherEmails(teacherEmails.filter(e => e !== email));
+    };
+
+    const handleTeacherAddClick = () => {
+        console.log(teacherEmails);
+        setTeacherModalOpen(!teacherModalOpen);
+    };
+
+    const handleTestsModalClick = () => {
+        setTestsModalOpen(!testsModalOpen);
+    };
+
+    const handleTestAddClick = () => {
+        console.log([testTitle, testDescription, testDuration]);
+        setTestsModalOpen(!testsModalOpen);
     };
 
     return(
@@ -192,6 +219,10 @@ function Classroom() {
                                         </label> 
                                     </div>                                   
                                 }
+                                <div className={styles.Student_modal_button_container}>
+                                    <div className={styles.Student_add_button} onClick={handleStudentAddClick}>Add</div>
+                                    <div className={styles.Student_cancel_button} onClick={handleStudentModalClick}>Cancel</div>
+                                </div>
                             </div>
                         </Modal>
                         </>
@@ -252,11 +283,95 @@ function Classroom() {
                                         <span className={styles.underline}></span>
                                     </div>
                                 </div>
+                                <div className={styles.Teacher_modal_button_container}>
+                                    <div className={styles.Teacher_add_button} onClick={handleTeacherAddClick}>Add</div>
+                                    <div className={styles.Teacher_cancel_button} onClick={handleTeacherModalClick}>Cancel</div>
+                                </div>
                             </div>
                         </Modal>
                         </>
                     }
-                    {value === "3" && <h1>Tests</h1>}
+                    {value === "3" && 
+                        <>
+                            <div className={styles.Classroom_tests}>
+                                <div className={styles.Add_tests_container}>
+                                    <div className={styles.Add_tests} onClick={handleTestsModalClick}>
+                                        <IoIosAddCircle />
+                                    </div>
+                                </div>
+                                <div className={styles.Tests_list_container}>
+                                    <div className={styles.Test_header_grid}>
+                                        <div className={styles.Test_grid_title}>Sl.no</div>
+                                        <div className={styles.Test_grid_title}>Test Title</div>
+                                        <div className={styles.Test_grid_title}>Duration (in minutes)</div>
+                                    </div>
+
+                                    {/* Map below this shit */}
+                                    
+                                    <div className={styles.Test_list_grid}>
+                                        <div className={styles.Test_grid_title}>01</div>
+                                        <div className={styles.Test_grid_title}>Python Basics</div>
+                                        <div className={styles.Test_grid_title}>60</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <Modal isOpen={testsModalOpen} onClose={handleTestsModalClick} title="Add Tests">
+                                <div className={styles.Test_modal_content}>
+                                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                                        <TabContext value={teacherTabValue}>
+                                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                            <TabList aria-label="lab API tabs example">
+                                                <Tab label="Tests" value="Mail" style={{fontSize: "1.2em"}} />
+                                            </TabList>
+                                            </Box>
+                                        </TabContext>
+                                    </Box>
+                                    <div className={styles.Test_modal_reciever_container}>
+                                        <Box
+                                            component="form"
+                                            sx={{
+                                                '& > :not(style)': { m: 1, width: '25ch' },
+                                            }}
+                                            noValidate
+                                            autoComplete="off"
+                                            style={{display: "flex", flexDirection: "column"}}
+                                        >
+                                            <TextField 
+                                                id="title_test" 
+                                                label="Title" 
+                                                variant="standard" required
+                                                style={{width: "20vw", fontSize: "1.2em"}}
+                                                value={testTitle}
+                                                onChange={e => setTestTitle(e.target.value)}
+                                            />   
+                                            <TextField 
+                                                id="test_des" 
+                                                label="Description (optional)" 
+                                                variant="standard"
+                                                style={{width: "20vw", fontSize: "1.2em"}} 
+                                                value={testDescription}
+                                                onChange={e => setTestDescription(e.target.value)}
+                                            />
+                                            <TextField 
+                                                id="test_duration" 
+                                                label="Duration (in minutes)" 
+                                                variant="standard" 
+                                                required
+                                                style={{width: "20vw", fontSize: "1.2em"}}
+                                                value={testDuration}
+                                                onChange={e => setTestDuration(e.target.value)}
+                                            />
+                                        </Box>
+                                        <div className={styles.Test_modal_button_container}>
+                                            <div className={styles.Test_add_button} onClick={handleTestAddClick}>Add</div>
+                                            <div className={styles.Test_cancel_button} onClick={handleTestsModalClick}>Cancel</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Modal>
+                        </>
+                    }
                 </div>
             </div>
         </div>
