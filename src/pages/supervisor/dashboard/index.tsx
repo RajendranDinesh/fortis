@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 
 // Assests import
 import styles from './supervisorDashboard.module.css'
@@ -7,15 +9,20 @@ import { FaSpotify } from "react-icons/fa";
 
 const SupervisorDashboard = () => {
 
+    const navigate = useNavigate();
+
+    const handleCardClick = () => {
+        navigate('/supervisor/StudentDetailsPage');
+    }
 
     return (
         <div className={styles.main_container}>
             <div className={styles.header_container}>
-            <FaSpotify className={styles.header_image} />
+                <FaSpotify className={styles.header_image} />
                 <h1 className={styles.header_title}>Spotify</h1>
             </div>
             <div className={styles.body_container} >
-                <div className={styles.card_container}>
+                <div className={styles.card_container} onClick={handleCardClick}>
                     <div className={styles.card_pattern}></div>
                     <div className={styles.text_container}>
                         <div>
@@ -28,8 +35,8 @@ const SupervisorDashboard = () => {
                         </div>
                         </div>
                         <div className={styles.card_NumberContainer}>
-                        <MdOutlineSupervisorAccount className={styles.count_image} />
-                        <h1 className={styles.card_number}> 0</h1>
+                            <MdOutlineSupervisorAccount className={styles.count_image} />
+                            <h1 className={styles.card_number}> 0</h1>
                         </div>
                     </div>
             </div>
