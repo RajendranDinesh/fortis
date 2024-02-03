@@ -1,9 +1,9 @@
 .top_container {
-    --text: #f2d5f9;
-    --background: #1c0523;
-    --primary: #d082ed;
-    --secondary: #738c14;
-    --accent: #4ce443;
+    --text: #b3b3b3;
+    --background: #121212;
+    --primary: #1db954;
+    --secondary: #212121;
+    --accent: #535353;
 
     position: fixed;
     top: 0;
