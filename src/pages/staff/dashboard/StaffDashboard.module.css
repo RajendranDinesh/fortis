@@ -1,9 +1,9 @@
 .DashBoard_container {
-    --text: #f2d5f9;
-    --background: #1c0523;
-    --primary: #d082ed;
-    --secondary: #738c14;
-    --accent: #4ce443;
+    --text: #b3b3b3;
+    --background: #121212;
+    --primary: #1db954;
+    --secondary: #212121;
+    --accent: #535353;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -84,7 +84,7 @@
     width: 4.5vw;
     height: 8vh;
     font-size: 5em;
-    color: var(--secondary);
+    color: var(--primary);
     border-radius: 10em;
     position: fixed;
     right: 1vw;
@@ -127,7 +127,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    background: var(--primary);
+    background: var(--accent);
     color: var(--text);
     font-family: "Montserrat", sans-serif;
     font-size: 1.2em;
@@ -147,8 +147,8 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    background: rgba(255, 0, 0, 0.75);
-    color: var(--text);
+    background: rgba(255, 0, 0, 0.811);
+    color: var(--background);
     font-family: "Montserrat", sans-serif;
     font-size: 1.2em;
     font-weight: 700;

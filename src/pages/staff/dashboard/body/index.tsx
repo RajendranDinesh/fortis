@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { HttpStatusCode } from "axios";
 import { Request } from "../../../../networking";
+import { useNavigate } from "react-router-dom";
 
 // Styles
 import styles from "../StaffDashboard.module.css";
@@ -56,13 +57,19 @@ function Body({ classroomList, getClassrooms }: Props) {
         getClassrooms();
     });
 
+    const navigate = useNavigate();
+
+    const changeClassRoom = () => {
+        navigate("/staff/classroom");
+    }
+
     return (
         <React.Fragment>
             {classroomList.map((classroom) => {
             return (
                 <div>
                     <div className={styles.Classroom_display}>
-                        <div className={styles.Classroom_display_header}>
+                        <div className={styles.Classroom_display_header} onClick={changeClassRoom}>
                             <h1>{classroom.name}</h1>
                         </div>
                         <div className={styles.Classroom_display_footer}>

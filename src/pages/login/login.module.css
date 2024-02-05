@@ -12,6 +12,7 @@
     @media only screen and (max-width: 1500px){
         overflow-y: scroll;
     }
+
 }
 
 .form {
@@ -140,14 +141,13 @@
 .forgot_pass {
     text-align: center;
     margin-top: 3em;
+}
 
-    a{
-        color: #868686;
-        font-size: 12px;
-        text-decoration: none;
-    }
-  }
-
+.forgot_pass a {
+    color: #efefef;
+    font-size: 1.2em;
+    text-decoration: none;
+}
 
 #custom_toast{
     width: 500px;
