@@ -154,4 +154,25 @@
     height: 40px;
 }
 
+.role_list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 2rem;
 
+    user-select: none;
+}
+
+.role {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border: solid 1px grey;
+    border-radius: 4px;
+    
+    cursor: pointer;
+
+    h2 {
+        font-weight: 400;
+    }
+}

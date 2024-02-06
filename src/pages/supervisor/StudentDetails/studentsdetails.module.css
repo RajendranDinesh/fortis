@@ -12,6 +12,17 @@
     color: var(--text);
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
+
+    button{
+      width:10rem;
+      height: 4rem;
+      background-color: transparent;
+      color: var(--text);
+      border-color: var(--text);
+      font-size: 1.4rem;
+      cursor : pointer;
+      border-radius: 1rem;
+    }
 }
 
 .header{
@@ -207,17 +218,6 @@
 
 .left_buttons.active {
   border-bottom :var(--secondary) 2px solid;
-}
-
-button{
-  width:10rem;
-  height: 4rem;
-  background-color: transparent;
-  color: var(--text);
-  border-color: var(--text);
-  font-size: 1.4rem;
-  cursor : pointer;
-  border-radius: 1rem;
 }
 
 .block_input_container{
