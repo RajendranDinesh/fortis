@@ -204,6 +204,10 @@
     background-size: calc(1.732 * var(--s)) var(--s);
 }
 
+.Classes_container {
+    display: flex;
+}
+
 .Classroom_display_header h1 {
     margin: 5vh 0 0 1vw;
     font-family: "Poppins", sans-serif;

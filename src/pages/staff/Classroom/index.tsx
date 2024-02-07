@@ -1,6 +1,7 @@
 //Dependencies
 
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabList, TabContext } from '@mui/lab';
@@ -8,7 +9,9 @@ import TextField from '@mui/material/TextField';
 import Modal from "../../components/Modal";
 import Papa from 'papaparse';
 import Swal from 'sweetalert2'
+import { toast, ToastContainer } from "react-toastify";
 import { saveAs } from 'file-saver';
+import { getClassroom } from "./Controllers";
 
 //Styles
 
@@ -16,12 +19,16 @@ import styles from "./Classroom.module.css";
 
 //Components
 
+import StudentList from "./StudentList";
+
 //Assets
 
-import { IoIosAddCircle } from 'react-icons/io'
+import { IoIosAddCircle } from 'react-icons/io';
 
 function Classroom() {
 
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [value, setValue] = useState('1');
     const [studentModelOpen, setStudentModelOpen] = useState(false);
     const [studentTabValue, setStudentTabValue] = useState("Mail");
@@ -178,15 +185,46 @@ function Classroom() {
         setTestsModalOpen(!testsModalOpen);
     };
 
+    interface headerProps {
+        title: string
+        description?: string
+    }
+    const getSetClassroomData = async (id: Number) => {
+        try {
+            const responseData = await getClassroom(id);
+            setHeaderProps({title: responseData.name, description: responseData.description});
+        } catch (error) {
+            if ((error as any).response) {
+                toast.error((error as any).response.data.error, {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            } else {
+                toast.error((error as Error).message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+                navigate("/staff", { replace: false });
+            }
+        }
+    }
+
+    const[headerProps, setHeaderProps] = useState<headerProps>({title: ""});
+
+    useEffect(() => {
+        const classRoomId = Number(id);
+        getSetClassroomData(classRoomId);
+    }, [id]);
+
     return(
         <div className={styles.Classroom_container}>
             <div className={styles.Classroom_header}>
                 <div className={styles.Classroom_title_box}>
                     <div className={styles.Classroom_title_container}>
-                        <h1>Classroom Title</h1>
+                        <h1>{headerProps.title}</h1>
                     </div>
                     <div className={styles.Classroom_description_container}>
-                        <p>Classroom Description</p>
+                        <p>{headerProps.description}</p>
                     </div>
                 </div>
             </div>
@@ -195,7 +233,7 @@ function Classroom() {
                     <Box sx={{ width: '100%', typography: 'body1' }}>
                         <TabContext value={value}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <TabList onChange={handleChange} aria-label="lab API tabs example">
+                            <TabList onChange={handleChange} aria-label="lab API tabs">
                                 <Tab label="Students" value="1" style={{color: "white", fontSize: "1.2em"}} />
                                 <Tab label="Teachers" value="2" style={{color: "white", fontSize: "1.2em"}} />
                                 <Tab label="Tests" value="3" style={{color: "white", fontSize: "1.2em"}} />
@@ -214,21 +252,14 @@ function Classroom() {
                                 </div> 
                             </div>
                             <div className={styles.Students_list_container}>
-                                <div className={styles.Student_header_grid}>
-                                    <div className={styles.Student_grid_title}>Sl.no</div>
-                                    <div className={styles.Student_grid_title}>Name</div>
-                                    <div className={styles.Student_grid_title}>Roll.No</div>
-                                    <div className={styles.Student_grid_title}>Email</div>
-                                </div>
 
-                                {/* Map this shit */}
-
-                                <div className={styles.Student_list_grid}>
+                                {/* <div className={styles.Student_list_grid}>
                                     <div className={styles.Student_grid_title}>01</div>
                                     <div className={styles.Student_grid_title}>Saran S M</div>
                                     <div className={styles.Student_grid_title}>7376222AL194</div>
                                     <div className={styles.Student_grid_title}>saran.al22@bitsathy.ac.in</div>
-                                </div>
+                                </div> */}
+                                <StudentList />
                             </div>
                         </div>
 
@@ -494,6 +525,7 @@ function Classroom() {
                     }
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
