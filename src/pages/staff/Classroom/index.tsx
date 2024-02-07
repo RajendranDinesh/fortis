@@ -7,6 +7,8 @@ import { TabList, TabContext } from '@mui/lab';
 import TextField from '@mui/material/TextField';
 import Modal from "../../components/Modal";
 import Papa from 'papaparse';
+import Swal from 'sweetalert2'
+import { saveAs } from 'file-saver';
 
 //Styles
 
@@ -23,14 +25,18 @@ function Classroom() {
     const [value, setValue] = useState('1');
     const [studentModelOpen, setStudentModelOpen] = useState(false);
     const [studentTabValue, setStudentTabValue] = useState("Mail");
+    const [studentNameInput, setStudentNameInput] = useState('');
+    const [studentRollNumberInput, setStudentRollNumberInput] = useState('');
     const [studentEmailInput, setStudentEmailInput] = useState('');
-    const [studentEmails, setStudentEmails] = useState<string[]>([]);
+    const [studentDetails, setStudentDetails] = useState<{name: string, rollNumber: string, email: string}[]>([]);
     const [fileName, setFileName] = useState('');
-    const [data, setData] = useState<string[][]>([]);
+    const [data, setData] = useState<{email: string, rollNumber: string, name: string}[]>([]);
     const [teacherModalOpen, setTeacherModalOpen] = useState(false);
     const [teacherTabValue, setTeacherTabValue] = useState("Mail");
+    const [teacherNameInput, setTeacherNameInput] = useState('');
+    const [teacherFacultyIdInput, setTeacherFacultyIdInput] = useState('');
     const [teacherEmailInput, setTeacherEmailInput] = useState('');
-    const [teacherEmails, setTeacherEmails] = useState<string[]>([]);
+    const [teacherDetails, setTeacherDetails] = useState<{name: string, facultyId: string, email: string}[]>([]);
     const [testsModalOpen, setTestsModalOpen] = useState(false);
     const [testTitle, setTestTitle] = useState('');
     const [testDescription, setTestDescription] = useState('');
@@ -48,18 +54,38 @@ function Classroom() {
         setStudentTabValue(newValue);
     }
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === ',') {
-            event.preventDefault();
-            if (studentEmailInput) {
-                setStudentEmails([...studentEmails, studentEmailInput]);
-                setStudentEmailInput('');
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === ',') {
+            e.preventDefault();
+            const name = studentNameInput.trim();
+            const rollNumber = studentRollNumberInput.trim();
+            const email = studentEmailInput.trim();
+            const emailRegex = /^[^\s@]+@bitsathy\.ac\.in$/; // Regex for email validation
+            if (name && rollNumber && (email && emailRegex.test(email))) {
+                if (studentDetails.some(student => student.email === email)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Mail ID already exists!",
+                    });
+                } else {
+                    setStudentDetails([...studentDetails, {name, rollNumber, email}]);
+                    setStudentNameInput('');
+                    setStudentRollNumberInput('');
+                    setStudentEmailInput('');
+                }
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Enter mail ID that ends with @bitsathy.ac.in",
+                });;
             }
         }
     };
 
     const handleStudentEmailClick = (email: string) => {
-        setStudentEmails(studentEmails.filter(e => e !== email));
+        setStudentDetails(studentDetails.filter(student => student.email !== email));
     };
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,16 +95,31 @@ function Classroom() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 const contents = e.target?.result as string;
-                const result = Papa.parse(contents, { header: false });
-                setData(result.data as string[][]);
+                const result = Papa.parse(contents, { header: true });
+                const data = result.data.map((row: any) => ({
+                    email: row['email'], // use the exact column header from your CSV file
+                    rollNumber: row['roll_no'], // use the exact column header from your CSV file
+                    name: row['user_name'] // use the exact column header from your CSV file
+                }));
+                setData(data);
             };
             reader.readAsText(file);
         }
     };
 
+    const downloadCSVTemplate = () => {
+        const template = [
+            ['email', 'roll_no', 'user_name'], // headers
+            ['example@bitsathy.ac.in', '<12345>ex123', 'Example'] // example row
+        ];
+        const csvString = template.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+        saveAs(blob, 'template.csv');
+    };
+
     const handleStudentAddClick = () => {
         if (studentTabValue === "Mail") {
-            console.log(studentEmails);
+            console.log(studentDetails);
         } else {
             console.log(data);
         }
@@ -89,22 +130,42 @@ function Classroom() {
         setTeacherModalOpen(!teacherModalOpen);
     };
 
-    const handleTeacherKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === ',') {
-            event.preventDefault();
-            if (teacherEmailInput) {
-                setTeacherEmails([...teacherEmails, teacherEmailInput]);
-                setTeacherEmailInput('');
+    const handleTeacherKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === ',') {
+            e.preventDefault();
+            const name = teacherNameInput.trim();
+            const facultyId = teacherFacultyIdInput.trim();
+            const email = teacherEmailInput.trim();
+            const emailRegex = /^[^\s@]+@bitsathy\.ac\.in$/; // Regex for email validation
+            if (name && facultyId && (email && emailRegex.test(email))) {
+                if (teacherDetails.some(teacher => teacher.email === email)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Mail ID already exists!",
+                    });
+                } else {
+                    setTeacherDetails([...teacherDetails, {name, facultyId, email}]);
+                    setTeacherNameInput('');
+                    setTeacherFacultyIdInput('');
+                    setTeacherEmailInput('');
+                }
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Enter mail ID that ends with @bitsathy.ac.in",
+                });;
             }
         }
     };
 
     const handleTeacherEmailClick = (email: string) => {
-        setTeacherEmails(teacherEmails.filter(e => e !== email));
+        setTeacherDetails(teacherDetails.filter(teacher => teacher.email !== email));
     };
 
     const handleTeacherAddClick = () => {
-        console.log(teacherEmails);
+        console.log(teacherDetails);
         setTeacherModalOpen(!teacherModalOpen);
     };
 
@@ -185,27 +246,60 @@ function Classroom() {
                                 </Box>
                                 {studentTabValue === "Mail" &&
                                     <div className={styles.Student_modal_reciever_container}>
-                                        {studentEmails.map(email => (
-                                            <div className={styles.Student_mail_display} key={email} onClick={() => handleStudentEmailClick(email)}>
-                                                {email}
+                                        <div className={styles.Student_modal_input_fields}>
+                                            <div className={styles.input_wrapper}>
+                                                <input 
+                                                    className={styles.input_box} 
+                                                    type="text"
+                                                    value={studentNameInput}
+                                                    onChange={e => setStudentNameInput(e.target.value)}
+                                                    onKeyDown={handleKeyDown}
+                                                    placeholder="Type name..."
+                                                />
+                                                <span className={styles.underline}></span>
                                             </div>
-                                        ))}
-                                        <div className={styles.input_wrapper}>
+                                            <div className={styles.input_wrapper}>
+                                                <input 
+                                                    className={styles.input_box} 
+                                                    type="text"
+                                                    value={studentRollNumberInput}
+                                                    onChange={e => setStudentRollNumberInput(e.target.value)}
+                                                    onKeyDown={handleKeyDown}
+                                                    placeholder="Type roll number..."
+                                                />
+                                                <span className={styles.underline}></span>
+                                            </div>
+                                            <div className={styles.input_wrapper}>
                                             <input 
-                                                className={styles.input_box} 
-                                                type="text"
-                                                value={studentEmailInput}
-                                                onChange={e => setStudentEmailInput(e.target.value)}
-                                                onKeyDown={handleKeyDown}
-                                                placeholder="Type email and press comma..."
-                                            />
-                                            <span className={styles.underline}></span>
+                                                    className={styles.input_box} 
+                                                    type="text"
+                                                    value={studentEmailInput}
+                                                    onChange={e => setStudentEmailInput(e.target.value)}
+                                                    onKeyDown={handleKeyDown}
+                                                    placeholder="Type email and press comma..."
+                                                />
+                                                <span className={styles.underline}></span>
+                                            </div>
+                                        </div>
+                                        <div className={styles.Student_modal_mail_list}>
+                                            {studentDetails.map(student => (
+                                                <div className={styles.Student_mail_display} key={student.email} onClick={() => handleStudentEmailClick(student.email)}>
+                                                    {student.name} ({student.rollNumber}, {student.email})
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 }
 
                                 {studentTabValue === "CSV" &&
                                     <div className={styles.Student_modal_reciever_container}>
+                                        <div className={styles.Student_download_container}>
+                                            <button className={styles.Btn} onClick={downloadCSVTemplate}>
+                                                <svg className={styles.svgIcon} viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg>
+                                                <span className={styles.icon2}></span>
+                                                <span className={styles.tooltip}>CSV Template</span>
+                                            </button>
+                                        </div>
                                         <label className={styles.custum_file_upload} htmlFor="file">
                                             <div className={styles.icon}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> </g></svg>
@@ -266,22 +360,48 @@ function Classroom() {
                                     </TabContext>
                                 </Box>
                                 <div className={styles.Teacher_modal_reciever_container}>
-                                    {teacherEmails.map(email => (
-                                        <div className={styles.Teacher_mail_display} key={email} onClick={() => handleTeacherEmailClick(email)}>
-                                            {email}
+                                    <div className={styles.Teacher_modal_input_fields}>
+                                            <div className={styles.input_wrapper}>
+                                                <input 
+                                                    className={styles.input_box} 
+                                                    type="text"
+                                                    value={teacherNameInput}
+                                                    onChange={e => setTeacherNameInput(e.target.value)}
+                                                    onKeyDown={handleTeacherKeyDown}
+                                                    placeholder="Type name..."
+                                                />
+                                                <span className={styles.underline}></span>
+                                            </div>
+                                            <div className={styles.input_wrapper}>
+                                                <input 
+                                                    className={styles.input_box} 
+                                                    type="text"
+                                                    value={teacherFacultyIdInput}
+                                                    onChange={e => setTeacherFacultyIdInput(e.target.value)}
+                                                    onKeyDown={handleTeacherKeyDown}
+                                                    placeholder="Type roll number..."
+                                                />
+                                                <span className={styles.underline}></span>
+                                            </div>
+                                            <div className={styles.input_wrapper}>
+                                            <input 
+                                                    className={styles.input_box} 
+                                                    type="text"
+                                                    value={teacherEmailInput}
+                                                    onChange={e => setTeacherEmailInput(e.target.value)}
+                                                    onKeyDown={handleTeacherKeyDown}
+                                                    placeholder="Type email and press comma..."
+                                                />
+                                                <span className={styles.underline}></span>
+                                            </div>
                                         </div>
-                                    ))}
-                                    <div className={styles.input_wrapper}>
-                                        <input 
-                                            className={styles.input_box} 
-                                            type="text"
-                                            value={teacherEmailInput}
-                                            onChange={e => setTeacherEmailInput(e.target.value)}
-                                            onKeyDown={handleTeacherKeyDown}
-                                            placeholder="Type email and press comma..."
-                                        />
-                                        <span className={styles.underline}></span>
-                                    </div>
+                                        <div className={styles.Teacher_modal_mail_list}>
+                                            {teacherDetails.map(teacher => (
+                                                <div className={styles.Teacher_mail_display} key={teacher.email} onClick={() => handleTeacherEmailClick(teacher.email)}>
+                                                    {teacher.name} ({teacher.facultyId}, {teacher.email})
+                                                </div>
+                                            ))}
+                                        </div>
                                 </div>
                                 <div className={styles.Teacher_modal_button_container}>
                                     <div className={styles.Teacher_add_button} onClick={handleTeacherAddClick}>Add</div>
