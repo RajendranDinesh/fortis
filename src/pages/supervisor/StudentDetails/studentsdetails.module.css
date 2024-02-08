@@ -12,16 +12,9 @@
     color: var(--text);
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
-
-    button{
-      width:10rem;
-      height: 4rem;
-      background-color: transparent;
-      color: var(--text);
-      border-color: var(--text);
-      font-size: 1.4rem;
-      cursor : pointer;
-      border-radius: 1rem;
+  
+    @media screen and (max-width:512px){
+        overflow: scroll;
     }
 }
 
@@ -213,11 +206,30 @@
   justify-content: center;
   color: var(--text);
   border: none;
-  border-radius: 1rem;
+  border-radius: 0rem;
 }
 
 .left_buttons.active {
   border-bottom :var(--secondary) 2px solid;
+}
+
+button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.2em;
+  margin: 0.8em 0;
+  border: #b3b3b3 solid 1px;
+  border-radius: 1em;
+  background-color: transparent;
+  color: #b3b3b3;
+  font-size: 1rem;
+
+  &:hover {
+  cursor: pointer;
+  background-color: #535353;
+  color: #fff;
+                }
 }
 
 .block_input_container{
@@ -227,7 +239,7 @@
   align-items: center;
   justify-content: space-evenly;
   margin-top: 2rem;
-  margin-left: 10rem;
+
 }
 
 .block_input{
@@ -240,6 +252,81 @@
   color: var(--secondary);
   border-radius: 1rem;
   font-size: 1.2rem;
+}
+
+.test_activity_container{
+    display: flex;
+    width: 90%;
+    height: 5%;
+    background-color: var(--accent);
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+
+}
+
+
+.test_activity_container h1{
+  font-size: 1.2rem;
+}
+.test_details_container{
+  display: flex;
+  width: 100%;
+}
+
+.test_details_container h1{
+  font-size: 1.4rem;
+  margin-left: 2.8rem;
+}
+
+.test_details{
+  display: flex;
+  width: 84%;
+  height: 5%;
+  background-color: var(--accent);
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+
+}
+
+.tabswitch_container{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: auto;
+  padding: 1rem;
+  background-color: var(--accent);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+}
+
+.tabswitch_container h3{
+  font-size: 1.4rem;
+  margin-top: 1rem;
+}
+
+
+.tabswitch_container h2{
+  font-size: 1.5rem;
+  margin-right: 20rem;
+}
+.test_Blocked_details{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: auto;
+  padding: 1rem;
+  background-color: var(--accent);
+  align-items: center;
+}
+
+.test_Blocked_details h2{
+  font-size: 1.4rem;
+  margin-right:15rem
 }
 /* checkbox settings 👇 */
 

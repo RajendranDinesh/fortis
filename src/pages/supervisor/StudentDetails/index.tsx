@@ -1,7 +1,9 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 import styles from './studentsdetails.module.css';
 import { toast , Bounce, ToastContainer } from "react-toastify";
+import AttendenceModal from '../AttendenceModal';
 
 interface Student {
     id: number;
@@ -25,6 +27,7 @@ const StudentDetailsPage = () => {
     const [students, setStudents] = useState<Student[] | null>(null);
     const [inputValue, setInputValue] = useState('');
     const [isBlockInputEnabled, setIsBlockInputEnabled] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const handleActivestudents = () =>{
         setActive(true);
@@ -36,6 +39,8 @@ const StudentDetailsPage = () => {
 
       useEffect(()=>{
             setStudents(initialStudents);
+            const firstActiveStudent = initialStudents.find(student => student.status === 'Active');
+            setSelectedStudent(firstActiveStudent ? [firstActiveStudent] : null);
       } ,[])
 
 
@@ -79,7 +84,7 @@ const StudentDetailsPage = () => {
         console.log('Block reason submitted:', inputValue);
       
         // Optionally, you can reset the input field and disable it after submission
-        toast.error('Student Blocked!', {
+        toast.success('Student Blocked!', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -92,6 +97,10 @@ const StudentDetailsPage = () => {
         setInputValue('');
         setIsBlockInputEnabled(false);
       };
+
+      const handleModalClick = () => {
+        setModalOpen(!modalOpen); // Toggle modalOpen state
+    };
       
 
     return (
@@ -100,7 +109,7 @@ const StudentDetailsPage = () => {
                 <h1 className={styles.test_name}>Python Prgramming Test</h1>
                 <div className={styles.header_right}>
                         <h2 className={styles.status}> Total Students : 128</h2>
-                        <button>Attendence</button>
+                        <button onClick={handleModalClick}>Attendence</button>
                 </div>
             </div>
             <div className={styles.body_container}>
@@ -174,9 +183,31 @@ const StudentDetailsPage = () => {
                     }
 
                 </div>
+                <div className={styles.right_container}>
+                    <div className={styles.test_activity_container}>
+                        <h1>Test Activity</h1>
+                    </div>
+                    <div className={styles.test_details_container}>
+                        <h1>Test Details</h1>
+                    </div>
+                    <div className={styles.test_details}>
+                        <h2>Blocked at : 2/5/2024 11:33</h2>
+                        </div>
+                    <div className={styles.test_details}>
+                        <h2>Blocked by :Yonko Kaido</h2>
+                    </div>
+              
+                    <div className={styles.test_Blocked_details}>
+                        <h2>Blocked Reason :</h2>
+                        <h3> For containing Less haki For containing Less haki For containing Less haki For containing Less haki 
+
+                        </h3>
+                    </div>
+                </div>
         </div>
         <ToastContainer/>
-        </div>
+        <AttendenceModal modalOpen={modalOpen} handleModalClick={handleModalClick}/>
+    </div>
     );
     }
 
