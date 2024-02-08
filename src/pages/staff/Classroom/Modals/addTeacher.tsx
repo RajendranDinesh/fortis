@@ -8,7 +8,6 @@ import Modal from "../../../components/Modal";
 import { addStaff } from "../Controllers";
 
 import styles from "../Classroom.module.css";
-import { HttpStatusCode } from "axios";
 
 interface teacherModalProps {
     isOpen: boolean
@@ -22,7 +21,6 @@ export default function AddTeacherModal({
     setModalOpen,
  }: teacherModalProps) {
     const { id } = useParams();
-    const [teacherTabValue, setTeacherTabValue] = useState("Mail");
     const [teacherNameInput, setTeacherNameInput] = useState('');
     const [teacherFacultyIdInput, setTeacherFacultyIdInput] = useState('');
     const [teacherEmailInput, setTeacherEmailInput] = useState('');
@@ -75,7 +73,7 @@ export default function AddTeacherModal({
             Swal.fire({
                 icon: "success",
                 title: "Success",
-                text: "Staff added successfully",
+                text: data.message,
             });
         } catch (error) {
             Swal.fire({
@@ -91,7 +89,7 @@ export default function AddTeacherModal({
         <Modal isOpen = {isOpen} onClose={onClose} title="Add Teachers">
             <div className={styles.Teacher_modal_content}>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <TabContext value={teacherTabValue}>
+                    <TabContext value={"Mail"}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList aria-label="lab API tabs example">
                             <Tab label="By Mail" value="Mail" style={{fontSize: "1.2em"}} />
