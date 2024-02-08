@@ -9,9 +9,18 @@ interface redirectParams {
     userRole: string
 }
 
+interface userRoles {
+    roles: string[]
+}
+
+function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [userRoles, setUserRoles] = useState<userRoles>({roles: []});
 
     const redirect = ({userRole}: redirectParams) => {
         switch (userRole) {
@@ -73,14 +82,20 @@ const Login = () => {
                 throw new Error("Something went wrong");
             }
 
-            const { token, userRole } = response.data;
+            const { token, userRoles } = response.data;
 
             localStorage.setItem("authToken", token);
-            localStorage.setItem("userRole", userRole);
+            localStorage.setItem("userRole", userRoles);
 
             SetHeader("Authorization ", `Bearer ${token}`);
 
-            redirect({userRole});
+            if (userRoles.length === 1) {
+                const userRole = userRoles[0];
+                redirect({userRole});
+            }
+            else {
+                setUserRoles({roles: userRoles});
+            }
     
         } catch (error: any) {
             console.log(`[Login] ${error.message}`);
@@ -119,6 +134,16 @@ const Login = () => {
                 </div>
                 <div className={styles.submit_button_cvr}>
                     <button className={styles.submit_button} type="submit">Login</button>
+                    {userRoles.roles.length > 1 && 
+                    userRoles.roles.map((userRole, index) =>
+                    <button 
+                        className={styles.submit_button} 
+                        key={index} 
+                        onClick={() => redirect({ userRole })}
+                    >
+                        {capitalizeFirstLetter(userRole)}
+                    </button>)
+                    }
                 </div>
 
                 <div className={styles.forgot_pass}>

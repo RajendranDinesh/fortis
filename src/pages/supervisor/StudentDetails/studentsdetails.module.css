@@ -12,7 +12,7 @@
     color: var(--text);
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
-
+  
     @media screen and (max-width:512px){
         overflow: scroll;
     }

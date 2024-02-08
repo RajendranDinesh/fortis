@@ -59,26 +59,29 @@ function Body({ classroomList, getClassrooms }: Props) {
 
     const navigate = useNavigate();
 
-    const changeClassRoom = () => {
-        navigate("/staff/classroom");
+    const changeClassRoom = (classRoomId: Number) => {
+        navigate(`/staff/classroom/${classRoomId}`);
     }
 
     return (
-        <React.Fragment>
-            {classroomList.map((classroom) => {
-            return (
-                <div>
-                    <div className={styles.Classroom_display}>
-                        <div className={styles.Classroom_display_header} onClick={changeClassRoom}>
-                            <h1>{classroom.name}</h1>
-                        </div>
-                        <div className={styles.Classroom_display_footer}>
-                            <MdDeleteOutline id={styles.bin} onClick={() => handleDelete({ classroomId: classroom.classroom_id })}/>
+        <div>
+            <h1>Your Classes</h1>
+            <div className={styles.Classes_container}>
+                {classroomList.map((classroom, index) => {
+                return (
+                    <div key={index}>
+                        <div className={styles.Classroom_display}>
+                            <div className={styles.Classroom_display_header} onClick={() => changeClassRoom(classroom.classroom_id)}>
+                                <h1>{classroom.name}</h1>
+                            </div>
+                            <div className={styles.Classroom_display_footer}>
+                                <MdDeleteOutline id={styles.bin} onClick={() => handleDelete({ classroomId: classroom.classroom_id })}/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                )})}
-        </React.Fragment>
+                    )})}
+            </div>
+        </div>
     );
 }
 

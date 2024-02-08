@@ -6,7 +6,7 @@ function Staff() {
     return (
         <Routes>
             <Route path="dashboard" element={<StaffDashboard />} />
-            <Route path="classroom" element={<Classroom />} />
+            <Route path="classroom/:id" element={<Classroom />} />
         </Routes>
     );
 };
