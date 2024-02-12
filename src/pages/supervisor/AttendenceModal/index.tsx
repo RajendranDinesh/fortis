@@ -4,6 +4,9 @@ import * as React from "react";
 import { DataGrid, GridColDef} from '@mui/x-data-grid';
 import styles from './attendenceModal.module.css';
 import { GridRowId, GridCallbackDetails } from '@mui/x-data-grid';
+import {styled} from '@mui/system';
+import { useState } from "react";
+
 
 
 interface Props {
@@ -12,9 +15,8 @@ interface Props {
 }
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'studentName', headerName: 'Student name', width: 200 },
-    { field: 'rollNo', headerName: 'Roll No', width: 200 },
+    { field: 'studentName', headerName: 'Student name', width: 150 ,filterable : false},
+    { field: 'rollNo', headerName: 'Roll No', width: 150 },
   ];
 
   
@@ -45,7 +47,32 @@ const columns: GridColDef[] = [
  const AttendenceModal = ({modalOpen, handleModalClick}:Props) =>{
 
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [attendance, setAttendance] = React.useState({});
+
+    const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+      '&.MuiDataGrid-root': {
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+          height: '100%',
+          fontSize : "12px"
+    
+        },
+        [theme.breakpoints.between('sm', 'md')]: {
+          width: '90%',
+          height: '700px',
+          fontSize : "16px"
+        },
+        [theme.breakpoints.between('md', 'lg')]: {
+          width: '80%',
+          height: '700px',
+          fontSize : "18px",
+        },
+        [theme.breakpoints.up('lg')]: {
+          width: '65%',
+          height: '800px',
+        },
+      }
+    }));
+    
 
     const FilteredRow = rows.filter((row) => {
         const formattedSearchQuery = searchQuery.replace(/\s/g, '').toLowerCase();
@@ -58,27 +85,50 @@ const columns: GridColDef[] = [
              formattedSearchQuery.toLowerCase() === ''
         )
         });
+        // let processedRows : string[] = [];
+        // const updatedAttendance: { [key: string]: boolean } = {};
+
+        //   let lastSelectedRows: GridRowId[] = [];
+
+        //   const handleSelectionChange = (rowSelectionModel: GridRowId[], details: GridCallbackDetails<any>) => {
+        //     // console.log(rowSelectionModel);
+        //     const newlySelectedRows = rowSelectionModel.filter(row => !lastSelectedRows.includes(row));
+        //     newlySelectedRows.forEach(newRow => {
+        //       const selectedRowData = rows.find(row => row.id === newRow);
+        //       if (selectedRowData && !processedRows.includes(selectedRowData.rollNo)) {
+        //         updatedAttendance[selectedRowData.rollNo] = true;
+        //         console.log(`Marked attendance: ${selectedRowData.studentName}, Roll Number: ${selectedRowData.rollNo}`);
+        //         processedRows.push(selectedRowData.rollNo);
+        //       } else if (!selectedRowData) {
+        //         console.log(`No data found for selected row: ${newRow}`);
+        //       }
+        //     });
+        //     lastSelectedRows = [...rowSelectionModel];
+        //     setAttendance(updatedAttendance);
+        //   };
+
         let processedRows : string[] = [];
-        const updatedAttendance: { [key: string]: boolean } = {};
+const [updatedAttendance, setUpdatedAttendance] = useState<{ [key: string]: boolean }>({});
+const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
-          let lastSelectedRows: GridRowId[] = [];
+let lastSelectedRows: GridRowId[] = [];
 
-          const handleSelectionChange = (rowSelectionModel: GridRowId[], details: GridCallbackDetails<any>) => {
-            // console.log(rowSelectionModel);
-            const newlySelectedRows = rowSelectionModel.filter(row => !lastSelectedRows.includes(row));
-            newlySelectedRows.forEach(newRow => {
-              const selectedRowData = rows.find(row => row.id === newRow);
-              if (selectedRowData && !processedRows.includes(selectedRowData.rollNo)) {
-                updatedAttendance[selectedRowData.rollNo] = true; // Mark as present
-                console.log(`Marked attendance: ${selectedRowData.studentName}, Roll Number: ${selectedRowData.rollNo}`);
-                processedRows.push(selectedRowData.rollNo);
-              } else if (!selectedRowData) {
-                console.log(`No data found for selected row: ${newRow}`);
-              }
-            });
-            lastSelectedRows = [...rowSelectionModel];
-            setAttendance(updatedAttendance);
-          };
+const handleSelectionChange = (rowSelectionModel: GridRowId[], details: GridCallbackDetails<any>) => {
+  const newlySelectedRows = rowSelectionModel.filter(row => !lastSelectedRows.includes(row));
+  newlySelectedRows.forEach(newRow => {
+    const selectedRowData = rows.find(row => row.id === newRow);
+    if (selectedRowData && !processedRows.includes(selectedRowData.rollNo)) {
+      updatedAttendance[selectedRowData.rollNo] = true;
+      console.log(`Marked attendance: ${selectedRowData.studentName}, Roll Number: ${selectedRowData.rollNo}`);
+      processedRows.push(selectedRowData.rollNo);
+    } else if (!selectedRowData) {
+      console.log(`No data found for selected row: ${newRow}`);
+    }
+  });
+  lastSelectedRows = [...rowSelectionModel];
+  setUpdatedAttendance(updatedAttendance);
+  setSelectedRows(rowSelectionModel);
+};
 
     return (
         <Modal isOpen ={modalOpen} onClose={handleModalClick} title = "" >
@@ -92,22 +142,19 @@ const columns: GridColDef[] = [
             onChange={(e) => setSearchQuery(e.target.value)}
         />
     
-            <DataGrid
+            <StyledDataGrid
                 rows={FilteredRow}
                 columns={columns}
                 className={styles.data_grid}
                 initialState={{
                 pagination: {
-                    paginationModel: { page: 0, pageSize: 5 },
+                    paginationModel: { page: 0, pageSize: 10 },
                 },
                 }}
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleSelectionChange}
-                sx={{fontSize : '1.05rem',
-                width:'50rem',
-                height:'20rem'
-            }}
+                rowSelectionModel={selectedRows}
             />
             {/* <button className={styles.Save_button}>submit</button> */}
             </div>
