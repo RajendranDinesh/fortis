@@ -28,7 +28,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import AddClassroomModal from "./addUserModal";
-import AddTestModal from "./addTestsModal";
+import AddTestModal from "./addTestModal";
 import { SiGoogleclassroom, SiTestcafe } from "react-icons/si";
 
 interface ClassRoom {
