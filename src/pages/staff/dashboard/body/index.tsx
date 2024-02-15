@@ -97,7 +97,7 @@ function Body({ classroomList, getClassrooms }: Props) {
             <h1>Your Tests</h1>
             <div className={styles.Tests_container}>
             <div className={styles.Tests_display}>
-                <div className={styles.Tests_display_header} onClick={changeTest}>
+              <div className={styles.Tests_display_header} onClick={changeTest}>
                     <h1>Test Name</h1>
                     </div>
                         <div className={styles.Tests_display_footer}>

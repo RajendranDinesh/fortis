@@ -29,6 +29,22 @@
     background-color: #f8f8f8;
 
     flex-direction: column;
+
+    @media screen and (max-width: 1024px) {
+        width: 60%;
+        height: 55%;
+    }
+    @media screen and (max-width: 768px) {
+        width: 70%;
+        height: 70%;
+    }
+
+    @media screen and (max-width: 512px) {
+        width: 80%;
+        height: 80%;
+    }
+
+    
 }
 
 .title_container {
@@ -49,4 +65,15 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+
+    @media screen and (max-width: 1024px) {
+        padding :0px;
+    }
+    @media screen and (max-width: 768px) {
+        padding :0px;
+        overflow-y: auto;
+    }
+    @media screen and (max-width: 512px) {
+        padding :0px;
+    }
 }

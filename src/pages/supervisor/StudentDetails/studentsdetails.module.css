@@ -6,16 +6,14 @@
     --secondary :#1db954;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: var(--background);
     color: var(--text);
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
-  
-    @media screen and (max-width:512px){
-        overflow: scroll;
-    }
+
+    
 }
 
 .header{
@@ -26,8 +24,19 @@
     align-items: center;
     justify-content: space-between;
 
+    @media screen and (max-width:1200px){
+        height: 10vh;     
+    }
+
+    @media screen and (max-width:992px){
+        height: 8vh;
+    }
+    @media screen and (max-width:768px){
+        height: 8vh;
+    }
+
     @media screen and (max-width:512px){
-        height: 20vh;
+        height: 8vh;
     }
 }
 
@@ -37,11 +46,41 @@
     height: 100%;
     align-items: center;
     justify-content: space-evenly;
+    @media screen and (max-width:1200px){
+        width: 50%;
+    }
+    
+    @media screen and (max-width:992px){
+        width: 50%;
+    }
+    @media screen and (max-width:768px){
+        width: 50%;
+    }
+    @media screen and (max-width:512px){
+        width: 50%;
+    }
 }
 
 .test_name{
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     margin-left: 2rem;
+
+    @media screen and (max-width:1200px){
+        font-size: 1.5rem;
+    }
+    @media screen and (max-width:992px){
+        font-size: 1.6rem;
+    }
+    @media screen and (max-width:768px){
+        font-size: 1.5rem;
+    }
+
+    @media screen and (max-width:512px){
+        font-size: 1.2rem;
+    }
+    @media screen and (max-width:300px){
+        font-size: 1rem;
+    }
 }
 
 .body_container{
@@ -51,9 +90,32 @@
     background-color: var(--background);
     flex-direction: row;
 
-    @media screen and (max-width:512px){
-        flex-direction: column;
+    @media screen and (max-width:1200px){
+        height: 100%;
         overflow-y: scroll;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    @media screen and (max-width:992px){
+        height: 100%;
+        overflow-y: scroll;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    @media screen and (max-width:768px){
+        height:110%;
+        overflow-y: scroll;
+        flex-direction: column;
+        align-items: center;
+
+    }
+    @media screen and (max-width:512px){
+      width: 100vw; 
+      height: 100%;
+      flex-direction: column;
+      overflow-y: auto;
     }
 }
 
@@ -66,10 +128,30 @@
     flex-direction: column;
     align-items: center;
     overflow-y: scroll;
+
+    @media screen and (max-width:1200px){
+        width: 80%;
+        height: 20%;
+        margin-bottom: 5rem;
+        overflow-x: hidden;
+    }
+    
+    @media screen and (max-width:992px){
+        width: 90%;
+        height: 20%;
+        margin-bottom: 5rem;
+    }
+    
+    @media screen and (max-width:768px){
+      width: 100%;
+      height: 20%;
+      margin-bottom: 3rem;
+    }
     @media screen and (max-width:512px){
-        width: 100vw;
-        height: 100vh;
-        
+        width: 100%;
+        height: 40%;
+        margin-bottom: 2rem;
+        overflow-x: hidden;
     }
     
 }
@@ -82,10 +164,27 @@
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
+
+  @media screen and (max-width:1200px){
+      width: 80%;
+      height: 55vh;
+  }
+
+  @media screen and (max-width:992px){
+      width: 90%;
+      height: 60vh;
+
+  }
+
+  @media screen and (max-width:768px){
+    width: 80vw;
+    height: 52vh;
+  }
+
+
   @media screen and (max-width:512px){
       width: 100vw;
-      height: 100vh;
-      
+      height: 50vh;
   }
   
 }
@@ -100,8 +199,77 @@
     align-items: center;
     justify-content: center;
 
+    @media screen and (max-width:1200px){
+        width: 90%;
+        height: 45vh;
+        margin-left: 0rem;
+    }
+
+    @media screen and (max-width:992px){
+        width: 90%;
+        height: 40vh;
+        margin-left: 0rem;
+    }
+
+    @media screen and (max-width:768px){
+      width: 80vw;
+      height: 40vh;
+      margin-left: 0rem;
+      margin-right: 0rem;
+    }
+
+    @media screen and (max-width:512px){
+        width: 100vw;
+        height: 39vh;
+        margin-left: 0rem;
+        margin-top: 0rem;
+    }
+
 }
 
+.hr_line{
+
+  display: none;
+
+  @media screen and (max-width:1200px){
+    display: flex;
+    background-color: white;
+    width: 80%;
+    height: 0.5rem;
+    margin-bottom: 0rem;
+    border: none;
+    border-radius: 5px;
+  }
+
+  @media screen and (max-width:992px){
+    display: flex;
+    background-color: white;
+    width: 80%;
+    height: 0.5rem;
+    margin-bottom: 0rem;
+    border: none;
+    border-radius: 5px;
+  }
+
+  @media screen and (max-width:768px){
+    display: flex;
+    background-color: white;
+    width: 80%;
+    height: 0.5rem;
+    margin-bottom: 0rem;
+    border: none;
+    border-radius: 5px;
+  }
+  
+
+  @media screen and (max-width:512px){
+    display: flex;
+    width: 80%;
+    height: 0.5rem;
+    background-color: white;
+  }
+
+}
 .heading_container{
     display: flex;
     width: 100%;
@@ -111,10 +279,48 @@
     justify-content: space-evenly;
     margin-bottom: 1.5rem;
     margin-top: 1rem;
+
+    @media screen and (max-width:1200px){
+        width: 90%;
+        height: 10%;
+    }
+
+    @media screen and (max-width:768px){
+      width: 100%;
+      height: 7%;
+      margin-bottom: 1rem;
+    }
+    
+    @media screen and (max-width:512px){
+        width: 90%;
+        margin-top: 0.5rem;
+        height: 9%;
+    }
+
+    @media screen and (max-width:300px){
+        width: 90%;
+        margin-top: 0.5rem;
+        height: 10%;
+    }
 }
 
 .heading_container h1{
   font-size: 1.3rem;
+
+  @media screen and (max-width:1200px){
+    font-size: 1.3rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 1.4rem;
+  }
+
+  @media screen and (max-width:512px){
+    font-size: 1.2rem;
+  }
+  @media screen and (max-width:300px){
+    font-size: 1rem;
+  }
 }
 
 .count_container{
@@ -124,7 +330,6 @@
    align-items: center;
    justify-content: center;
    margin-right: -2rem;
-   cursor: pointer;
 
 }
 
@@ -134,24 +339,101 @@
     height: 5%;
     background-color: var(--accent);
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-bottom: 1em;
     cursor: pointer;
     border-radius: .4rem;
+
+    @media screen and (max-width:1200px){
+        width: 90%;
+        height: 9%;
+        margin-bottom: 1rem;
+    }
+
+    @media screen and (max-width:768px){
+      height: 7%;
+      margin-bottom: 0.5rem;
+    }
+
+    @media screen and (max-width:512px){
+        height: 8%;
+        width: 80%;
+        border-radius: 1rem;
+        margin-bottom: 0.5rem;
+        justify-content: space-between;
+    }
+    @media screen and (max-width:300px){
+        height: 9%;
+        width: 90%;
+        border-radius: 0.8rem;
+        margin-bottom: 0.5rem;
+        justify-content: space-between;
+    }
 }
 
 .student_name{
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    margin-left: 2rem;
+
+    @media screen and (max-width:1200px){
+        font-size: 1.3rem;
+
+    }
+
+    @media screen and (max-width:768px){
+        font-size: 1.3rem;
+        margin-left: 5rem;
+    }
+
+    @media screen and (max-width:512px){
+        font-size: 1.2rem;
+        margin-left: 5rem;
+    }
+    @media screen and (max-width:300px){
+        font-size: 1rem;
+        margin-left: 3rem;
+    }
 }
 
 .tab_count{
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    margin-right: 5rem ;
+
+    @media screen and (max-width:1200px){
+        font-size: 1.3rem;
+        margin-right:4rem;
+    }
+
+    @media screen and (max-width:768px){
+        font-size: 1.3rem;
+        margin-right:4rem;
+    }
+
+    @media screen and (max-width:512px){
+      font-size: 1.3rem;
+      margin-right: 4rem;
+  }
+    @media screen and (max-width:300px){
+        font-size: 1.2rem;
+        margin-right: 3rem;
+    }
 }
 
-.student_index{
-    font-size: 1.4rem;
-    color: var(--text);
+
+.tab_Count{
+  font-size: 1.4rem;
+  margin-right: 2rem;
+
+  @media screen and (max-width:1200px){
+      font-size: 1.3rem;
+  }
+
+  @media screen and (max-width:512px){
+      font-size: 1.5rem;
+      margin-right: 1rem;
+  }
 }
+
 
 .content_container{
     display: flex;
@@ -161,26 +443,125 @@
     background-color: var(--background);
     align-items: flex-start;
     margin-top:-5rem;
+
+    @media screen and (max-width:1200px){
+        width: 90%;
+        height: 70%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media screen and (max-width:992px){
+     width: 90%;
+    justify-content: center;
+    align-items: center;
+    }
+
+    @media screen and (max-width:768px){
+      margin-top: -5rem;
+      justify-content: center;
+      align-items: center;
+    }
+    @media screen and (max-width:512px){
+        margin-top: 0rem;
+        height: 40%;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .content_student{
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 80%;
   height: 10%;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-top: 3rem;
+  @media screen and (max-width:1200px){
+    width: 90%;
+    height: 10%;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width:992px){
+    width: 80%;
+    height: 10%;
+    justify-content: space-between;
+  }
+  @media screen and (max-width:768px){
+    margin-top: 1.5rem;
+    width: 80%;
+    height: 10%;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width:512px){
+    margin-top: 1.5rem;
+    height: 12%;
+    width: 70%;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width:300px){
+    margin-top: 1.5rem;
+    height: 12%;
+    width: 85%;
+    justify-content: space-between;
+  }
 }
 
 .content_details{
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  color: var(--text);
+
+  @media screen and (max-width:1200px){
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 1.5rem;
+  }
+  @media screen and (max-width:512px){
+    font-size: 1.3rem;
+  }
+  @media screen and (max-width:300px){
+    font-size: 1.1rem;
+  }
 
 }
+.student_status{
+  font-size: 1.8rem;
+  color: var(--secondary);
 
+  @media screen and (max-width:1200px){
+    font-size: 2rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width:512px){
+    font-size: 1.1rem;
+  }
+}
 .status{
   font-size: 1.8rem;
   color: var(--secondary);
+
+  @media screen and (max-width:1200px){
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 1.4rem;
+  }
+
+  @media screen and (max-width:512px){
+    font-size: 1.1rem;
+    display: none;
+  }
 }
 .blocked_students{
   font-size: 1.4rem;
@@ -194,6 +575,23 @@
   height: 10%;
   align-items: center;
   justify-content: space-evenly;
+
+  @media screen and (max-width:1200px){
+    width: 90%;
+    height: 7%;
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (max-width:768px){
+    height: 12%;
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (max-width:512px){
+    height: 12%;
+    margin-top: -1rem;
+  }
 }
 
 
@@ -201,19 +599,45 @@
   display: flex;
   width: 10rem;
   height: 4rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   align-items: center;
   justify-content: center;
   color: var(--text);
   border: none;
   border-radius: 0rem;
+  background-color: transparent;
+  cursor: pointer;
+
+  @media screen and (max-width:1200px){
+    font-size: 1.2rem;
+    width: 10rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 1.2rem;
+    width: 10rem;
+    height: 4rem;
+  }
+
+  @media screen and (max-width:512px){
+    font-size: 1rem;
+    width: 8rem;
+    height: 3rem;
+  }
+  @media screen and (max-width:300px){
+    font-size: 0.8rem;
+    width: 8rem;
+    height: 3rem;
+  }
 }
 
 .left_buttons.active {
   border-bottom :var(--secondary) 2px solid;
 }
 
-button{
+.main_button{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -229,7 +653,22 @@ button{
   cursor: pointer;
   background-color: #535353;
   color: #fff;
-                }
+  }
+
+  @media screen and (max-width:1200px){
+    padding: 0.6em;
+    margin: 0em;
+    font-size: 1.2rem;
+    border-radius: 0.5em;
+  }
+
+  @media screen and (max-width:512px){
+    padding: 0.8em;
+    margin: 0.5em;
+    font-size: 0.8rem;
+  }
+
+  
 }
 
 .block_input_container{
@@ -240,6 +679,22 @@ button{
   justify-content: space-evenly;
   margin-top: 2rem;
 
+  @media screen and (max-width:1200px){
+    width: 90%;
+    height: 10%;
+    margin-top:5rem;
+  }
+
+  @media screen and (max-width:768px){
+    margin-top: 1rem;
+    height: 25%;
+  }
+
+  @media screen and (max-width:512px){
+    height: 50%;
+    margin-top: 1rem;
+    justify-content: center;
+  }
 }
 
 .block_input{
@@ -252,6 +707,24 @@ button{
   color: var(--secondary);
   border-radius: 1rem;
   font-size: 1.2rem;
+
+  @media screen and (max-width:1200px){
+    width: 60%;
+    height: 5vh;
+    font-size:1.5rem;
+    border-radius: 0.4rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  @media screen and (max-width:512px){
+    font-size: 1rem;
+    border-radius: 4px;
+    height: 2vh;
+  }
 }
 
 .test_activity_container{
@@ -264,20 +737,61 @@ button{
     margin-bottom: 1.5rem;
     margin-top: 1rem;
 
+    @media screen and (max-width:1200px){
+        width: 90%;
+        height: 15%;
+    }
+    @media screen and (max-width:768px){
+      width: 80%;
+      height: 15%;
+      margin-bottom: 0.5rem;
+    }
+
+    @media screen and (max-width:512px){
+        margin-top: 0.5rem;
+        height: 9%;
+        margin-bottom: 0.5rem;
+        width: 85%;
+    }
+
 }
 
 
 .test_activity_container h1{
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  @media screen and (max-width:1200px){
+    font-size: 1.3rem;
+  }
+
+  @media screen and (max-width:768px){
+    font-size: 1.4rem;
+  }
+
+  @media screen and (max-width:512px){
+    font-size: 1rem;
+  }
 }
 .test_details_container{
   display: flex;
   width: 100%;
+  @media screen and (max-width:1200px){
+    width: 90%;
+  }
+  @media screen and (max-width:768px){
+    width: 80%;
+    height: 15%;
+  }
 }
 
 .test_details_container h1{
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin-left: 2.8rem;
+  @media screen and (max-width:1200px){
+    font-size: 1.3rem;
+  }
+  @media screen and (max-width:512px){
+    font-size: 1rem;
+  }
 }
 
 .test_details{
@@ -286,149 +800,112 @@ button{
   height: 5%;
   background-color: var(--accent);
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
 
+  @media screen and (max-width:1200px){
+    width: 80%;
+    height: 15%;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width:768px){
+    width: 80%;
+    height: 15%;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  @media screen and (max-width:512px){
+    margin-bottom: 0.5rem;
+    height: 6%;
+    width: 90%;
+  }
+
 }
 
-.tabswitch_container{
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  height: auto;
-  padding: 1rem;
-  background-color: var(--accent);
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  margin-top: 1rem;
-}
+.test_details h2{
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  @media screen and (max-width:1200px){
+    font-size: 1.3rem;
+  }
+  @media screen and (max-width:768px){
+    font-size: 1.6rem;
+  }
 
-.tabswitch_container h3{
-  font-size: 1.4rem;
-  margin-top: 1rem;
+  @media screen and (max-width:512px){
+    font-size: 1.2rem;
+  }
 }
 
 
-.tabswitch_container h2{
-  font-size: 1.5rem;
-  margin-right: 20rem;
-}
 .test_Blocked_details{
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 78%;
   height: auto;
   padding: 1rem;
   background-color: var(--accent);
   align-items: center;
+  justify-content: space-around;
+  overflow-x: auto;
+
+  @media screen and (max-width:1200px){
+    width: 77%;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: space-around;
+    gap: 1rem;
+    overflow-x: auto;
+
+  }
+
+  @media screen and (max-width:768px){
+    width: 76%;
+    height: 20%;
+    align-items: flex-start;
+    justify-content: space-around;
+    overflow-x: auto;
+  }
+
+  @media screen and (max-width:512px){
+    width: 82%;
+    overflow-x: auto;
+  }
 }
 
 .test_Blocked_details h2{
-  font-size: 1.4rem;
-  margin-right:15rem
-}
-/* checkbox settings 👇 */
+  font-size: 1.2rem;
+  margin-right:15rem;
+  @media screen and (max-width:1200px){
+    font-size: 1.3rem;
+  }
+  @media screen and (max-width:768px){
+    font-size: 1.6rem;
+  }
 
-.uicheckbox {
-    --primary-color: #1677ff;
-    --secondary-color: #fff;
-    --primary-hover-color: #4096ff;
-    /* checkbox */
-    --checkbox-diameter: 20px;
-    --checkbox-border-radius: 5px;
-    --checkbox-border-color: #d9d9d9;
-    --checkbox-border-width: 1px;
-    --checkbox-border-style: solid;
-    /* checkmark */
-    --checkmark-size: 1.2;
+  @media screen and (max-width:512px){
+    font-size: 1.2rem;
   }
-  
-  .uicheckbox, 
-  .uicheckbox *, 
-  .uicheckbox *::before, 
-  .uicheckbox *::after {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+}
+
+.test_Blocked_details h3{
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  @media screen and (max-width:1200px){
+    font-size: 1.3rem;
+    line-height: 5rem;
+    margin: 0 10vw 0 1vw;
   }
-  
-  .uicheckbox {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: var(--checkbox-diameter);
-    height: var(--checkbox-diameter);
-    border-radius: var(--checkbox-border-radius);
-    background: var(--secondary-color);
-    border: var(--checkbox-border-width) var(--checkbox-border-style) var(--checkbox-border-color);
-    -webkit-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
-    cursor: pointer;
-    position: relative;
+  @media screen and (max-width:768px){
+    font-size: 1.5rem;
+    line-height: 3rem;
   }
-  
-  .uicheckbox::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    -webkit-box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--primary-color);
-    box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--primary-color);
-    border-radius: inherit;
-    opacity: 0;
-    -webkit-transition: all 0.5s cubic-bezier(0.12, 0.4, 0.29, 1.46);
-    -o-transition: all 0.5s cubic-bezier(0.12, 0.4, 0.29, 1.46);
-    transition: all 0.5s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+
+  @media screen and (max-width:512px){
+    font-size: 1rem;
+    line-height: 3rem;
   }
-  
-  .uicheckbox::before {
-    top: 40%;
-    left: 50%;
-    content: "";
-    position: absolute;
-    width: 4px;
-    height: 7px;
-    border-right: 2px solid var(--secondary-color);
-    border-bottom: 2px solid var(--secondary-color);
-    -webkit-transform: translate(-50%, -50%) rotate(45deg) scale(0);
-    -ms-transform: translate(-50%, -50%) rotate(45deg) scale(0);
-    transform: translate(-50%, -50%) rotate(45deg) scale(0);
-    opacity: 0;
-    -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6),opacity 0.1s;
-    -o-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6),opacity 0.1s;
-    transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6),opacity 0.1s;
-  }
-  
-  /* actions */
-  
-  .uicheckbox:hover {
-    border-color: var(--primary-color);
-  }
-  
-  .uicheckbox:checked {
-    background: var(--primary-color);
-    border-color: transparent;
-  }
-  
-  .uicheckbox:checked::before {
-    opacity: 1;
-    -webkit-transform: translate(-50%, -50%) rotate(45deg) scale(var(--checkmark-size));
-    -ms-transform: translate(-50%, -50%) rotate(45deg) scale(var(--checkmark-size));
-    transform: translate(-50%, -50%) rotate(45deg) scale(var(--checkmark-size));
-    -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
-    -o-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
-    transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
-  }
-  
-  .uicheckbox:active:not(:checked)::after {
-    -webkit-transition: none;
-    -o-transition: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    transition: none;
-    opacity: 1;
-  }
-  
+}
