@@ -12,6 +12,8 @@
     color: var(--text);
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
+
+    
 }
 
 .header{
@@ -603,6 +605,8 @@
   color: var(--text);
   border: none;
   border-radius: 0rem;
+  background-color: transparent;
+  cursor: pointer;
 
   @media screen and (max-width:1200px){
     font-size: 1.2rem;
@@ -633,7 +637,7 @@
   border-bottom :var(--secondary) 2px solid;
 }
 
-button{
+.main_button{
   display: flex;
   justify-content: center;
   align-items: center;

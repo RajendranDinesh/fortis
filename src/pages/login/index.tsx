@@ -21,6 +21,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [userRoles, setUserRoles] = useState<userRoles>({roles: []});
+    const [showLoginButton, setShowLoginButton] = useState(true);
 
     const redirect = ({userRole}: redirectParams) => {
         switch (userRole) {
@@ -95,6 +96,7 @@ const Login = () => {
             }
             else {
                 setUserRoles({roles: userRoles});
+                setShowLoginButton(false);
             }
     
         } catch (error: any) {
@@ -132,23 +134,30 @@ const Login = () => {
                     />
                 </div>
                 </div>
-                <div className={styles.submit_button_cvr}>
-                    <button className={styles.submit_button} type="submit">Login</button>
-                    {userRoles.roles.length > 1 && 
-                    userRoles.roles.map((userRole, index) =>
-                    <button 
-                        className={styles.submit_button} 
-                        key={index} 
-                        onClick={() => redirect({ userRole })}
-                    >
-                        {capitalizeFirstLetter(userRole)}
-                    </button>)
-                    }
+                
+                {showLoginButton && 
+                    <div className={styles.submit_button_cvr}>
+                        <button className={styles.submit_button} type="submit">Login</button>
+                    </div>
+                }
+                {userRoles.roles.length > 1 && 
+                <div className={styles.role_container}>
+                    <h1 className={styles.role_Heading}>Select Role :</h1>
+                    <div className={styles.role_button_cotainer}>
+                        {userRoles.roles.map((userRole: string, index: number) =>
+                            <button 
+                                className={styles.role_button} 
+                                key={index} 
+                                onClick={() => {
+                                    redirect({userRole});     
+                                }}
+                            >
+                                {capitalizeFirstLetter(userRole)}
+                            </button>
+                        )}
+                    </div>
                 </div>
-
-                <div className={styles.forgot_pass}>
-                    <a href="/">Forgot password?</a>
-                </div>
+            }
                
             </form>
         </div>
