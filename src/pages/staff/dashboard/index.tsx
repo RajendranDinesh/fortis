@@ -78,7 +78,7 @@ function StaffDashboard () {
             const response = await Request("GET", "/classroom/user/me");
 
             if (response.status === HttpStatusCode.Ok) {
-                setClassroomList(response.data);
+                setClassroomList(response.data.classrooms);
             }
 
         } catch (error) {
