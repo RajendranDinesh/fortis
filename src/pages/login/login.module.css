@@ -19,34 +19,45 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20vw;
-    height: 55vh;
+    width: 20%;
+    height: 60%;
     box-shadow: 0px 15px 60px #868686;
     border-radius: 1rem;
+    overflow-y: auto;
 
     @media screen and (max-width: 1200px){
         width: 35vw;
         height: 70vh;
+        overflow-y: scroll;
     }
 
     @media only screen and (max-width: 992px){
         width: 35vw;
         height: 82vh;
+        overflow-y: scroll;
     }
     @media only screen and (max-width:768px){
         width: 50vw;
         height: 60vh;
+        overflow-y :scroll;
     }
 
     @media only screen and (max-width:512px){
         width: 80vw;
         height: 65vh;
+        overflow-y :scroll;
     }
     @media only screen and (max-width: 420px){
         width: 90vw;
         height: 70vh;
+        overflow-y :scroll;
     }
 
+    @media only screen and (max-width: 280px){
+        width: 95vw;
+        height: 70vh;
+        overflow-y :scroll;
+    }
   } 
 
 .heading_container{
@@ -83,7 +94,6 @@
     border-radius: 8px;
     border: 1px solid #ffffff;
     transition: all ease-in-out .3s;
-
 }
 
 .form_inp:focus input {
@@ -102,6 +112,10 @@
     border: none;
     padding: 0;
     margin: 0;
+
+    @media only screen and (max-width: 420px){
+        font-size: 1em;
+    }
 }
 
 .form_inp input:focus {
@@ -136,19 +150,14 @@
     color: #000000;
     cursor: pointer;
   }
+
+    @media only screen and (max-width: 420px){
+        width: 15em;
+        height: 2.5em;
+        font-size: 1em;
+    }
 }
   
-.forgot_pass {
-    text-align: center;
-    margin-top: 3em;
-}
-
-.forgot_pass a {
-    color: #efefef;
-    font-size: 1.2em;
-    text-decoration: none;
-}
-
 #custom_toast{
     width: 500px;
     height: 40px;
@@ -175,4 +184,64 @@
     h2 {
         font-weight: 400;
     }
+}
+
+.role_container {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+
+    @media screen and (max-width: 420px){
+        width: 80%;
+        margin-bottom: 2rem;
+    }
+
+    @media screen and (max-width: 280px){
+        width: 95%;
+        margin-bottom: 2rem;
+    }
+}
+.role_button_cotainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2em;
+    gap: 1em;
+}
+.role_button{
+    display: flex;
+    width: 30%;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+    color: #00FF7F;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 1.1em;
+    border: 0;
+    outline: 1px solid #00FF7F;
+    border-radius: 0.2em;
+    line-height: 1;
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+    
+    &:hover {
+    transition: all ease-in-out .3s;
+    background-color: #00FF7F;
+    color: #000000;
+    cursor: pointer;
+  }
+
+  
+}
+
+.role_Heading{
+    font-size: 1.5em;
+    font-weight: 400;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }

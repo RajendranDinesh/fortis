@@ -1,8 +1,6 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { toast, Bounce, ToastContainer } from "react-toastify";
 import styles from './studentsdetails.module.css';
-import { toast , Bounce, ToastContainer } from "react-toastify";
 import AttendenceModal from '../AttendenceModal';
 
 interface Student {
@@ -13,9 +11,8 @@ interface Student {
     status: string;
     blockReason?: string;
     blockedAt?: string;
-  };
-
-  const initialStudents: Student[] = [
+}
+const initialStudents: Student[] = [
     { id: 1, name: 'Adesh', tabCount: 4, blocked: false, status: 'Active' },
     { id: 2, name: 'Monkey D Luffy', tabCount: 0, blocked: true, status: 'Blocked' },
     { id: 3, name: 'Roronoa Zoro', tabCount: 1, blocked: false, status: 'Active' },
@@ -40,14 +37,20 @@ interface Student {
     { id: 22, name: 'Boa Hancock', tabCount: 0, blocked: true, status: 'Blocked' },
   ];
 
- 
 const StudentDetailsPage = () => {
     const [active, setActive] = useState(true);
+    const [blocked, setBlocked] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-    const [students, setStudents] = useState<Student[] | null>(null);
+    const [students, setStudents] = useState<Student[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [isBlockInputEnabled, setIsBlockInputEnabled] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const [showButton, setShowButton] = useState(true);
+    const [blockedAt, setBlockedAt] = useState('');
+    const [blockedBy, setBlockedBy] = useState('');
+    const [blockReason, setBlockReason] = useState('');
+    const [isReasonContainerShown, setIsReasonContainerShown] = useState(false);
+
 
     useEffect(() => {
         setStudents(initialStudents);
@@ -60,32 +63,47 @@ const StudentDetailsPage = () => {
     };
 
     const handleBlockedStudents = () => {
+        setBlocked(true);
         setActive(false);
     };
 
-    const toggleBlock = (id: number) => {
-        if (!students) return;
-
+    const blockStudent = (id: number) => {
         const updatedStudents = students.map((student: Student) => {
             if (student.id === id) {
-                if (student.blocked) {
-                    // Unblock the student directly without asking for a reason
-                    return { ...student, blocked: false, status: 'Active' };
-                } else {
-                    // Block the student and ask for a reason
-                    setIsBlockInputEnabled(true);
-                    setSelectedStudent(student);
-                    return { ...student, blocked: true };
-                }
+                setIsBlockInputEnabled(true);
+                setSelectedStudent(student);
+                toast.promise(
+                    new Promise<void>((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 1000);
+                    }),
+                    {
+                        pending: 'Blocking...',
+                        success: 'submit Reason',
+                    }
+                );
+                setIsReasonContainerShown(true);
+                return { ...student };
+                
             }
             return student;
         });
-
+    
         setStudents(updatedStudents);
-
+    };
+    
+    const unblockStudent = (id: number) => {
+        const updatedStudents = students.map((student: Student) => {
+            if (student.id === id) {
+                return { ...student, blocked: false, status: 'Active' };
+            }
+            return student;
+        });
+    
+        setStudents(updatedStudents);
+    
         const clickedStudent = updatedStudents.find(student => student.id === id);
-        setIsBlockInputEnabled(clickedStudent?.blocked || false);
-
         if (!clickedStudent?.blocked) {
             toast.success('Student Unblocked!', {
                 position: "top-right",
@@ -97,9 +115,10 @@ const StudentDetailsPage = () => {
                 draggable: true,
                 progress: undefined,
             });
-           
         }
     };
+
+
     const submitReason = () => {
         if (!selectedStudent || !students) return;
 
@@ -131,6 +150,7 @@ const StudentDetailsPage = () => {
         });
 
         setStudents(updatedStudents);
+        setIsReasonContainerShown(false);
 
         toast.success('Student Blocked!', {
             position: "top-right",
@@ -148,8 +168,13 @@ const StudentDetailsPage = () => {
     };
 
     const handleStudentClick = (id: number) => {
-        const clickedStudent = students?.find(student => student.id === id);
+        const clickedStudent = students.find(student => student.id === id);
         setSelectedStudent(clickedStudent || null);
+        if (clickedStudent?.status === 'Active') {
+            setShowButton(true);
+        } else {
+            setShowButton(false);
+        }
     };
 
     const handleModalClick = () => {
@@ -161,15 +186,15 @@ const StudentDetailsPage = () => {
             <div className={styles.header}>
                 <h1 className={styles.test_name}>Python Prgramming Test</h1>
                 <div className={styles.header_right}>
-                        <h2 className={styles.status}> Total Students : 128</h2>
-                        <button  onClick={handleModalClick}>Attendence</button>
+                    <h2 className={styles.status}> Total Students : 128</h2>
+                    <button className={styles.main_button} onClick={handleModalClick}>Attendence</button>
                 </div>
             </div>
             <div className={styles.body_container}>
                 <div className={styles.left_container}>
                     <div className={styles.heading_container}>
                         <h1>Student Name</h1>
-                        <div className = {styles.count_container}>
+                        <div className={styles.count_container}>
                             <h1>Tab Count</h1>
                         </div>
                     </div>
@@ -177,95 +202,94 @@ const StudentDetailsPage = () => {
                         <button className={`${styles.left_buttons} ${active ? styles.active : ''}`} onClick={handleActivestudents}>Active  Students</button>
                         <button className={`${styles.left_buttons} ${!active ? styles.active : ''}`} onClick={handleBlockedStudents}>Blocked Students</button>
                     </div>
-            {active && students?.map(student => (
-                student.status === 'Active' && (
-                    <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
-                        <h1 className={styles.student_name}>{student.name}</h1>
-                        <h1 className={styles.tab_count}>{student.tabCount}</h1>
-                    </div>
-                )
-            ))}
-
-            {!active && students?.map(student => (
-                student.status === 'Blocked' && (
-                    <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
-                        <h1 className={styles.student_name}>{student.name}</h1>
-                        <h1 className={styles.tab_count}>{student.tabCount}</h1>
-                    </div>
-                )
-            ))}
+                    {active && students.map(student => (
+                        student.status === 'Active' && (
+                            <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
+                                <h1 className={styles.student_name}>{student.name}</h1>
+                                <h1 className={styles.tab_count}>{student.tabCount}</h1>
+                            </div>
+                        )
+                    ))}
+                    {blocked && students.map(student => (
+                        student.status === 'Blocked' && (
+                            <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
+                                <h1 className={styles.student_name}>{student.name}</h1>
+                                <h1 className={styles.tab_count}>{student.tabCount}</h1>
+                            </div>
+                        )
+                    ))}
                 </div>
                 <div className={styles.middle_container}>
-                 
-                    {selectedStudent &&(
-                          <div className={styles.content_container}>
-                        <hr className={styles.hr_line}/>
-                          <div className={styles.content_student}>
-                          <h1 className={styles.content_details}>Student Name :</h1>
-                          <h1 className={styles.content_details}>{selectedStudent.name}</h1>
-                          </div>
-                          <div className={styles.content_student}>
-                          <h1 className={styles.content_details}>Block:</h1>
-                          <button onClick={() => toggleBlock(selectedStudent.id)}>
-                                {selectedStudent.blocked ? 'Unblock' : 'Block'}
-                            </button>
-                          </div>
-                          {isBlockInputEnabled && (
-                            <div className={styles.block_input_container}>
-                                <h1 className={styles.content_details}>Reason:</h1>
-                                <input
-                                type="text"
-                                className={styles.block_input}
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                />
-                                <button onClick = {submitReason}>Submit</button>
+                    {selectedStudent && (
+                        <div className={styles.content_container}>
+                            <hr className={styles.hr_line} />
+                            <div className={styles.content_student}>
+                                <h1 className={styles.content_details}>Student Name :</h1>
+                                <h1 className={styles.content_details}>{selectedStudent.name}</h1>
                             </div>
+                          
+                                {showButton ? 
+                                    (!isReasonContainerShown && <>
+                                      <div className={styles.content_student}>
+                                        <h1 className={styles.content_details}>Block:</h1>
+                                        <button className={styles.main_button} onClick={() => blockStudent(selectedStudent.id)}>Block</button>
+                                        </div>
+                                        </>)
+                                    :
+                                    <button className={styles.main_button} onClick={() => unblockStudent(selectedStudent.id)}>Unblock</button>
+                                }
+                            {isBlockInputEnabled && (
+                                <div className={styles.block_input_container}>
+                                    <h1 className={styles.content_details}>Reason:</h1>
+                                    <input
+                                        type="text"
+                                        className={styles.block_input}
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                    />
+                                    <button className={styles.main_button} onClick={submitReason}>Submit</button>
+                                </div>
                             )}
-                          <div className={styles.content_student}>
-                          <h1 className={styles.content_details}>Tab Switch Count :</h1>
-                          <h1 className={styles.tab_Count}>{selectedStudent.tabCount}</h1>
-                          </div>
-                          <div className={styles.content_student}>
-                          <h1 className={styles.content_details}>Status :</h1>
-                          <h1 className={styles.student_status}>{selectedStudent.status}</h1>
-                          </div>
-                      </div>
-                    )
-                    }
-
+                            <div className={styles.content_student}>
+                                <h1 className={styles.content_details}>Tab Switch Count :</h1>
+                                <h1 className={styles.tab_Count}>{selectedStudent.tabCount}</h1>
+                            </div>
+                            <div className={styles.content_student}>
+                                <h1 className={styles.content_details}>Status :</h1>
+                                <h1 className={styles.student_status}>{selectedStudent.status}</h1>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className={styles.right_container}>
-                {selectedStudent && selectedStudent.blocked && (
+                    {selectedStudent && selectedStudent.blocked && (
                         <>
-                    <div className={styles.test_activity_container}>
-                        <h1>Test Activity</h1>
-                    </div>
-                    <div className={styles.test_details_container}>
-                        <h1>Test Details</h1>
-                    </div>
-    
-                         <div className={styles.test_details}>
-                         <h2>Blocked at : {selectedStudent.blockedAt}</h2>
-                     </div>
-                     <div className={styles.test_details}>
-                         <h2>Blocked by :Yonko Kaido</h2>
-                     </div>
-               
-                     <div className={styles.test_Blocked_details}>
-                         <h2>Blocked Reason :</h2>
-                         <h3>{selectedStudent.blockReason}
-                         </h3>
-                     </div>
-                     </>)
-                        }
-                   
+                            <div className={styles.test_activity_container}>
+                                <h1>Test Activity</h1>
+                            </div>
+                            <div className={styles.test_details_container}>
+                                <h1>Test Details</h1>
+                            </div>
+
+                            <div className={styles.test_details}>
+                                <h2>Blocked at : {blockedAt}</h2>
+                            </div>
+                            <div className={styles.test_details}>
+                                <h2>Blocked by :{blockedBy}</h2>
+                            </div>
+
+                            <div className={styles.test_Blocked_details}>
+                                <h2>Blocked Reason :</h2>
+                                <h3>{blockReason}</h3>
+                            </div>
+                        </>
+                    )}
                 </div>
+            </div>
+            <ToastContainer />
+            <AttendenceModal modalOpen={modalOpen} handleModalClick={handleModalClick} />
         </div>
-        <ToastContainer/>
-        <AttendenceModal modalOpen={modalOpen} handleModalClick={handleModalClick}/>
-    </div>
     );
-    }
+}
 
 export default StudentDetailsPage;
