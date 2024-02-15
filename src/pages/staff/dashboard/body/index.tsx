@@ -63,11 +63,15 @@ function Body({ classroomList, getClassrooms }: Props) {
         navigate(`/staff/classroom/${classRoomId}`);
     }
 
+    const changeTest = () => {
+        navigate("/staff/test");
+    }
+
     return (
         <div>
             <h1>Your Classes</h1>
             <div className={styles.Classes_container}>
-                {classroomList.map((classroom, index) => {
+                {classroomList.slice().reverse().slice(0,3).map((classroom, index) => {
                 return (
                     <div key={index}>
                         <div className={styles.Classroom_display}>
@@ -79,7 +83,27 @@ function Body({ classroomList, getClassrooms }: Props) {
                             </div>
                         </div>
                     </div>
-                    )})}
+                    )
+                })}
+                {classroomList.length >= 3 && (
+                    <button className={styles.view_all_button}>
+                        View All
+                        <div className={styles.arrow_wrapper}>
+                            <div className={styles.arrow}></div>
+                        </div>
+                    </button>
+                )}
+            </div>
+            <h1>Your Tests</h1>
+            <div className={styles.Tests_container}>
+            <div className={styles.Tests_display}>
+                <div className={styles.Tests_display_header} onClick={changeTest}>
+                    <h1>Test Name</h1>
+                    </div>
+                        <div className={styles.Tests_display_footer}>
+                            <MdDeleteOutline id={styles.bin}/>
+                        </div>
+                    </div>
             </div>
         </div>
     );

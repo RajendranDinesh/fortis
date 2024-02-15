@@ -7,6 +7,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Request } from "../../../networking";
+import Backdrop from '@mui/material/Backdrop';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
 
 //Styles
 
@@ -18,13 +22,14 @@ import Body from "./body";
 
 //Assets
 
-import { IoIosAddCircle } from "react-icons/io";
 import { FaSpotify } from "react-icons/fa";
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import AddClassroomModal from "./addUserModal";
+import AddTestModal from "./addTestModal";
+import { SiGoogleclassroom, SiTestcafe } from "react-icons/si";
 
 interface ClassRoom {
     classroom_id: number
@@ -38,7 +43,11 @@ function StaffDashboard () {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [modelOpen, setModelOpen] = React.useState(false);
+    const [modelTestsOpen, setModelTestsOpen] = React.useState(false);
     const [classroomList, setClassroomList] = React.useState<ClassRoom[]>([]);
+    const [openSpeadDial, setOpenSpeedDial] = React.useState(false);
+    const handleSpeedDialOpen = () => setOpenSpeedDial(true);
+    const handleSpeedDialClose = () => setOpenSpeedDial(false);
 
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -51,6 +60,10 @@ function StaffDashboard () {
 
     const handleModalClick = () => {
         setModelOpen(!modelOpen);
+    }
+
+    const handleTestsModalClick = () => {
+        setModelTestsOpen(!modelTestsOpen);
     }
 
     const handleLogout = () => {
@@ -84,6 +97,11 @@ function StaffDashboard () {
             }
         }
     }
+
+    const actions = [
+        { icon: <SiGoogleclassroom onClick={handleModalClick} style={{fontSize: '2em'}} />, name: 'Class' },
+        { icon: <SiTestcafe onClick={handleTestsModalClick} style={{fontSize: '2em'}} />, name: 'Test' },
+    ];
 
     return (
         <div className={styles.DashBoard_container}>
@@ -160,12 +178,32 @@ function StaffDashboard () {
                 </div>
             </div>
             <div className={styles.DashBoard_body}>
-                <div className={styles.Add_classroom} onClick={handleModalClick}>
-                    <IoIosAddCircle />
+                <div className={styles.Add_classroom}>
+                    <Box sx={{ height: 330, transform: 'translateZ(0px)', flexGrow: 1 }}>
+                        <Backdrop open={openSpeadDial} />
+                        <SpeedDial
+                            ariaLabel="SpeedDial tooltip example"
+                            sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                            icon={<SpeedDialIcon />}
+                            onClose={handleSpeedDialClose}
+                            onOpen={handleSpeedDialOpen}
+                            open={openSpeadDial}
+                        >
+                            {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                tooltipOpen
+                            />
+                            ))}
+                        </SpeedDial>
+                    </Box>
                 </div> 
                 <Body classroomList={classroomList} getClassrooms={getClassrooms} />
             </div>
             <AddClassroomModal modelOpen={modelOpen} handleModalClick={handleModalClick} getClassrooms={getClassrooms}/>
+            <AddTestModal modelTestsOpen={modelTestsOpen} handleTestsModalClick={handleTestsModalClick} />
             <ToastContainer />
         </div>
     );
