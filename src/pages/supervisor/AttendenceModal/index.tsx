@@ -6,6 +6,9 @@ import styles from './attendenceModal.module.css';
 import { GridRowId } from '@mui/x-data-grid';
 import { useState , useEffect } from "react";
 
+import { Request } from '../../../networking';
+import { useParams } from "react-router-dom";
+
 
 
 interface Props {
@@ -42,16 +45,70 @@ const columns: GridColDef[] = [
     {id :19, studentName :'Kizaru', rollNo: '7376222AL119', isPresent: false},
     {id :20, studentName :'Fujitora', rollNo: '7376222AL120', isPresent: false},
   ];
+
   
  const AttendenceModal = ({modalOpen, handleModalClick}:Props) =>{
 
     const [searchQuery, setSearchQuery] = React.useState('');
     const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
+    const [attendence, setAttendence] = useState([]);
+
+
+    const { id } = useParams();
+
+    useEffect(() => {
+      fetchData();
+  }, []);
+
+  const fetchData = async () => {
+      try {
+          const response = await Request("GET",`/supervisor/attendence/${id}`);
+          if (response.status === 200) {
+              // const testData = response.data.active_students;
+              console.log("--- attendence data ----",response.data.attendence);
+              setAttendence(response.data.attendence);
+          } else {
+              console.error('Failed to fetch test data');
+          }
+      } catch (error) {
+          console.error('Error fetching test data:', error);
+      }
+  };
+
+  // const presentStudents = async () => {
+  //   try {
+  //       const response = await Request("POST",`/supervisor/attendence-present/${id}`,{student_id: student_id});
+  //       if (response.status === 200) {
+
+  //         console.log("- present message -",response.data.message);
+
+  //       } else {
+  //           console.error('Failed to fetch test data');
+  //       }
+  //   } catch (error) {
+  //       console.error('Error fetching test data:', error);
+  //   }
+  // }
+
+  // const absentStudents = async () => {
+  //   try {
+  //       const response = await Request("POST",`/supervisor/attendence-absent/${id}`,{student_id: student_id});
+  //       if (response.status === 200) {
+
+  //         console.log("- absent message -",response.data.message);
+
+  //       } else {
+  //           console.error('Failed to fetch test data');
+  //       }
+  //   } catch (error) {
+  //       console.error('Error fetching test data:', error);
+  //   }
+
     useEffect(() => {
       // Ensure selectedRows remain valid when the filteredRows change
       setSelectedRows(rows.filter(row => row.isPresent).map(row => row.id));
-  },[selectedRows]);
+  },[]);
 
     const filteredRows = rows.filter((row) => {
       const formattedSearchQuery = searchQuery.trim().toLowerCase();
