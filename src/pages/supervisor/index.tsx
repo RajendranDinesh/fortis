@@ -6,7 +6,7 @@ function Supervisor() {
     return (
         <Routes>
             <Route path="dashboard" element={<SupervisorDashboard />} />
-            <Route path= "StudentDetailsPage" element ={<StudentDetailsPage/>}/>
+            <Route path= "StudentDetailsPage/:id" element ={<StudentDetailsPage/>}/>
         </Routes>
     );
 };

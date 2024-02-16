@@ -3,6 +3,9 @@ import { toast, Bounce, ToastContainer } from "react-toastify";
 import styles from './studentsdetails.module.css';
 import AttendenceModal from '../AttendenceModal';
 
+import { Request } from '../../../networking';
+import { useParams } from 'react-router-dom';
+
 interface Student {
     id: number;
     name: string;
@@ -12,6 +15,12 @@ interface Student {
     blockReason?: string;
     blockedAt?: string;
 }
+
+interface TestTitle {
+    title: string;
+    total_students: number;
+}
+
 const initialStudents: Student[] = [
     { id: 1, name: 'Adesh', tabCount: 4, blocked: false, status: 'Active' },
     { id: 2, name: 'Monkey D Luffy', tabCount: 0, blocked: true, status: 'Blocked' },
@@ -51,12 +60,75 @@ const StudentDetailsPage = () => {
     const [blockReason, setBlockReason] = useState('');
     const [isReasonContainerShown, setIsReasonContainerShown] = useState(false);
 
+    const [testTitle, setTestTitle] = useState<TestTitle>({ title: 'test title', total_students: 0 });
+
+    const { id } = useParams();
+
 
     useEffect(() => {
         setStudents(initialStudents);
         const firstActiveStudent = initialStudents.find(student => student.status === 'Active');
         setSelectedStudent(firstActiveStudent || null);
     }, []);
+
+    useEffect(() => {
+        fetchtitle();
+        fetchData();
+    }, []);
+
+    const fetchtitle = async () => {
+        try {
+            const response = await Request("GET",`/supervisor/header/${id}`);
+            if (response.status === 200) {
+                const TestTitle = response.data.test[0]; //subscripting the array to get the first element
+                setTestTitle(TestTitle);
+            } else {
+                console.error('Failed to fetch test data');
+            }
+        } catch (error) {
+            console.error('Error fetching test data:', error);
+        }
+    }
+
+    const fetchData = async () => {
+        try {
+            const response = await Request("GET",`/supervisor/active-blocked-students/${id}`);
+            if (response.status === 200) {
+
+                console.log("-actuive & blocked students-",response.data.students);
+
+            } else {
+                console.error('Failed to fetch test data');
+            }
+        } catch (error) {
+            console.error('Error fetching test data:', error);
+        }
+    };
+
+    // const block_Student = async () => {
+    //     try {
+    //         const response = await Request("POST",`/supervisor/block-student/${id}`,{student_id: student_id, block_reason: block_reason});
+    //         if (response.status === 200) {
+    //             console.log("Blocked student successfully");
+    //         } else {
+    //             console.error('Failed to block student');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error blocking student:', error);
+    //     }
+    // }
+
+    // const blocked_details = async () => {
+    //     try {
+    //         const response = await Request("GET",`/supervisor/blocked-details/${id}`,{student_id: student_id});
+    //         if (response.status === 200) {
+    //             console.log("Blocked details fetched successfully");
+    //         } else {
+    //             console.error('Failed to fetch blocked details');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching blocked details:', error);
+    //     }
 
     const handleActivestudents = () => {
         setActive(true);
@@ -184,9 +256,9 @@ const StudentDetailsPage = () => {
     return (
         <div className={styles.main_container}>
             <div className={styles.header}>
-                <h1 className={styles.test_name}>Python Prgramming Test</h1>
+                <h1 className={styles.test_name}>{testTitle.title}</h1>
                 <div className={styles.header_right}>
-                    <h2 className={styles.status}> Total Students : 128</h2>
+                    <h2 className={styles.status}> Total Students : {testTitle.total_students}</h2>
                     <button className={styles.main_button} onClick={handleModalClick}>Attendence</button>
                 </div>
             </div>
@@ -246,6 +318,8 @@ const StudentDetailsPage = () => {
                                         className={styles.block_input}
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
+                                        title="Enter the reason"
+                                        placeholder="Enter the reason"
                                     />
                                     <button className={styles.main_button} onClick={submitReason}>Submit</button>
                                 </div>
