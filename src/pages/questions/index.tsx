@@ -2,8 +2,8 @@ import styles from './compiler.module.css';
 import RightContainer from "./components/RightContainer";
 import LeftContainer from './components/LeftContainer';
 
-const Editor = () => {
-    document.title = 'Compiler | HexaVert';
+const Questions = () => {
+    document.title = 'Questions | CodeX';
 
     return (
         <div className={styles.page_container}>
@@ -21,4 +21,4 @@ const Editor = () => {
     );
 };
 
-export default Editor;
+export default Questions;

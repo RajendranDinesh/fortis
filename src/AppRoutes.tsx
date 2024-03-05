@@ -1,7 +1,7 @@
  /* eslint-disable */
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
 
-import Editor from "./pages/editor";
+import Questions from "./pages/questions";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import Student from "./pages/student";
@@ -35,7 +35,7 @@ function ProtectedRoutes() {
                 <Route path="student/*" element={<Student />} />
                 <Route path="supervisor/*" element={<Supervisor />} />
 
-                <Route path="editor" element={<Editor />} />
+                <Route path="questions" element={<Questions />} />
             </Route>
         </Routes>
     );
