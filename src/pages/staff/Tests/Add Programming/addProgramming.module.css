@@ -5,7 +5,7 @@
     --secondary: #212121;
     --accent: #535353;
     width: 100vw;
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -13,6 +13,16 @@
     background: var(--background);
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.addProgramming_first_container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background: var(--background);
 }
 
 .addProgramming_header {
@@ -242,213 +252,397 @@
     width: 96vw;
     height: 73vh;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 2vh 0 0 2vw;
     border-radius: 2em;
     background: var(--secondary);
 }
 
-.addProgramming_body_left {
-    width: 30vw;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    border-radius: 2em 0 0 2em;
-}
-
-.addProgramming_body_left_header {
-  width: 100%;
-  height: 6vh;
-  border-radius: 2em 0 0 0;
+.addProgramming_body_bottom_button {
+  width: 4.5vw;
+  height: 8vh;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-}
-
-.addProgramming_body_left_header h1 {
+  justify-content: center;
+  margin: 60vh 0 0 90vw;
+  border: none;
+  border-radius: 10em;
+  background: var(--accent);
+  color: var(--text);
   font-size: 2em;
-  margin: 0 0 0 1vw;
-  color: var(--text);
-  letter-spacing: 0.1em;
-  font-family: "Poppins", sans-serif;
-}
-
-#addIcon {
-  font-size: 4em;
-  margin: 0 0 0 10vw;
+  font-weight: 700;
   cursor: pointer;
-  color: var(--text);
+  position: absolute;
 }
 
-.addProgramming_body_left_content {
+.addProgramming_second_container {
   width: 100%;
-  height: 61vh;
-  border-radius: 2em 0 0 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  overflow-y: scroll;
+  background: var(--background);
 }
 
-.addProgramming_body_left_content_element {
-  width: 80%;
-  height: 15vh;
+.addProgramming_second_container_body {
+  width: 96vw;
+  height: 96vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 2vh 0 0 2vw;
   border-radius: 2em;
-  margin: 1vh 0 1vh 3vw;
+  background: var(--secondary);
+}
+
+.addProgramming_second_container_header {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 0 0;
+  color: var(--text);
+  border-radius: 2em 2em 0 0;
+}
+
+.addProgramming_second_container_header h1 {
+  font-size: 2em;
+  font-weight: 700;
+  font-style: italic;
+  margin: 0 0 0 2vw;
+}
+
+.addProgramming_second_tabs_container {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 0 0;
+  color: var(--text);
+}
+
+.addProgramming_second_body {
+  height: 80vh;
+  width: 100%;
+  border-radius: 0 0 2em 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.addProgramming_second_public_array {
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.addProgramming_second_public_array button {
+  height: 6vh;
+  width: 3.5vw;
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 5em;
+  font-size: 2em;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background: var(--text);
-}
-
-.addProgramming_body_left_content_element_left{
-  width: 80%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.addProgramming_body_left_content_element_right{
-  width: 20%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0 2em 2em 0;
-}
-
-#binIcon {
-  font-size: 2em;
-  color: var(--background);
+  margin: 2vh 1vw 1vh 1vw;
   cursor: pointer;
 }
 
-.addProgramming_body_left_footer {
-  width: 100%;
-  height: 6vh;
-  border-radius: 0 0 0 2em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.addProgramming_body_left_footer button {
-  height: 5vh;
+.addProgramming_second_public_case_name {
   width: 10vw;
-  margin: 0 1vw 0 0;
+  height: 8vh;
+  border-radius: 1em;
+  margin: 1vh 1vw 1vh 1vw;
   background: var(--accent);
   color: var(--text);
-  font-size: 1.2em;
-  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.addProgramming_second_public_case_name h3{
+  font-size: 1.4em;
   font-weight: 700;
-  border: none;
 }
 
-.addProgramming_body_middle {
-    width: 40vw;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow-x: auto;
+.addProgramming_second_public_case_name span {
+  background: red;
+  height: 3vh;
+  width: 2vw;
+  border-radius: 1em;
+  text-align: center;
+  font-weight: 700;
+  position: absolute;
+  margin: -8vh 0 0 8vw;
+  cursor: pointer;
 }
 
-.addProgramming_body_middle_bottom {
-    width: 100%;
-    height: 10vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    margin: 1vh 0 0 0;
-}
-
-.addProgramming_body_middle_bottom button {
-    width: 10vw;
-    height: 5vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 0 1vw 0 0;
-    border: none;
-    border-radius: 1em;
-    background: var(--accent);
-    color: var(--text);
-    font-size: 1.2em;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.addProgramming_body_right {
-    width: 30vw;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0 2em 2em 0;
-}
-
-.addProgramming_body_right_header {
+.addProgramming_second_public_inout {
+  height: 70vh;
   width: 100%;
-  height: 6vh;
-  border-radius: 0 2em 0 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
-.addProgramming_body_right_header h1 {
-  font-size: 2em;
-  margin: 0 0 0 1vw;
-  color: var(--text);
-  letter-spacing: 0.1em;
-  font-family: "Poppins", sans-serif;
-}
-
-.addProgramming_body_right_content {
+.addProgramming_second_public_inout_field_container {
+  height: 100%;
   width: 100%;
-  height: 61vh;
-  border-radius: 2em 0 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.addProgramming_second_public_inout_fields {
+  height: 50vh;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  overflow-y: auto;
+  justify-content: center;
 }
 
-.addProgramming_body_right_footer {
+.addProgramming_second_public_inout_fields label {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0 0 2vh 0;
+  color: var(--text);
+}
+
+.addProgramming_second_public_inout_fields textarea {
+  height: 40vh;
+  width: 30vw;
+  border-radius: 1em;
+  margin: 1vh 1vw 1vh 1vw;
+  background: var(--accent);
+  color: var(--text);
+  font-size: 1.5em;
+  padding: 1vh 1vw 1vh 1vw;
+  resize: none;
+  border: none;
+  outline: none;
+}
+
+.addProgramming_second_public_save {
+  height: 15vh;
   width: 100%;
-  height: 6vh;
-  border-radius: 0 0 2em 0;
+  border-radius: 0 0 2em 2em;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
 }
 
-.addProgramming_body_right_footer button {
-  height: 5vh;
-  width: 10vw;
-  margin: 0 1vw 0 0;
+.addProgramming_second_public_save button {
+  height: 8vh;
+  width: 5vw;
+  border-radius: 5em;
+  margin: 0 2vw 0 0;
+  font-size: 2.5em;
+  text-align: center;
+  border: none;
   background: var(--accent);
   color: var(--text);
-  font-size: 1.2em;
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
+  cursor: pointer;
+}
+
+.addProgramming_second_pvt_array {
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+
+.addProgramming_second_pvt_array button {
+  height: 6vh;
+  width: 3.5vw;
+  background: var(--accent);
+  color: var(--text);
   border: none;
+  border-radius: 5em;
+  font-size: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 2vh 1vw 1vh 1vw;
+  cursor: pointer;
+}
+
+.addProgramming_second_pvt_case_name {
+  width: 10vw;
+  height: 8vh;
+  border-radius: 1em;
+  margin: 1vh 1vw 1vh 1vw;
+  background: var(--accent);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 10vw;
+}
+
+.addProgramming_second_pvt_case_name h3{
+  font-size: 1.4em;
+  font-weight: 700;
+}
+
+.addProgramming_second_pvt_case_name span {
+  background: red;
+  height: 3vh;
+  width: 2vw;
+  border-radius: 1em;
+  text-align: center;
+  font-weight: 700;
+  position: absolute;
+  margin: -8vh 0 0 8vw;
+  cursor: pointer;
+}
+
+
+.addProgramming_second_pvt_inout {
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.addProgramming_second_pvt_inout_field_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.addProgramming_second_pvt_inout_fields {
+  height: 50vh;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.addProgramming_second_pvt_inout_fields label {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0 0 2vh 0;
+  color: var(--text);
+}
+
+.addProgramming_second_pvt_inout_fields textarea {
+  height: 40vh;
+  width: 30vw;
+  border-radius: 1em;
+  margin: 1vh 1vw 1vh 1vw;
+  background: var(--accent);
+  color: var(--text);
+  font-size: 1.5em;
+  padding: 1vh 1vw 1vh 1vw;
+  resize: none;
+  border: none;
+  outline: none;
+}
+
+.addProgramming_second_pvt_save {
+  height: 15vh;
+  width: 100%;
+  border-radius: 0 0 2em 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.addProgramming_second_pvt_save button {
+  height: 8vh;
+  width: 5vw;
+  border-radius: 5em;
+  margin: 0 2vw 0 0;
+  font-size: 2.5em;
+  text-align: center;
+  border: none;
+  background: var(--accent);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.addProgramming_third_container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: var(--background);
+}
+
+.addProgramming_third_container_body {
+  width: 96vw;
+  height: 96vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2vh 0 0 2vw;
+  border-radius: 2em;
+  background: var(--secondary);
+}
+
+.addProgramming_third_container_header {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 0 0;
+  color: var(--text);
+  border-radius: 2em 2em 0 0;
+}
+
+.addProgramming_third_container_header h1 {
+  font-size: 2em;
+  font-weight: 700;
+  font-style: italic;
+  margin: 0 0 0 2vw;
+}
+
+.addProgramming_third_body {
+  height: 90vh;
+  width: 100%;
+  border-radius: 0 0 2em 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
