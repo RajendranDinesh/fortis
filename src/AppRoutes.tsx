@@ -1,7 +1,7 @@
  /* eslint-disable */
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
 
-import Editor from "./pages/editor";
+import Questions from "./pages/questions";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import Student from "./pages/student";
@@ -13,8 +13,6 @@ function AppRoutes() {
     return (
         <Routes>
             <Route path="/login" element={<Login />}/>
-            <Route path="supervisor" element={<Navigate to={"dashboard"} />} />
-            <Route path="supervisor/*" element={<Supervisor />} />
         </Routes>
     );
 };
@@ -29,14 +27,15 @@ function ProtectedRoutes() {
                 <Route path="admin" element={<Navigate to={"dashboard"} />} />
                 <Route path="staff" element={<Navigate to={"dashboard"} />} />
                 <Route path="student" element={<Navigate to={"dashboard"} />} />
+                <Route path="supervisor" element={<Navigate to={"dashboard"} />} />
                
 
                 <Route path="admin/*" element={<Admin />} />
                 <Route path="staff/*" element={<Staff />} />
                 <Route path="student/*" element={<Student />} />
-              
+                <Route path="supervisor/*" element={<Supervisor />} />
 
-                <Route path="editor" element={<Editor />} />
+                <Route path="questions" element={<Questions />} />
             </Route>
         </Routes>
     );

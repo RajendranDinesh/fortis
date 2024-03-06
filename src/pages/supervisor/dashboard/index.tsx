@@ -12,22 +12,31 @@ import { Request } from '../../../networking';
 // import { format } from 'date-fns';
 
 
+interface Test {
+    scheduled_at: string;
+    test_id: number;
+    title: string;
+    total_students: number;
+}
+
 const SupervisorDashboard = () => {
 
     const navigate = useNavigate();
 
-    const handleCardClick = () => {
-        navigate('/supervisor/StudentDetailsPage');
+    const handleCardClick = (testId: number) => {
+        navigate(`/supervisor/StudentDetailsPage/${testId}`);
     }
 
     const [tests, setTests] = useState([
         {
             scheduled_at: '01.02.2024',
             title: 'Python Programming Test...',
+            test_id : 1,
             total_students: 0
         },{
             scheduled_at: '03.06.2024',
             title: 'C Programming',
+            test_id : 2,
             total_students: 2
         },
     ]);
@@ -35,19 +44,17 @@ const SupervisorDashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('Fetching test data');
-                const response = await Request("GET",`/hello`);
-                console.log("resonse is here....");
-                console.log(response);
+                const response = await Request("GET",`/supervisor/dashboard-data`);
                 if (response.status === 200) {
-                    const testData = response.data.tests;
-                    console.log(testData);
+                    const testData = response.data.tests.map((test: Test) => ({
+                        ...test,
+                        scheduled_at: new Date(test.scheduled_at).toLocaleDateString(), // Format date
+                    }));
                     setTests(testData);
                 } else {
                     console.error('Failed to fetch test data');
                 }
             } catch (error) {
-                console.log("there is an error in fetching data from api/supervisor/tests")
                 console.error('Error fetching test data:', error);
             }
         };
@@ -64,7 +71,7 @@ const SupervisorDashboard = () => {
             <div className={styles.body_container} >
 
             {tests.map((test, index) => (
-                <div className={styles.card_container} onClick={handleCardClick}>
+                <div className={styles.card_container} key={test.test_id ?? 0} onClick={() => handleCardClick(test.test_id ?? 0)}>
                     <div className={styles.card_pattern}></div>
                     <div className={styles.text_container}>
                         <div>
