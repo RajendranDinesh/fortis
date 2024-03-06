@@ -69,7 +69,7 @@ export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick }:
                         <button className={styles.save_button}>
                             <span>Add</span>
                         </button>
-                        <button className={styles.cancel_button}>
+                        <button onClick={handleTestsModalClick} className={styles.cancel_button}>
                             <span>Cancel</span>
                         </button>
                     </div>

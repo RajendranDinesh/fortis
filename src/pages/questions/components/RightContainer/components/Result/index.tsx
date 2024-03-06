@@ -28,6 +28,8 @@ type results = {
     memory: number;
     stdin: string;
     stdout: string;
+    stderr: string;
+    compile_output: string;
     expected_output: string;
 };
 
@@ -44,7 +46,9 @@ const Result = ({ token }: props) => {
             memory: 0,
             stdin: "",
             stdout: "",
-            expected_output: ""
+            stderr: "",
+            expected_output: "",
+            compile_output: ""
         }
     ]);
 
@@ -69,7 +73,7 @@ const Result = ({ token }: props) => {
             }
         };
 
-        if (token.length !== 0) {
+        if (token.length !== 0 && token[0] !== "1") {
             getResults();
         }
     }, [token])
@@ -79,20 +83,22 @@ const Result = ({ token }: props) => {
             <SkeletonTheme baseColor="#272727" highlightColor="#3f3f3f">
                 {token.length === 0 ? 
                 <div className={styles.main_container}>You must run your code first</div> :
+                token[0] == "1" ? 
+                <div className={styles.main_container}>Loading...</div> :
                 <div className={styles.main_container}>
                     <div className={styles.verdict_container}>
                         <div style={ results[activeTab].status.id === 3 ? { color: "#2cb75c" } : results[activeTab].status.id === 2 || results[activeTab].status.id === 1 ? { color: "#f39b18" } : { color: "#e24441" }}>
                                 {results[activeTab].status.description}
                         </div>
                         <div style={{ width: "25%" }}>
-                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 ?
-                                `Runtime: ${results[activeTab].time}ms` :
+                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
+                                `Runtime: ${results[activeTab].time || '~ '}ms` :
                                 <Skeleton style={{"height": "30px"}} />
                             }
                         </div>
                         <div style={{ width: "40%" }}>
-                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 ?
-                                `Memory consumed: ${results[activeTab].memory} bytes` :
+                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
+                                `Memory consumed: ${results[activeTab].memory || '~'} bytes` :
                                 <Skeleton style={{"height": "30px"}} />
                             }
                         </div>
@@ -115,7 +121,7 @@ const Result = ({ token }: props) => {
                         {/* Inputs */}
                         <div className={styles.input_container}>
                             <label>Input</label>
-                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 ?
+                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
                             <textarea
                                 value={atob(results[activeTab].stdin) || "No input"}
                                 disabled
@@ -125,9 +131,9 @@ const Result = ({ token }: props) => {
                         {/* Output by user's code */}
                         <div className={styles.input_container}>
                             <label>Output</label>
-                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 ?
+                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
                             <textarea
-                                value={atob(results[activeTab].stdout) || "No output"}
+                                value={atob(results[activeTab].stdout || results[activeTab].stderr || results[activeTab].compile_output) || "No output"}
                                 disabled
                             /> : <Skeleton height={"60px"} />}
                         </div>
@@ -135,7 +141,7 @@ const Result = ({ token }: props) => {
                         {/* Expected output */}
                         <div className={styles.input_container}>
                             <label>Expected output</label>
-                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 ?
+                            { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
                             <textarea
                                 value={atob(results[activeTab].expected_output) || "No expected output"}
                                 disabled
