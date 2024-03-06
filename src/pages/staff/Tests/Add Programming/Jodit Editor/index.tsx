@@ -4,6 +4,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import JoditEditor from 'jodit-react';
 import { editorConfig } from './EditorConfig';
 import styles from '../addProgramming.module.css'
+import { IoIosSave } from "react-icons/io";
 
 function Jodit() {
 const [data, setData] = useState('');
@@ -27,8 +28,8 @@ const config = useMemo(
         uploader: {
             insertImageAsBase64URI: true
         },
-        width: 700,
-        height: 600,
+        width: 1000,
+        height: 500,
         placeholder: "Start Typing in your question...",
         controls: {
             font: {
@@ -52,19 +53,13 @@ const config = useMemo(
 
 	return (
         <>
-        <div
-			style={{ maxWidth: editorConfig.width, margin: '0 auto' }}
-		>
-			<JoditEditor
+            <JoditEditor
                 ref={editor}
                 value={data}
                 config={config}
                 onBlur={value => setData(value)}
             />
-		</div>
-        <div className={styles.addProgramming_body_middle_bottom}>
-            <button onClick={handleSaveQuestion}>Save Question</button>
-        </div>
+            <button className={styles.addProgramming_body_bottom_button} onClick={handleSaveQuestion}><IoIosSave /></button>
         </>
 	);
 }

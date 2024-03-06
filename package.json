@@ -19,6 +19,7 @@
     "@types/react-dom": "^18.2.18",
     "axios": "^1.6.2",
     "file-saver": "^2.0.5",
+    "jodit-react": "^4.0.9",
     "monaco-editor": "^0.45.0",
     "papaparse": "^5.4.1",
     "react": "^18.2.0",
