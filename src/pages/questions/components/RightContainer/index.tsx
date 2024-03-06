@@ -49,7 +49,7 @@ const RightContainer = () => {
         { id: 0, name: "Case 1", input: "", output: "" },
     ]);
 
-    const [token, setToken] = useState([]);
+    const [token, setToken] = useState<string[]>([]);
     
     const consoleVisible = Number(consoleHeight.replace("%", "")) > 7 ? true : false;
 
@@ -108,6 +108,7 @@ const RightContainer = () => {
         setIsResultTabActive(true);
 
         try {
+            setToken(["1"]);
             const response = await Request('POST', '/submission', body);
             
             if (response.status === 201) {

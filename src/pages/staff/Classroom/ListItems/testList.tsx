@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from '../Classroom.module.css';
 import { getClassroomTests } from '../Controllers';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface Test {
     title: string;
@@ -14,12 +15,12 @@ export default function TestList() {
     const [tests, setTests] = useState<Test[]>([{title: "", duration_in_minutes: 0}]);
 
     const getSetData = async (id: Number) => {
-        setIsLoading(true);
         try {
+            setIsLoading(true);
             const data = await getClassroomTests(id);
             setTests(data);
         } catch (error) {
-            
+            toast.error("Error fetching tests");
         } finally {
             setIsLoading(false);
         }
@@ -41,12 +42,12 @@ export default function TestList() {
                 <div className={styles.Test_grid_title}>Test Title</div>
                 <div className={styles.Test_grid_title}>Duration (in mins)</div>
             </div>
-            {tests.map((test: Test, index) => {
+            {tests.length > 0 ? tests.map((test: Test, index) => {
             return (<div className={styles.Test_list_grid} key={index}>
                 <div className={styles.Test_grid_title}>{index+1}</div>
                 <div className={styles.Test_grid_title}>{test.title}</div>
                 <div className={styles.Test_grid_title}>{test.duration_in_minutes}</div>
-            </div>)})}
+            </div>)}) : <>No tests schedules for this class</>}
         </>
     );
 }

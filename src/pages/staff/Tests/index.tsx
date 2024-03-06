@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -8,14 +8,21 @@ import styles from './Tests.module.css';
 
 //Assets
 
-import { IoIosAddCircle } from 'react-icons/io';  
-import { BiSelectMultiple } from "react-icons/bi";  
+import { IoIosAddCircle } from 'react-icons/io';
 
 //Components
+
+import AddMCQ from './addMCQ';
 
 function Test() {
 
     const navigate = useNavigate();
+
+    const [isMCQModalOpen, setMCQModalOpen] = useState(false);
+
+    const handleMCQModalClick = () => {
+        setMCQModalOpen(false);
+    }
 
     const handleAddQuestion = () => {
         Swal.fire({
@@ -27,7 +34,7 @@ function Test() {
             cancelButtonText: `Cancel`
         }).then((result) => {
             if (result.isConfirmed) {
-                navigate('/staff/test/mcq');
+                setMCQModalOpen(!isMCQModalOpen);
             } else if (result.isDenied) {
                 navigate('/staff/test/programming');
             }
@@ -64,6 +71,7 @@ function Test() {
                     <h1>Duration Goes Here</h1>
                 </div>
             </div>
+            <AddMCQ modalOpen={isMCQModalOpen} handleModalClick={handleMCQModalClick} />
         </div>
     )
 }
