@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabList, TabContext } from '@mui/lab';
+import * as monaco from 'monaco-editor';
 
 //Styles
 
@@ -17,6 +18,15 @@ import { IoMdSave, IoMdAddCircle } from "react-icons/io";
 //Components
 
 import Jodit from './Jodit Editor';
+import OurEditor from '../../../questions/components/Editor';
+
+const Planguages = [
+    { id: 92, name: 'Python', value: 'python' },
+    { id: 50, name: 'C', value: 'c' },
+    { id: 54, name: 'C++', value: 'c++' },
+    { id: 91, name: 'Java', value: 'java' },
+    { id: 93, name: 'JavaScript', value: 'javascript' },
+];
 
 function AddProgramming() {
 
@@ -36,6 +46,13 @@ function AddProgramming() {
     const [privateCaseNumber, setPrivateCaseNumber] = useState(2);
     const [pvtHoveredIndex, setPvtHoveredIndex] = useState<number | null>(null);
     const [pvtActiveIndex, setPvtActiveIndex] = useState(0);
+    const [lang, setLang] = useState([Planguages[0].value, Planguages[0].id.toString()]);
+    const [code, setCode] = useState('');
+    const [editorContainerHeight, setEditorContainerHeight] = useState("95%");
+    const [editorHeight, setEditorHeight] = useState("95%");
+    const topRef = React.createRef<HTMLDivElement>();
+    const testcaseRef = React.createRef<HTMLDivElement>();
+    const starterRef = React.createRef<HTMLDivElement>();
 
     const handleEditClick = () => {
         setIsEditable(!isEditable);
@@ -181,9 +198,33 @@ function AddProgramming() {
         console.log(JSON.stringify(testCaseDetails));
     };
 
+    const handleLangSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setLang([e.target.value.split(',')[0], e.target.value.split(',')[1]]);
+    }
+
+    const handleCodeChange = (value: string | undefined, event: monaco.editor.IModelContentChangedEvent) => {
+        value && setCode(value);
+    }
+
+    const hanldeSaveStarter = () => {
+        console.log(code);
+    }
+
+    const scrollToTop = () => {
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const scrollToTestcase = () => {
+        testcaseRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const scrollToStarter = () => {
+        starterRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+
     return (
         <div className={styles.addProgramming_whole_container}>
-            <div className={styles.addProgramming_first_container}>
+            <div className={styles.addProgramming_first_container} id='top' ref={topRef}>
                 <div className={styles.addProgramming_header}>
                     <div className={styles.addProgramming_header_top}>
                         <div className={styles.input_container}>
@@ -235,8 +276,14 @@ function AddProgramming() {
                 <div className={styles.addProgramming_body}>
                     <Jodit />
                 </div>
+                <div className={styles.scrolldown} onClick={scrollToTestcase}>
+                    <div className={styles.chevrons}>
+                        <div className={styles.chevrondown}></div>
+                        <div className={styles.chevrondown}></div>
+                    </div>
+                </div>
             </div>
-            <div className={styles.addProgramming_second_container}>
+            <div className={styles.addProgramming_second_container} id='testcase' ref={testcaseRef}>
                 <div className={styles.addProgramming_second_container_body}>
                     <div className={styles.addProgramming_second_container_header}>
                         <h1>Add Testcases</h1>
@@ -321,14 +368,45 @@ function AddProgramming() {
                         }
                     </div>
                 </div>
+                <div className={styles.scrolldown} onClick={scrollToStarter}>
+                    <div className={styles.chevrons}>
+                        <div className={styles.chevrondown}></div>
+                        <div className={styles.chevrondown}></div>
+                    </div>
+                </div>
             </div>
-            <div className={styles.addProgramming_third_container}>
+            <div className={styles.addProgramming_third_container} id='starter' ref={starterRef}>
                 <div className={styles.addProgramming_third_container_body}>
                     <div className={styles.addProgramming_third_container_header}>
                         <h1>Add Starter Code</h1>
                     </div>
-                    <div className={styles.addProgramming_third_body}></div>
+                    <div className={styles.addProgramming_third_body}>
+                        <div style={{ height: editorContainerHeight }} className={styles.addProgramming_third_lang_container}>
+                            <div className={styles.options_container}>
+                                <div>
+                                    <div className={styles.select_container}>
+                                        <select className={styles.lang_select} onChange={handleLangSelect}>
+                                            {Planguages.map((lang) => (
+                                                <option key={lang.id} value={[lang.value, lang.id.toString()]}>{lang.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.editor_container} style={{ width: '100%', height: editorHeight }}>
+                                <OurEditor lang={lang[0]} onChange={handleCodeChange} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.addProgramming_third_save}>
+                        <button onClick={hanldeSaveStarter}><IoMdSave /></button>
+                    </div>
                 </div>
+                <button className={styles.Btn} onClick={scrollToTop}>
+                    <svg height="1.2em" className={styles.arrow} viewBox="0 0 512 512"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg>
+                    <p className={styles.text}>Back to Top</p>
+                </button>
             </div>
         </div>
     );
