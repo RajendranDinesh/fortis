@@ -8,11 +8,11 @@ interface EditorProps {
     onChange: (value: string | undefined, event: monaco.editor.IModelContentChangedEvent) => void;
 }
 
-loader.config({
-    paths: {
-        vs: `${process.env.PUBLIC_URL}/monaco-editor/min/vs`
-    }
-});
+// loader.config({
+//     paths: {
+//         vs: `${process.env.PUBLIC_URL}/monaco-editor/min/vs`
+//     }
+// });
 
 loader.init().then((monaco) => {
     monaco.editor.defineTheme('customTheme', {
