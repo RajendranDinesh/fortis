@@ -1,14 +1,36 @@
-import React from "react";
+import { useState } from "react";
 
-import { CiSearch } from "react-icons/ci";
-import { FiPlus } from "react-icons/fi";
 import { CiCircleChevRight } from "react-icons/ci";
 import { Avatar } from "@mui/material";
+import { ToastContainer } from "react-toastify";
 
 import styles from './dashboard.module.css';
 import handWave from '../../../assets/hand_wave.svg';
+import AddStaffModal from "./addStaffModal";
+import AddStudentModal from "./addStudentModal";
 
 function AdminDashboard() {
+
+    const [isStaffModalOpen, setIsStaffModalOpen] = useState(false);
+    const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
+    const [isClassModalOpen, setIsClassModalOpen] = useState(false);
+    const [isTestModalOpen, setIsTestModalOpen] = useState(false);
+
+    const toggleAddStaffModal = () => {
+        setIsStaffModalOpen(!isStaffModalOpen)
+    };
+
+    const toggleAddStudentModal = () => {
+        setIsStudentModalOpen(!isStudentModalOpen)
+    };
+
+    const toggleAddClassModal = () => {
+        setIsClassModalOpen(!isClassModalOpen)
+    };
+
+    const toggleAddTestModal = () => {
+        setIsTestModalOpen(!isTestModalOpen)
+    };
 
     return (
         <div className={styles.dashboard}>
@@ -19,66 +41,23 @@ function AdminDashboard() {
                 </div>
                 <div className={styles.cards_container}>
                     {/* Teachers */}
-                    <div className={styles.card}>
+                    <div className={styles.card} onClick={toggleAddStaffModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Teachers</h3>
                                 <p className={styles.count}>Count: 5</p>
                                 <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
-                            <div className={styles.details}>
-                                <div className={styles.row}>
-                                    <div className={styles.search}>
-                                        <CiSearch fontSize={"24px"} strokeWidth={"1px"} />
-                                        <input className={styles.input} type="text" placeholder="Search" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.list_container}>
-                            <hr className={styles.divider}/>
-                            <div className={styles.list}>
-                                <div className={styles.item}>
-                                    <p>Teacher 1</p>
-                                </div>
-                                <div className={styles.item}>
-                                    <p>Teacher 2</p>
-                                </div>
-                            </div>
-                            <div className={styles.bottom_row}>
-                                <button className={styles.add_button}><FiPlus fontSize={"24px"} strokeWidth={"2px"} color={"#1db954"} /></button>
-                            </div>
                         </div>
                     </div>
 
                     {/* Students */}
-                    <div className={styles.card}>
+                    <div className={styles.card} onClick={toggleAddStudentModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Students</h3>
                                 <p className={styles.count}>Count: 5</p>
-                            </div>
-                            <div className={styles.details}>
-                                <div className={styles.row}>
-                                    <div className={styles.search}>
-                                        <CiSearch fontSize={"24px"} strokeWidth={"1px"} />
-                                        <input className={styles.input} type="text" placeholder="Search" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.list_container}>
-                            <hr className={styles.divider}/>
-                            <div className={styles.list}>
-                                <div className={styles.item}>
-                                    <p>Student 1</p>
-                                </div>
-                                <div className={styles.item}>
-                                    <p>Student 2</p>
-                                </div>
-                            </div>
-                            <div className={styles.bottom_row}>
-                                <button className={styles.add_button}><FiPlus fontSize={"24px"} strokeWidth={"2px"} color={"#1db954"} /></button>
+                                <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
                         </div>
                     </div>
@@ -89,28 +68,7 @@ function AdminDashboard() {
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Classes</h3>
                                 <p className={styles.count}>Count: 5</p>
-                            </div>
-                            <div className={styles.details}>
-                                <div className={styles.row}>
-                                    <div className={styles.search}>
-                                        <CiSearch fontSize={"24px"} strokeWidth={"1px"} />
-                                        <input className={styles.input} type="text" placeholder="Search" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.list_container}>
-                            <hr className={styles.divider}/>
-                            <div className={styles.list}>
-                                <div className={styles.item}>
-                                    <p>AIML</p>
-                                </div>
-                                <div className={styles.item}>
-                                    <p>IT</p>
-                                </div>
-                            </div>
-                            <div className={styles.bottom_row}>
-                                <button className={styles.add_button}><FiPlus fontSize={"24px"} strokeWidth={"2px"} color={"#1db954"} /></button>
+                                <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
                         </div>
                     </div>
@@ -121,28 +79,7 @@ function AdminDashboard() {
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Tests</h3>
                                 <p className={styles.count}>Count: 5</p>
-                            </div>
-                            <div className={styles.details}>
-                                <div className={styles.row}>
-                                    <div className={styles.search}>
-                                        <CiSearch fontSize={"24px"} strokeWidth={"1px"} />
-                                        <input className={styles.input} type="text" placeholder="Search" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.list_container}>
-                            <hr className={styles.divider}/>
-                            <div className={styles.list}>
-                                <div className={styles.item}>
-                                    <p>Test 1</p>
-                                </div>
-                                <div className={styles.item}>
-                                    <p>Test 2</p>
-                                </div>
-                            </div>
-                            <div className={styles.bottom_row}>
-                                <button className={styles.add_button}><FiPlus fontSize={"24px"} strokeWidth={"2px"} color={"#1db954"} /></button>
+                                <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
                         </div>
                     </div>
@@ -156,6 +93,9 @@ function AdminDashboard() {
                 </div>
             </div>
 
+        <AddStaffModal modalOpen={isStaffModalOpen} handleModalClick={toggleAddStaffModal} />
+        <AddStudentModal modalOpen={isStudentModalOpen} handleModalClick={toggleAddStudentModal} />
+        <ToastContainer />
         </div>
     );
 };

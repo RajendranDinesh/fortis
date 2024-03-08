@@ -6,7 +6,7 @@ interface ModalType {
     isOpen: boolean
     onClose: MouseEventHandler
     children: JSX.Element
-    title: string
+    title?: string
 }
 
 function Modal({isOpen, onClose, children, title}: ModalType) {
@@ -15,12 +15,12 @@ function Modal({isOpen, onClose, children, title}: ModalType) {
     }
 
     return (
-        <div className={styles.top_container}>
-            <div className={styles.children_container}>
-                <div className={styles.title_container}>
+        <div className={styles.top_container} onClick={onClose}>
+            <div className={styles.children_container} onClick={(e) => e.stopPropagation()}>
+                {title && <div className={styles.title_container}>
                     <h1>{title}</h1>
                     <IoIosCloseCircle onClick={onClose} style={{fontSize: "2em", cursor: "pointer"}} />
-                </div>
+                </div>}
                 <div className={styles.modal_body}>
                     {children}
                 </div>

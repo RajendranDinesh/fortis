@@ -38,7 +38,7 @@ function Layout({ children }: LayoutProps) {
             <header>
                 <div className={styles.header_left}>
                     <img src={logo} className={styles.logo} alt="logo" onClick={() => {
-                        window.location.href = `/${localStorage.getItem("userRole")}`;
+                        window.location.href = `/admin`;
                     }}/>
                 </div>
                 <div className={styles.header_right}>

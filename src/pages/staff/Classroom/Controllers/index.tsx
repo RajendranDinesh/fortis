@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request } from "../../../../networking";
 
-async function getClassroom(id: Number) {
+export async function getClassroom(id: Number) {
     try {
         const response = await Request("GET", `/classroom/id/${id}`);
 
@@ -14,7 +14,7 @@ async function getClassroom(id: Number) {
     }
 }
 
-async function getClassroomStudents(id: Number) {
+export async function getClassroomStudents(id: Number) {
     try {
         const response = await Request("GET", `/classroom/${id}/students`);
 
@@ -27,7 +27,7 @@ async function getClassroomStudents(id: Number) {
     }
 }
 
-async function getClassroomTeachers(id: Number) {
+export async function getClassroomTeachers(id: Number) {
     try {
         const response = await Request("GET", `/classroom/${id}/staffs`);
 
@@ -40,7 +40,7 @@ async function getClassroomTeachers(id: Number) {
     }
 }
 
-async function getClassroomTests(id: Number) {
+export async function getClassroomTests(id: Number) {
     try {
         const response = await Request("GET", `/test/${id}/tests`);
 
@@ -53,7 +53,7 @@ async function getClassroomTests(id: Number) {
     }
 }
 
-async function addStudents(id: Number, students: Array<{user_name: string, roll_number: string, email: string}>) {
+export async function addStudents(id: Number, students: Array<{user_name: string, roll_number: string, email: string}>) {
     try {
         const response = await Request("POST", `/classroom/${id}/students`, {students: students});
 
@@ -66,7 +66,7 @@ async function addStudents(id: Number, students: Array<{user_name: string, roll_
     }
 }
 
-async function addStaff(id: Number, staffs: Array<{user_name: string, faculty_id: string, email: string}>) {
+export async function addStaff(id: Number, staffs: Array<{user_name: string, faculty_id: string, email: string}>) {
     try {
         const response = await Request("POST", `/classroom/${id}/staff`, {email: staffs[0].email});
 
@@ -78,5 +78,3 @@ async function addStaff(id: Number, staffs: Array<{user_name: string, faculty_id
         throw new Error (error as any);
     }
 }
-
-export { getClassroom, getClassroomStudents, getClassroomTeachers, getClassroomTests, addStudents, addStaff };
