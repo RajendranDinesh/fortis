@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
+import { toast } from "react-toastify";
 
 import { CiSaveDown2 } from "react-icons/ci";
 import { CiSaveUp2 } from "react-icons/ci";
@@ -9,6 +10,8 @@ import styles from './addStudent.module.css';
 import Modal from "../../../components/Modal";
 import Manual from "./manual";
 import { validateStudent } from "./utils";
+import { addStudents } from "../controllers";
+import ProgressBar from "../../../components/CircularProgress";
 
 interface Props {
     modalOpen: boolean
@@ -25,6 +28,8 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
 
     const [students, setStudents] = useState<studentDetails[]>([]);
     const csvFile = useRef<HTMLInputElement>(null);
+    const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(1);
 
     const downloadCSVTemplate = () => {
         const template = [
@@ -69,8 +74,43 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
         }
     };
 
-    const handleAdd = () => {
-        console.log(students);
+    const handleAdd = async () => {
+        if (students.length === 0) {
+            toast.error('No students to add');
+            return;
+        }
+
+        setLoading(true);
+
+        for (let i = 0; i < students.length; i++) {
+            const student = {
+                userName: students[i].user_name,
+                roll_no: students[i].roll_number,
+                email: students[i].email,
+                password: students[i].email.split('@')[0],
+                role: 'student'
+            }
+
+            await addStudents(student)
+                .then(() => {
+                    const calculatedProgress = ((i + 1) / students.length) * 100;
+                    const roundedProgress = Math.round(calculatedProgress);
+                    const progressValue = Math.min(100, Math.max(1, roundedProgress));
+                    setProgress(progressValue);
+                })
+                .catch(error => {
+                    const calculatedProgress = ((i + 1) / students.length) * 100;
+                    const roundedProgress = Math.round(calculatedProgress);
+                    const progressValue = Math.min(100, Math.max(1, roundedProgress));
+                    setProgress(progressValue);
+                    toast.error(error.response.data.message);
+                });
+        }
+
+        setTimeout(() => {
+            setLoading(false);
+            setStudents([]);
+        }, 1000);
     }
 
     return(
@@ -81,11 +121,15 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
                 </div>
 
                 <div className={styles.button_container}>
-                    <button onClick={handleAdd} className={styles.add_btn}>Add</button>
-                    <button onClick={handleModalClick} className={styles.cancel_btn}>Cancel</button>
-                    <button onClick={() => setStudents([])} className={styles.clear_btn}>Clear</button>
-                    <button onClick={downloadCSVTemplate} className={styles.download_btn} title="Download CSV template"><CiSaveDown2 /></button>
-                    <button onClick={handleUploadBtnClick} className={styles.upload_btn} title="Upload filled CSV file"><CiSaveUp2 /></button>
+                    <div className={styles.functional_btn}>
+                        <button onClick={handleAdd} className={styles.add_btn}>Add</button>
+                        <button onClick={handleModalClick} className={styles.cancel_btn}>Cancel</button>
+                        <button onClick={() => setStudents([])} className={styles.clear_btn}>Clear</button>
+                    </div>
+                    <div className={styles.csv_btn}>
+                        <button onClick={downloadCSVTemplate} className={styles.download_btn} title="Download CSV template"><CiSaveDown2 /></button>
+                        <button onClick={handleUploadBtnClick} className={styles.upload_btn} title="Upload filled CSV file"><CiSaveUp2 /></button>
+                    </div>
                 </div>
                 <input 
                     type="file"
@@ -94,6 +138,9 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
                     ref={csvFile} 
                     onChange={handleCSVChange}
                 />
+                {loading && <div className={styles.loading} onClick={() => setLoading(false)}>
+                    <ProgressBar progress={progress} label={""} indicatorColor={"#1db954"} />
+                </div>}
             </div>
         </Modal>
     );

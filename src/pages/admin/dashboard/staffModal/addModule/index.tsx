@@ -1,29 +1,21 @@
 // Dependencies
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 // Styles
-import styles from './addStaffModal.module.css';
+import styles from '../addStaffModal.module.css';
 
 // Components
-import Modal from "../../../components/Modal";
-import { addStaff } from '../controllers';
+import { addStaff } from '../../controllers';
+
+import { staffDetails } from '..';
 
 interface Props {
-    modalOpen: boolean
     handleModalClick: () => void
 }
 
-export interface staffDetails {
-    email: string
-    userName: string
-    roll_no: string
-    password: string
-    role: string
-}
-
-export default function AddStaffModal({ modalOpen, handleModalClick }: Props) {
+export default function AddModule({ handleModalClick }: Props) {
 
     const navigate = useNavigate();
 
@@ -89,40 +81,37 @@ export default function AddStaffModal({ modalOpen, handleModalClick }: Props) {
             }
         }
     }
-
-    return(
-        <Modal isOpen={modalOpen} onClose={handleModalClick} title="Add New Staff">
-            <div className={styles.top_container}>
-                <div className={styles.details_container}>
-                    <div className={styles.left_container}>
-                        <div className={styles.input_container}>
-                            <h4>Name</h4>
-                            <input name="userName" onChange={handleInputChange} value={userDetails.userName} autoComplete='off' />
-                        </div>
-
-                        <div className={styles.input_container}>
-                            <h4>Email</h4>
-                            <input name="email" onChange={handleInputChange} value={userDetails.email} autoComplete='off' />
-                        </div>
+    return (
+        <div>
+            <div className={styles.details_container}>
+                <div className={styles.left_container}>
+                    <div className={styles.input_container}>
+                        <h4>Name</h4>
+                        <input name="userName" onChange={handleInputChange} value={userDetails.userName} autoComplete='off' />
                     </div>
 
-                    <div className={styles.right_container}>
-                        <div className={styles.input_container}>
-                            <h4>Roll Number</h4>
-                            <input name="roll_no" onChange={handleInputChange} value={userDetails.roll_no} autoComplete='off' />
-                        </div>
-
-                        <div className={styles.input_container}>
-                            <h4>Password</h4>
-                            <input name="password" onChange={handleInputChange} value={userDetails.password} type='password' autoComplete='off' />
-                        </div>
+                    <div className={styles.input_container}>
+                        <h4>Email</h4>
+                        <input name="email" onChange={handleInputChange} value={userDetails.email} autoComplete='off' />
                     </div>
                 </div>
 
-                <div className={styles.add_staff_btn_container}>
-                    <button onClick={handleSubmitClick}>Add Staff</button>
+                <div className={styles.right_container}>
+                    <div className={styles.input_container}>
+                        <h4>Roll Number</h4>
+                        <input name="roll_no" onChange={handleInputChange} value={userDetails.roll_no} autoComplete='off' />
+                    </div>
+
+                    <div className={styles.input_container}>
+                        <h4>Password</h4>
+                        <input name="password" onChange={handleInputChange} value={userDetails.password} type='password' autoComplete='off' />
+                    </div>
                 </div>
             </div>
-        </Modal>
+
+            <div className={styles.add_staff_btn_container}>
+                <button onClick={handleSubmitClick}>Add Staff</button>
+            </div>
+        </div>
     );
 }

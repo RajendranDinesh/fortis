@@ -6,8 +6,8 @@ import { ToastContainer } from "react-toastify";
 
 import styles from './dashboard.module.css';
 import handWave from '../../../assets/hand_wave.svg';
-import AddStaffModal from "./addStaffModal";
-import AddStudentModal from "./addStudentModal";
+import StaffModal from "./staffModal";
+import StudentModal from "./studentModal";
 
 function AdminDashboard() {
 
@@ -93,8 +93,8 @@ function AdminDashboard() {
                 </div>
             </div>
 
-        <AddStaffModal modalOpen={isStaffModalOpen} handleModalClick={toggleAddStaffModal} />
-        <AddStudentModal modalOpen={isStudentModalOpen} handleModalClick={toggleAddStudentModal} />
+        <StaffModal modalOpen={isStaffModalOpen} handleModalClick={toggleAddStaffModal} />
+        <StudentModal modalOpen={isStudentModalOpen} handleModalClick={toggleAddStudentModal} />
         <ToastContainer />
         </div>
     );

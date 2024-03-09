@@ -1,0 +1,137 @@
+.top_container {
+    --text: #b3b3b3;
+    --active-text: #efefef;
+    --primary: #1db954;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.tab_container {
+    display: flex;
+
+    div > button {
+        padding: 12px;
+        margin: 0 12px;
+        border: none;
+        color: var(--text);
+        background-color: transparent;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .active_tab {
+        color: var(--active-text);
+        border-bottom: 2px solid var(--active-text);
+    }
+}
+
+/* Add Module */
+.details_container{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.left_container {
+    width: 45%;
+}
+
+.right_container {
+    width: 45%;
+}
+
+.input_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    gap: 3rem;
+
+    input {
+        height: 2rem;
+    }
+}
+
+.add_staff_btn_container {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    button {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding-left: 24px;
+        padding-right: 24px;
+
+        font-size: larger;
+
+        border-radius: 8px;
+        border: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+/* End of Add Module */
+
+
+/* View Module */
+
+.view_container{
+    margin-top: 1rem;
+    table {
+        width: 100%;
+        
+        border: 1px solid var(--text);
+        border-collapse: collapse;
+
+        th {
+            border: 1px solid var(--text);
+            padding: 0.5rem;
+            text-align: center;
+            color: var(--active-text);
+        }
+
+        td {
+            border: 1px solid var(--text);
+            padding: 0.4rem;
+            text-align: left;
+            color: var(--active-text);
+        }
+
+        td:last-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}
+
+/* End of View Module */
+
+@media (max-width: 768px) {
+
+    /* Add Module */
+    .details_container{
+        flex-direction: column;
+    }
+
+    .left_container {
+        width: 100%;
+    }
+
+    .right_container {
+        width: 100%;
+    }
+    /* End of Add Module */
+
+}
