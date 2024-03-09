@@ -28,8 +28,7 @@ function ProtectedRoutes() {
                 <Route path="staff" element={<Navigate to={"dashboard"} />} />
                 <Route path="student" element={<Navigate to={"dashboard"} />} />
                 <Route path="supervisor" element={<Navigate to={"dashboard"} />} />
-               
-
+                
                 <Route path="admin/*" element={<Admin />} />
                 <Route path="staff/*" element={<Staff />} />
                 <Route path="student/*" element={<Student />} />

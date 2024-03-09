@@ -70,8 +70,6 @@ const StudentDetailsPage = () => {
             setStudents([]);
             const response = await Request("GET",`/supervisor/active-blocked-students/${id}`);
             if (response.status === 200) {
-
-                console.log("-actuive & blocked students-",response.data.students);
                 const transformedData = response.data.students.map((student: any) => ({
                     id: student.user_id,
                     name: student.user_name,
@@ -93,9 +91,6 @@ const StudentDetailsPage = () => {
 
     const block_Student = async (studentId : any , blockReason : string) => {
         try {
-            console.log(studentId)
-            console.log(blockReason);
-
             const response = await Request("POST",`/supervisor/block-student/${id}`,{student_id: studentId, block_reason: blockReason});
             if (response.status === 200) {
                 console.log("Blocked student successfully");
@@ -109,11 +104,10 @@ const StudentDetailsPage = () => {
 
     const blocked_details = async (studentId: any) => {
         try {
-            const response = await Request("GET", `/supervisor/blocked-details/${id}`, { student_id: studentId });
+            
+            const response = await Request("POST", `/supervisor/blocked-details/${id}`, {student_id: studentId});
             if (response.status === 200) {
-                console.log("Blocked details fetched successfully");
-                console.log(response.data);
-                return response.data; // Return the response data\
+                return response; // Return the response 
             } else {
                 console.error('Failed to fetch blocked details');
                 return null; // Return null in case of failure
@@ -151,31 +145,6 @@ const StudentDetailsPage = () => {
                     }
                 );
 
-    };
-    
-    const unblockStudent = (id: number) => {
-        // const updatedStudents = students.map((student: Student) => {
-        //     if (student.id === id) {
-        //         return { ...student, blocked: false, status: 'Active' };
-        //     }
-        //     return student;
-        // });
-    
-        // // setStudents(updatedStudents);
-    
-        // const clickedStudent = updatedStudents.find(student => student.id === id);
-        // if (!clickedStudent?.blocked) {
-        //     toast.success('Student Unblocked!', {
-        //         position: "top-right",
-        //         autoClose: 1000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         transition: Bounce,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //     });
-        // }
     };
 
 
@@ -215,8 +184,7 @@ const StudentDetailsPage = () => {
             // Clear the input value and disable block input
             setInputValue('');
             setIsBlockInputEnabled(false);
-            console.log("---- blocked reason ----",inputValue);
-            console.log("Student ID",selectedStudent.id);
+          
 
 
         } catch (error) {
@@ -235,42 +203,41 @@ const StudentDetailsPage = () => {
         }
     };
     
-
     const handleStudentClick = async (id: number) => {
         const clickedStudent = students.find(student => student.id === id);
         setSelectedStudent(clickedStudent || null);
         setHideBlockButton(false);
-        setIsBlockInputEnabled(false); // Reset block input container state
+        setIsBlockInputEnabled(false);
     
-        // If the clicked student is in the blocked list
         if (clickedStudent && clickedStudent.status === 'Blocked') {
             try {
-                // Call the blocked_details function to fetch blocked details for the selected student
                 const response = await blocked_details(clickedStudent.id);
-                if (response && response.blocked_details && response.blocked_details.length > 0) {
-                    // If blocked details are available, update the state variables
-                    const { blockedAt, blockedBy, blockReason } = response.blocked_details[0]; // Assuming response.data contains the blocked details
-                    setBlockedAt(blockedAt || '');
-                    setBlockedBy(blockedBy || '');
-                    setBlockReason(blockReason || '');
+                if (response && response.data && response.data.blocked_setails && response.data.blocked_setails.length > 0) {
+                    const blockedDetails = response.data.blocked_setails[0];
+                    const { block_reason, blocked_by_user_name } = blockedDetails;
+                    // setBlockedAt(blockedDetails.blocked_at || ''); 
+                    setBlockReason(block_reason || '');
+                    setBlockedBy(blocked_by_user_name || '');
                 } else {
-                    // If no blocked details are available, reset the state variables
+                   
                     setBlockedAt('');
-                    setBlockedBy('');
                     setBlockReason('');
-                    console.log("No blocked details available for the selected student");
+                    setBlockedBy('');
                 }
             } catch (error) {
-                // Handle error if the fetch request fails
                 console.error('Error fetching blocked details:', error);
             }
         } else {
-            // Reset the blocked details if the clicked student is not blocked
+           
             setBlockedAt('');
-            setBlockedBy('');
             setBlockReason('');
+            setBlockedBy('');
         }
     };
+    
+
+    
+    
     
 
     const handleModalClick = () => {
@@ -344,15 +311,7 @@ const StudentDetailsPage = () => {
                                 </>
                             )}
                           
-                            {selectedStudent.status === 'Blocked' && (
-                                <>
-                                <div className={styles.content_student}>
-                                    <h1 className={styles.content_details}>Unblock:</h1>
-                                    <button className={styles.main_button} onClick={() => unblockStudent(selectedStudent.id)}>Unblock</button>
-                                </div>
-                                </>
-                                
-                            )}
+
 
                             {isBlockInputEnabled && (
                                 <div className={styles.block_input_container}>

@@ -592,6 +592,11 @@
     height: 12%;
     margin-top: -1rem;
   }
+
+  @media screen and (max-width:420px){
+    height: 12%;
+    margin-top: 1rem;
+  }
 }
 
 
