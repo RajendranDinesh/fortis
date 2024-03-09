@@ -8,14 +8,15 @@ import { useState, useEffect } from "react";
 import { Request } from '../../../networking';
 import { useParams } from "react-router-dom";
 
+
 interface Props {
     modalOpen: boolean
     handleModalClick: () => void
 }
 
 const columns: GridColDef[] = [
-    { field: 'studentName', headerName: 'Student name', width: 150 },
-    { field: 'rollNo', headerName: 'Roll No', width: 150 },
+    { field: 'studentName', headerName: 'Student name', width: 150 , filterable : false},
+    { field: 'rollNo', headerName: 'Roll No', width: 150 , filterable : false},
 ];
 
 const AttendenceModal = ({ modalOpen, handleModalClick }: Props) => {
@@ -24,6 +25,7 @@ const AttendenceModal = ({ modalOpen, handleModalClick }: Props) => {
     const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
     const [attendence, setAttendence] = useState<any[]>([]);
     const [originalAttendence, setOriginalAttendence] = useState<any[]>([]); // Store original data
+    const [markedStudentIds, setMarkedStudentIds] = useState<GridRowId[]>([]); // Store marked student IDs
 
 
     const { id } = useParams();
@@ -41,16 +43,22 @@ const AttendenceModal = ({ modalOpen, handleModalClick }: Props) => {
         try {
             const response = await Request("GET", `/supervisor/attendence/${id}`);
             if (response.status === 200) {
-              // console.log("--- attendence data ----",response.data);
               const attendenceData = Object.values(response.data.attendence).map((user: any, index: number) => ({
                 id: user.user_id,
                 studentName: user.username,
                 rollNo: user.roll_number,
                 isPresent: user.is_present === 1, // Convert to boolean
             }));
-                // console.log("--- attendence data ----", attendenceData);
+            
                 setAttendence(attendenceData);
                 setOriginalAttendence(attendenceData);
+
+                const initiallySelectedRows = attendenceData
+                .filter(row => row.isPresent)
+                .map(row => row.id);
+            setSelectedRows(initiallySelectedRows);
+            setMarkedStudentIds(initiallySelectedRows)
+
 
             } else {
                 console.error('Failed to fetch attendence data');
@@ -60,57 +68,99 @@ const AttendenceModal = ({ modalOpen, handleModalClick }: Props) => {
         }
     };
 
+    
 
-   const filterRows = (query: string) => {
-    const formattedQuery = query.trim().toLowerCase();
-    const filteredData = originalAttendence.filter((row) => {
-        const studentName = row.studentName.toLowerCase();
-        const rollNo = row.rollNo.toLowerCase();
-        return studentName.includes(formattedQuery) || rollNo.includes(formattedQuery);
-    });
-    setAttendence(filteredData);
-};
+    const filterRows = (query: string) => {
+        const formattedQuery = query.trim().toLowerCase();
+        const filteredData = originalAttendence.filter((row) => {
+            const studentName = row.studentName.toLowerCase();
+            const rollNo = row.rollNo.toLowerCase();
+            return studentName.includes(formattedQuery) || rollNo.includes(formattedQuery);
+        });
+
+        // Update selected rows based on filtered data
+        const selectedRowsInFilteredData = filteredData
+            .filter(row => markedStudentIds.includes(row.id))
+            .map(row => row.id);
+        setSelectedRows(selectedRowsInFilteredData);
+        setAttendence(filteredData);
+    };
+
+    
 
 const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     filterRows(e.target.value);
 };
 
-
-  const handleSelectionChange = async (selectionModel: GridRowId[]) => {
-    setSelectedRows(selectionModel);
+const handleSelectionChange = async (selectionModel: GridRowId[]) => {
     
-    // Iterate through all rows in the attendance data
-    attendence.forEach(async (row) => {
-        // Check if the current row is selected
-        const isSelected = selectionModel.includes(row.id);
-        
-        // Prepare the data to send to the backend
-        const data = {
-            is_present: isSelected ? 1 : 0,
-            roll_number: row.rollNo,
-            name: row.studentName
-        };
-        
-        try {
-            // Make an API request to the backend endpoint to update attendance
-            console.log(data)
-            // const response = await fetch('/api/updateAttendance', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(data)
-            // });
-            // if (response.ok) {
-            //     console.log(`Attendance for ${row.studentName} (${row.rollNo}) updated successfully.`);
-            // } else {
-            //     console.error(`Failed to update attendance for ${row.studentName} (${row.rollNo}).`);
-            // }
-        } catch (error) {
-            console.error('Error updating attendance:', error);
+    const newlySelectedRows = selectionModel.filter(rowId => !selectedRows.includes(rowId));
+
+    const unselectedRows = selectedRows.filter(rowId => !selectionModel.includes(rowId));
+
+    for (const newlySelectedRowId of newlySelectedRows) {
+        const selectedRow = attendence.find(row => row.id === newlySelectedRowId);
+        if (selectedRow && !selectedRow.isPresent) {
+            await handleMarkCheckbox(newlySelectedRowId);
+        } else if (selectedRow && selectedRow.isPresent) {
+            await handleUnmarkCheckbox(newlySelectedRowId);
         }
-    });
+    }
+
+    for (const unselectedRowId of unselectedRows) {
+        await handleUnmarkCheckbox(unselectedRowId);
+    }
+
+    setSelectedRows(selectionModel);
+};
+
+
+const handleMarkCheckbox = async (selectedRowId: GridRowId) => {
+    const selectedRow = attendence.find(row => row.id === selectedRowId);
+    
+    if (selectedRow) {
+        const selectedData = {
+            userId: selectedRow.id,
+        };
+        setMarkedStudentIds(prevMarkedStudentIds => [...prevMarkedStudentIds, selectedRowId]);
+
+        try{
+            const response = await Request("POST", `/supervisor/attendence-present/${id}`, {student_id: selectedData.userId});
+            if (response.status === 200) {
+
+            } else {
+                console.error('Failed to update attendence');
+            }
+        }
+        catch{
+            console.log('Failed to connect to server');
+        }
+    }
+};
+
+const handleUnmarkCheckbox = async (unselectedRowId: GridRowId) => {
+    const unselectedRow = attendence.find(row => row.id === unselectedRowId);
+
+    if (unselectedRow) {
+        const unselectedData = {
+            userId: unselectedRow.id,
+            is_Present: 0
+        };
+
+    try{
+        const response = await Request("POST", `/supervisor/attendence-absent/${id}`, {student_id:unselectedData.userId});
+        if (response.status === 200) {
+        } else {
+            console.error('Failed to update attendence');
+        }
+    }
+    catch{
+        console.log('Failed to connect to server');
+    }
+
+    setMarkedStudentIds(prevMarkedStudentIds => prevMarkedStudentIds.filter(rowId => rowId !== unselectedRowId));
+    }
 };
 
 
@@ -132,9 +182,10 @@ const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                         <DataGrid
                             rows={attendence}
                             columns={columns}
+                            
                             initialState={{
                                 pagination: {
-                                    paginationModel: { page: 0, pageSize: 5 },
+                                    paginationModel: { page:0, pageSize: 5 },
                                 },
                             }}
                             pageSizeOptions={[5, 10]}

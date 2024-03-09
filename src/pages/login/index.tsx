@@ -120,6 +120,7 @@ const Login = () => {
                         type="email" 
                         value={email} 
                         placeholder="Email Address"
+                        autoComplete="off"
                         onChange={(e) => setEmail(e.target.value)} 
                         required 
                     />

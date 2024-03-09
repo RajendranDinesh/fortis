@@ -27,13 +27,18 @@
     overflow-y: auto;
 
     @media screen and (max-width: 1500px){
-        width: 55vw;
-        height: 65vh;
-        overflow-y: scroll;
+        width: 28vw;
+        height: 70vh;
+       overflow: hidden;
     }
     @media screen and (max-width: 1200px){
-        width: 55vw;
-        height: 65vh;
+        width: 40vw;
+        height: 85vh;
+        overflow-y: scroll;
+    }
+    @media screen and (max-width: 1024px){
+        width: 45vw;
+        height: 60vh;
         overflow-y: scroll;
     }
 
@@ -50,7 +55,7 @@
 
     @media only screen and (max-width:512px){
         width: 80vw;
-        height: 65vh;
+        height: 60vh;
         overflow-y :scroll;
     }
     @media only screen and (max-width: 420px){
@@ -73,9 +78,15 @@
     justify-content: center;
     margin-top: 10%;
 
+    @media only screen and (max-width: 1500px){
+        margin-top: 15%;
+    }
+
+    @media only screen and (max-width: 1200px){
+        margin-top: 7%;
+    }
     @media only screen and (max-width: 420px){
         margin-bottom: 2%;
-
     }
 
 }
@@ -86,6 +97,12 @@
     font-weight: 500;
     margin-bottom: 1em;
 
+    @media only screen and (max-width:1500px){
+        font-size: 2.8em;
+    }
+    @media only screen and (max-width:1200px){
+        font-size: 2.8em;
+    }
     @media only screen and (max-width: 420px){
         font-size: 2em;
     }
@@ -100,7 +117,9 @@
 
 .input_area {
     margin-top: 10%;
-
+    @media screen and (max-width: 1500px){
+        margin-top: 2%;
+    }
     @media only screen and (max-width: 420px){
         margin-top: 5%;
     }
@@ -117,9 +136,12 @@
 
 
     @media screen and (max-width: 1500px){
-        padding: 20px 60px;
+        padding: 11px 25px;
     }
 
+    @media only screen and (max-width:1200px){
+        padding: 13px 35px;
+    }
     @media only screen and (max-width: 992px){
         padding: 13px 35px;
     }
@@ -155,15 +177,18 @@
     margin: 0;
 
     @media only screen and (max-width:1500px){
-        font-size: 1.5em;
+        font-size: 1em;
     }
 
+    @media only screen and (max-width:992px){
+        font-size: 1.1em;
+    }
     @media only screen and (max-width:768px){
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 
     @media only screen and (max-width:512px){
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
     @media only screen and (max-width: 420px){
         font-size: 1em;
@@ -192,7 +217,7 @@
     font-size: 1.2em;
     border: 0;
     outline: 1px solid #00FF7F;
-    border-radius: 0.7em;
+    border-radius: 0.5em;
     line-height: 1;
     cursor: pointer;
     transition: all ease-in-out .3s;
@@ -205,37 +230,40 @@
   }
 
   @media only screen and (max-width:1500px){
-        width: 16em;
-        height: 2.5em;
-        font-size: 1.7em;
-        margin-bottom: 2rem;
+        width: 12em;
+        height: 2.1em;
+        font-size: 1.5em;
+        margin-bottom: 1.2rem;
     }
 
     @media only screen and (max-width:1024px){
-            width: 16em;
-            height: 2.5em;
-            font-size: 1.7em;
+            width: 12em;
+            height: 2em;
+            font-size: 1.4em;
+            margin-bottom: 1.2rem;
     }
   @media only screen and (max-width: 992px){
-        width: 13em;
-        height: 2.5em;
-        font-size: 1.7em;
+        width: 12em;
+        height: 2em;
+        font-size: 1.55em;
+        margin-bottom: 1.2rem;
   }
   @media only screen and (max-width:768px){
-        width: 13em;
-        height: 2.5em;
+        width: 11em;
+        height: 2em;
         font-size: 1.7em;
+        margin-bottom: 1.2rem;
   }
 
   @media only screen and (max-width:512px){
-        width: 15em;
-        height: 2.5em;
-        font-size: 1.2em;
+        width: 11em;
+        height: 2em;
+        margin-bottom: 1.2rem;
   }
     @media only screen and (max-width: 420px){
-        width: 15em;
-        height: 2.5em;
-        font-size: 1em;
+        width: 10em;
+        height: 2em;
+        margin-bottom: 1.2rem;
     }
 }
   
