@@ -131,6 +131,11 @@
     margin: 0 0 0 2vw;
 }
 
+.checkbox_container {
+  display: flex;
+  gap: 1rem;
+}
+
 .duration_container {
     position: relative;
     width: 25vw;

@@ -1,6 +1,6 @@
 // Dependencies
 
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from "../../../components/Modal";
 import TextField from '@mui/material/TextField';
@@ -8,16 +8,20 @@ import TextField from '@mui/material/TextField';
 // Styles
 
 import styles from "../StaffDashboard.module.css";
+import { Request } from '../../../../networking';
+import { HttpStatusCode } from 'axios';
+import { toast } from 'react-toastify';
 
 interface Props {
     modelTestsOpen: boolean
     handleTestsModalClick: () => void
+    getTests: () => void
 }
 
-export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick }: Props) {
-    const [testName, setTestName] = React.useState("");
-    const [testDescription, setTestDescription] = React.useState("");
-    const [testDuration, setTestDuration] = React.useState("");
+export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick, getTests }: Props) {
+    const [testName, setTestName] = useState("");
+    const [testDescription, setTestDescription] = useState("");
+    const [testDuration, setTestDuration] = useState("");
 
     const handleTestNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTestName(event.target.value);
@@ -30,6 +34,37 @@ export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick }:
     const handleTestDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTestDuration(event.target.value);
     };
+
+    const handleAddTest = async () => {
+        try {
+            const response = await Request(
+                "POST",
+                "/test/create",
+                {
+                    "title": testName,
+                    "description": testDescription,
+                    "duration_in_minutes": testDuration
+                });
+            
+            if (response.status === HttpStatusCode.Created) {
+                toast.success(response.data.message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+                handleTestsModalClick();
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("An error occurred", {
+                autoClose: 2000,
+                theme: "dark",
+                hideProgressBar: true,
+            });
+        } finally {
+            getTests();
+        }
+    }
 
     return(
         <>
@@ -47,7 +82,7 @@ export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick }:
                         <TextField
                             required
                             id={styles.text_field}
-                            label="Classroom Name"
+                            label="Test Name"
                             variant="standard"
                             onChange={handleTestNameChange}
                         />
@@ -66,7 +101,7 @@ export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick }:
                         />
                     </Box>
                     <div className={styles.Modal_buttons}>
-                        <button className={styles.save_button}>
+                        <button onClick={handleAddTest} className={styles.save_button}>
                             <span>Add</span>
                         </button>
                         <button onClick={handleTestsModalClick} className={styles.cancel_button}>

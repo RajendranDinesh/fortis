@@ -4,18 +4,19 @@ import * as monaco from 'monaco-editor';
 import styles from './editor.module.css';
 
 interface EditorProps {
+    value?: string;
     lang: string | undefined;
     onChange: (value: string | undefined, event: monaco.editor.IModelContentChangedEvent) => void;
 }
 
-// loader.config({
-//     paths: {
-//         vs: `${process.env.PUBLIC_URL}/monaco-editor/min/vs`
-//     }
-// });
+loader.config({
+    paths: {
+        vs: `${process.env.PUBLIC_URL}/monaco-editor/min/vs`
+    }
+});
 
-loader.init().then((monaco) => {
-    monaco.editor.defineTheme('customTheme', {
+loader.init().then((monaco1) => {
+    monaco1.editor.defineTheme('customTheme', {
         base: 'vs-dark',
         inherit: true,
         rules: [],
@@ -27,9 +28,13 @@ loader.init().then((monaco) => {
     
 });
 
-const OurEditor = ({lang, onChange}: EditorProps) => {
+
+loader.config({ monaco });
+
+const OurEditor = ({value="", lang, onChange}: EditorProps) => {
     return (
         <Editor
+          value={value}
           className={styles.editor}
           defaultLanguage={'python'}
           language={lang}

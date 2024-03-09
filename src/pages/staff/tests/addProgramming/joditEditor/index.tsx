@@ -1,18 +1,13 @@
-import React, { useState, useRef, useMemo } from 'react';
-// import Jodit from "jodit";
-// import 'jodit/build/jodit.min.css';
+import  { useState, useRef, useMemo } from 'react';
 import JoditEditor from 'jodit-react';
-import { editorConfig } from './EditorConfig';
+
 import styles from '../addProgramming.module.css'
-import { IoIosSave } from "react-icons/io";
+import useLocalStorage from '../../../../../hooks/useLocalStorage';
 
 function Jodit() {
-const [data, setData] = useState('');
-const editor = useRef(null);
+const [question,setQuestion] = useLocalStorage<string>("codeQuestion_question", "");
 
-const handleSaveQuestion = () => {
-    console.log(data);
-};
+const editor = useRef(null);
 
 const config = useMemo(
     () => ({
@@ -55,11 +50,10 @@ const config = useMemo(
         <>
             <JoditEditor
                 ref={editor}
-                value={data}
+                value={question}
                 config={config}
-                onBlur={value => setData(value)}
+                onBlur={value => setQuestion(value)}
             />
-            <button className={styles.addProgramming_body_bottom_button} onClick={handleSaveQuestion}><IoIosSave /></button>
         </>
 	);
 }

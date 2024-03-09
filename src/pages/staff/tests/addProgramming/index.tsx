@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabList, TabContext } from '@mui/lab';
 import * as monaco from 'monaco-editor';
+import { toast, ToastContainer } from 'react-toastify';
 
 //Styles
 
@@ -17,8 +18,12 @@ import { IoMdSave, IoMdAddCircle } from "react-icons/io";
 
 //Components
 
-import Jodit from './Jodit Editor';
+import Jodit from './joditEditor';
 import OurEditor from '../../../questions/components/Editor';
+
+//Hooks
+
+import useLocalStorage from '../../../../hooks/useLocalStorage';
 
 const Planguages = [
     { id: 92, name: 'Python', value: 'python' },
@@ -28,31 +33,35 @@ const Planguages = [
     { id: 93, name: 'JavaScript', value: 'javascript' },
 ];
 
+interface TestCase {
+    name: string
+    input: string
+    output: string
+}
+
 function AddProgramming() {
 
-    const [titleValue, setTitleValue] = useState<string>('Add Your Question Title Here');
+    const [titleValue, setTitleValue] = useLocalStorage<string>("codeQuestion_Title", 'Add Your Question Title Here');
     const [isEditable, setIsEditable] = useState(false);
-    const [languages, setLanguages] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState<string>('')
-    const [isEditLanguage, setIsEditLanguage] = useState(false);
-    const [marks, setMarks] = useState<string>('Add Marks Here');
+    const [selectedLanguages, setSelectedLanguages] = useLocalStorage<string[]>("codeQuestion_AllowedLanguages", []);
+    const [marks, setMarks] = useLocalStorage<string>("codeQuestion_Marks", 'Add Marks Here');
     const [isEditMarks, setIsEditMarks] = useState(false);
     const [tabvalue, setTabValue] = useState('1');
-    const [publicTestCases, setPublicTestCases] = useState([{ name: 'Case 1', input: '', output: '' }]);
+    const [publicTestCases, setPublicTestCases] = useLocalStorage<TestCase[]>("codeQuestion_PublicTestCases", [{ name: 'Case 1', input: '', output: '' }]);
     const [publicCaseNumber, setPublicCaseNumber] = useState(2);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [publicActiveIndex, setPublicActiveIndex] = useState(0);
-    const [privateTestCases, setPrivateTestCases] = useState([{ name: 'Case 1', input: '', output: '' }]);
+    const [privateTestCases, setPrivateTestCases] = useLocalStorage<TestCase[]>("codeQuestion_PrivateTestCases", [{ name: 'Case 1', input: '', output: '' }]);
     const [privateCaseNumber, setPrivateCaseNumber] = useState(2);
     const [pvtHoveredIndex, setPvtHoveredIndex] = useState<number | null>(null);
     const [pvtActiveIndex, setPvtActiveIndex] = useState(0);
     const [lang, setLang] = useState([Planguages[0].value, Planguages[0].id.toString()]);
-    const [code, setCode] = useState('');
+    const [solutionCode, setSolutionCode] = useLocalStorage("codeQuestion_solutionCode", '');
     const [editorContainerHeight, setEditorContainerHeight] = useState("95%");
     const [editorHeight, setEditorHeight] = useState("95%");
     const topRef = React.createRef<HTMLDivElement>();
     const testcaseRef = React.createRef<HTMLDivElement>();
-    const starterRef = React.createRef<HTMLDivElement>();
+    const starterRef = React.createRef<HTMLDivElement>(); 
 
     const handleEditClick = () => {
         setIsEditable(!isEditable);
@@ -64,28 +73,17 @@ function AddProgramming() {
 
     const handleConfirmTitleClick = () => {
         setIsEditable(!isEditable);
-        console.log(titleValue);
     };
 
-    const handleLanguageClick = () => {
-        setIsEditLanguage(!isEditLanguage);
-    }
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setInputValue(value);
-        if (value.includes(',')) {
-            const lang = value.split(',');
-            const langTrimmed = lang.map((l) => l.trim());
-            setLanguages(langTrimmed);
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checkboxName = event.target.name;
+    
+        if (event.target.checked) {
+          setSelectedLanguages((prevSelectedLanguages) => [...prevSelectedLanguages, checkboxName]);
+        } else {
+          setSelectedLanguages((prevSelectedLanguages) => prevSelectedLanguages.filter((lang) => lang !== checkboxName));
         }
-    };
-
-    const handleTickClick = () => {
-        setIsEditLanguage(false);
-        const languagesJson = JSON.stringify({ languages });
-        console.log(languagesJson);
-    };
+      };
 
     const handleEditMarksClick = () => {
         setIsEditMarks(!isEditMarks);
@@ -97,10 +95,9 @@ function AddProgramming() {
 
     const handleConfirmMarksClick = () => {
         setIsEditMarks(!isEditMarks);
-        console.log(marks);
     };
 
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    const handleTestCaseTabChange = (event: React.SyntheticEvent, newValue: string) => {
         setTabValue(newValue);
     };
 
@@ -143,15 +140,6 @@ function AddProgramming() {
         setPublicTestCases(newTestCases);
     };
 
-    const handlePublicSave = () => {
-        const testCaseDetails = publicTestCases.reduce<{ [key: string]: { input: string, output: string } }>((acc, testCase, index) => {
-          acc[`Case ${index + 1}`] = { input: testCase.input, output: testCase.output };
-          return acc;
-        }, {});
-      
-        console.log(JSON.stringify(testCaseDetails));
-    };
-
     const handleAddPvtTestCase = () => {
           setPrivateTestCases([...privateTestCases, { name: `Case ${privateCaseNumber}`, input: '', output: '' }]);
           setPrivateCaseNumber(privateCaseNumber + 1);
@@ -189,25 +177,12 @@ function AddProgramming() {
         setPrivateTestCases(newTestCases);
     };
 
-    const handlePvtSave = () => {
-        const testCaseDetails = privateTestCases.reduce<{ [key: string]: { input: string, output: string } }>((acc, testCase, index) => {
-          acc[`Case ${index + 1}`] = { input: testCase.input, output: testCase.output };
-          return acc;
-        }, {});
-      
-        console.log(JSON.stringify(testCaseDetails));
-    };
-
     const handleLangSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setLang([e.target.value.split(',')[0], e.target.value.split(',')[1]]);
     }
 
     const handleCodeChange = (value: string | undefined, event: monaco.editor.IModelContentChangedEvent) => {
-        value && setCode(value);
-    }
-
-    const hanldeSaveStarter = () => {
-        console.log(code);
+        value && setSolutionCode(value);
     }
 
     const scrollToTop = () => {
@@ -241,23 +216,60 @@ function AddProgramming() {
                     <div className={styles.addProgramming_header_bottom}>
                         <div className={styles.addProgramming_header_bottom_left}>
                             <h1>Allowed Languages:</h1>
-                            <div className={styles.duration_container}>
-                                <input 
-                                    type="text" 
-                                    id="input" 
-                                    value={inputValue}
-                                    onChange={handleInputChange}
-                                    disabled={!isEditLanguage} 
+                            <div className={styles.checkbox_container}>
+                            <div>
+                                <input
+                                type="checkbox"
+                                title="Python"
+                                name="python"
+                                onChange={handleCheckboxChange}
+                                checked={selectedLanguages.includes('python')}
                                 />
-                                <div className={styles.underline}></div>
+                                <label htmlFor="python">Python</label>
                             </div>
-
-                            {isEditLanguage ? (
-                                <FiCheck onClick={handleTickClick} id={styles.editIcon} />
-                            ) : (
-                                <FiEdit onClick={handleLanguageClick} id={styles.editIcon} />
-                            )}
+                            <div>
+                                <input
+                                type="checkbox"
+                                title="C"
+                                name="c"
+                                onChange={handleCheckboxChange}
+                                checked={selectedLanguages.includes('c')}
+                                />
+                                <label htmlFor="c">C</label>
+                            </div>
+                            <div>
+                                <input
+                                type="checkbox"
+                                title="C++"
+                                name="cpp"
+                                onChange={handleCheckboxChange}
+                                checked={selectedLanguages.includes('cpp')}
+                                />
+                                <label htmlFor="cpp">C++</label>
+                            </div>
+                            <div>
+                                <input
+                                type="checkbox"
+                                title="Java"
+                                name="java"
+                                onChange={handleCheckboxChange}
+                                checked={selectedLanguages.includes('java')}
+                                />
+                                <label htmlFor="java">Java</label>
+                            </div>
+                            <div>
+                                <input
+                                type="checkbox"
+                                title="JavaScript"
+                                name="javascript"
+                                onChange={handleCheckboxChange}
+                                checked={selectedLanguages.includes('javascript')}
+                                />
+                                <label htmlFor="javascript">JavaScript</label>
+                            </div>
+                            </div>
                         </div>
+
                         <div className={styles.addProgramming_header_bottom_right}>
                             <h1>Mark:</h1>
                             <div className={styles.marks_container}>
@@ -283,6 +295,40 @@ function AddProgramming() {
                     </div>
                 </div>
             </div>
+
+            {/* Starter Code */}
+            <div className={styles.addProgramming_third_container} id='starter' ref={starterRef}>
+                <div className={styles.addProgramming_third_container_body}>
+                    <div className={styles.addProgramming_third_container_header}>
+                        <h1>Add Starter Code</h1>
+                    </div>
+                    <div className={styles.addProgramming_third_body}>
+                        <div style={{ height: editorContainerHeight }} className={styles.addProgramming_third_lang_container}>
+                            <div className={styles.options_container}>
+                                <div>
+                                    <div className={styles.select_container}>
+                                        <select className={styles.lang_select} onChange={handleLangSelect}>
+                                            {Planguages.map((lang) => (
+                                                <option key={lang.id} value={[lang.value, lang.id.toString()]}>{lang.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.editor_container} style={{ width: '100%', height: editorHeight }}>
+                                <OurEditor value={solutionCode} lang={lang[0]} onChange={handleCodeChange} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button className={styles.Btn} onClick={scrollToTop}>
+                    <svg height="1.2em" className={styles.arrow} viewBox="0 0 512 512"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg>
+                    <p className={styles.text}>Back to Top</p>
+                </button>
+            </div>
+
+            {/* Test Cases */}
             <div className={styles.addProgramming_second_container} id='testcase' ref={testcaseRef}>
                 <div className={styles.addProgramming_second_container_body}>
                     <div className={styles.addProgramming_second_container_header}>
@@ -292,7 +338,7 @@ function AddProgramming() {
                         <Box sx={{ width: '100%', typography: 'body1' }}>
                             <TabContext value={tabvalue}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                    <TabList onChange={handleChange} aria-label="lab API tabs">
+                                    <TabList onChange={handleTestCaseTabChange} aria-label="lab API tabs">
                                         <Tab label="Public" value="1" style={{color: "white", fontSize: "1.2em"}} />
                                         <Tab label="Private" value="2" style={{color: "white", fontSize: "1.2em"}} />
                                     </TabList>
@@ -324,13 +370,14 @@ function AddProgramming() {
                                         </div>
                                         <div className={styles.addProgramming_second_public_inout_fields}>
                                             <label htmlFor={`output-${publicActiveIndex}`}>Output:</label>
-                                            <textarea id={`output-${publicActiveIndex}`}  name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output} onChange={(event) => handlePublicOutputChange(publicActiveIndex, event)}></textarea>
+                                            {/* <textarea id={`output-${publicActiveIndex}`}  name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output} onChange={(event) => handlePublicOutputChange(publicActiveIndex, event)}></textarea> */}
+                                            <textarea disabled id={`output-${publicActiveIndex}`}  name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output}></textarea>
                                         </div>
                                     </div>
                                     )}
                                 </div>
-                                <div className={styles.addProgramming_second_public_save}>
-                                    <button onClick={handlePublicSave}><IoMdSave /></button>
+                                <div className={styles.addProgramming_third_save}>
+                                    <button><IoMdSave /></button>
                                 </div>
                             </> 
                         : 
@@ -356,13 +403,14 @@ function AddProgramming() {
                                             </div>
                                             <div className={styles.addProgramming_second_pvt_inout_fields}>
                                                 <label htmlFor={`output-${pvtActiveIndex}`}>Output:</label>
-                                                <textarea id={`output-${pvtActiveIndex}`}  name="output" rows={10} value={privateTestCases[pvtActiveIndex]?.output} onChange={(event) => handlePvtOutputChange(pvtActiveIndex, event)}></textarea>
+                                                {/* <textarea id={`output-${pvtActiveIndex}`}  name="output" rows={10} value={privateTestCases[pvtActiveIndex]?.output} onChange={(event) => handlePvtOutputChange(pvtActiveIndex, event)}></textarea> */}
+                                                <textarea id={`output-${pvtActiveIndex}`}  name="output" rows={10} value={privateTestCases[pvtActiveIndex]?.output} disabled></textarea>
                                             </div>
                                         </div>
                                     )}
                                 </div>
-                                <div className={styles.addProgramming_second_pvt_save}>
-                                    <button onClick={handlePvtSave}><IoMdSave /></button>
+                                <div className={styles.addProgramming_third_save}>
+                                    <button><IoMdSave /></button>
                                 </div>
                             </>
                         }
@@ -375,39 +423,8 @@ function AddProgramming() {
                     </div>
                 </div>
             </div>
-            <div className={styles.addProgramming_third_container} id='starter' ref={starterRef}>
-                <div className={styles.addProgramming_third_container_body}>
-                    <div className={styles.addProgramming_third_container_header}>
-                        <h1>Add Starter Code</h1>
-                    </div>
-                    <div className={styles.addProgramming_third_body}>
-                        <div style={{ height: editorContainerHeight }} className={styles.addProgramming_third_lang_container}>
-                            <div className={styles.options_container}>
-                                <div>
-                                    <div className={styles.select_container}>
-                                        <select className={styles.lang_select} onChange={handleLangSelect}>
-                                            {Planguages.map((lang) => (
-                                                <option key={lang.id} value={[lang.value, lang.id.toString()]}>{lang.name}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div className={styles.editor_container} style={{ width: '100%', height: editorHeight }}>
-                                <OurEditor lang={lang[0]} onChange={handleCodeChange} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.addProgramming_third_save}>
-                        <button onClick={hanldeSaveStarter}><IoMdSave /></button>
-                    </div>
-                </div>
-                <button className={styles.Btn} onClick={scrollToTop}>
-                    <svg height="1.2em" className={styles.arrow} viewBox="0 0 512 512"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path></svg>
-                    <p className={styles.text}>Back to Top</p>
-                </button>
-            </div>
+            <ToastContainer />
         </div>
     );
 }
