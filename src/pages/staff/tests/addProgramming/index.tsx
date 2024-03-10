@@ -1,11 +1,13 @@
 //Dependencies
 
-import React, { useState } from 'react';
+import React, { createRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabList, TabContext } from '@mui/lab';
 import * as monaco from 'monaco-editor';
 import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate, useParams } from 'react-router-dom';
+import { HttpStatusCode } from 'axios';
 
 //Styles
 
@@ -20,24 +22,33 @@ import { IoMdSave, IoMdAddCircle } from "react-icons/io";
 
 import Jodit from './joditEditor';
 import OurEditor from '../../../questions/components/Editor';
+import { programmingLanguages } from '../../../questions/components/Editor';
 
 //Hooks
 
 import useLocalStorage from '../../../../hooks/useLocalStorage';
-
-const Planguages = [
-    { id: 92, name: 'Python', value: 'python' },
-    { id: 50, name: 'C', value: 'c' },
-    { id: 54, name: 'C++', value: 'c++' },
-    { id: 91, name: 'Java', value: 'java' },
-    { id: 93, name: 'JavaScript', value: 'javascript' },
-];
+import { runCode } from '../controllers';
+import { Request } from '../../../../networking';
 
 interface TestCase {
     name: string
     input: string
     output: string
 }
+
+type results = {
+    status: {
+        id: number;
+        description: string;
+    };
+    time: number;
+    memory: number;
+    stdin: string;
+    stdout: string;
+    stderr: string;
+    compile_output: string;
+    expected_output: string;
+};
 
 function AddProgramming() {
 
@@ -55,13 +66,16 @@ function AddProgramming() {
     const [privateCaseNumber, setPrivateCaseNumber] = useState(2);
     const [pvtHoveredIndex, setPvtHoveredIndex] = useState<number | null>(null);
     const [pvtActiveIndex, setPvtActiveIndex] = useState(0);
-    const [lang, setLang] = useState([Planguages[0].value, Planguages[0].id.toString()]);
+    const [lang, setLang] = useState([programmingLanguages[0].value, programmingLanguages[0].id.toString()]);
     const [solutionCode, setSolutionCode] = useLocalStorage("codeQuestion_solutionCode", '');
     const [editorContainerHeight, setEditorContainerHeight] = useState("95%");
     const [editorHeight, setEditorHeight] = useState("95%");
-    const topRef = React.createRef<HTMLDivElement>();
-    const testcaseRef = React.createRef<HTMLDivElement>();
-    const starterRef = React.createRef<HTMLDivElement>(); 
+    const topRef = createRef<HTMLDivElement>();
+    const testcaseRef = createRef<HTMLDivElement>();
+    const starterRef = createRef<HTMLDivElement>(); 
+
+    const { testId } = useParams();
+    const navigate = useNavigate();
 
     const handleEditClick = () => {
         setIsEditable(!isEditable);
@@ -134,10 +148,56 @@ function AddProgramming() {
         setPublicTestCases(newTestCases);
     };
 
-    const handlePublicOutputChange = (index: number, event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newTestCases = [...publicTestCases];
-        newTestCases[index].output = event.target.value;
-        setPublicTestCases(newTestCases);
+    const handlePublicOutputChange = async () => {
+
+        let newTestCases = [...publicTestCases];
+
+        try {
+            const response = await runCode(
+                {
+                    sourceCode: solutionCode,
+                    testCases: publicTestCases,
+                    languageId: lang[1]
+                }
+            );
+
+            if (response.status === HttpStatusCode.Created) {
+                const tokens = response.data.tokens;
+
+                const tokenString = tokens.length === 1 ? tokens[0] : tokens.join(",");
+
+                const params = { "tokens": tokenString };
+                
+                const getResults = async () => {
+                    try {
+                        const response = await Request("GET", `/submission`, null, params);
+
+                        const outputs = response.data.submissions.map((result: results) => result.stdout || result.stderr || result.compile_output);
+
+                        newTestCases = newTestCases.map((testCase, index) => ({ ...testCase, output: atob(outputs[index]) }));
+
+                        response.data.submissions.forEach((result: results) => {
+                            if (result.status.id === 1 || result.status.id === 2) {
+                                setTimeout(() => getResults(), 4000);
+                            }
+                        });
+
+                        setPublicTestCases(newTestCases);
+
+                    } catch (error) {
+                        console.log(error);
+                    }
+                };
+
+                getResults();
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to get public test case outputs', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+        }
     };
 
     const handleAddPvtTestCase = () => {
@@ -171,10 +231,55 @@ function AddProgramming() {
         setPrivateTestCases(newTestCases);
     };
 
-    const handlePvtOutputChange = (index: number, event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newTestCases = [...privateTestCases];
-        newTestCases[index].output = event.target.value;
-        setPrivateTestCases(newTestCases);
+    const handlePvtOutputChange = async () => {
+        let newTestCases = [...privateTestCases];
+
+        try {
+            const response = await runCode(
+                {
+                    sourceCode: solutionCode,
+                    testCases: privateTestCases,
+                    languageId: lang[1]
+                }
+            );
+
+            if (response.status === HttpStatusCode.Created) {
+                const tokens = response.data.tokens;
+
+                const tokenString = tokens.length === 1 ? tokens[0] : tokens.join(",");
+
+                const params = { "tokens": tokenString };
+                
+                const getResults = async () => {
+                    try {
+                        const response = await Request("GET", `/submission`, null, params);
+
+                        const outputs = response.data.submissions.map((result: results) => result.stdout || result.stderr || result.compile_output);
+
+                        newTestCases = newTestCases.map((testCase, index) => ({ ...testCase, output: atob(outputs[index]) }));
+
+                        response.data.submissions.forEach((result: results) => {
+                            if (result.status.id === 1 || result.status.id === 2) {
+                                setTimeout(() => getResults(), 4000);
+                            }
+                        });
+
+                        setPrivateTestCases(newTestCases);
+
+                    } catch (error) {
+                        console.log(error);
+                    }
+                };
+
+                getResults();
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to get private test case outputs', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+        }
     };
 
     const handleLangSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -197,6 +302,125 @@ function AddProgramming() {
         starterRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
 
+    const handleSaveQuestion = async () => {
+
+        if (titleValue === 'Add Your Question Title Here') {
+            toast.error('Please add a title for the question', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        if (selectedLanguages.length === 0) {
+            toast.error('Please select at least one language', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        if (marks === 'Add Marks Here') {
+            toast.error('Please add marks for the question', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        const question = localStorage.getItem("codeQuestion_question");
+
+        if (question == "<p><br></p>" || question == '' || question == null) {
+            toast.error('Please add a question', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        if (solutionCode === '') {
+            toast.error('Please add a solution code', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        if (publicTestCases.length === 0) {
+            toast.error('Please add at least one public test case', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        if (privateTestCases.length === 0) {
+            toast.error('Please add at least one private test case', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+            return;
+        }
+
+        for (let i = 0; i < publicTestCases.length; i++) {
+            if (publicTestCases[i].input === '' || publicTestCases[i].output === '') {
+                toast.error('Please fill in all the public test cases', {
+                    autoClose: 2000,
+                    hideProgressBar: true
+                });
+                return;
+            }
+        }
+
+        for (let i = 0; i < privateTestCases.length; i++) {
+            if (privateTestCases[i].input === '' || privateTestCases[i].output === '') {
+                toast.error('Please fill in all the private test cases', {
+                    autoClose: 2000,
+                    hideProgressBar: true
+                });
+                return;
+            }
+        }
+
+        try {
+            const questionData = {
+                test_id: testId,
+                question: question,
+                question_title: titleValue,
+                solution_code: solutionCode,
+                allowed_languages: selectedLanguages,
+                public_test_case: publicTestCases,
+                private_test_case: privateTestCases,
+                marks: marks,
+            };
+
+            const response = await Request("POST", "/question/add-code", questionData);
+
+            if (response.status === HttpStatusCode.Created) {
+                toast.success('Question added successfully', {
+                    autoClose: 2000,
+                    hideProgressBar: true
+                });
+                
+                const itemsToClear = ["codeQuestion_Title", "codeQuestion_AllowedLanguages", "codeQuestion_Marks", "codeQuestion_PublicTestCases", "codeQuestion_PrivateTestCases", "codeQuestion_solutionCode", "codeQuestion_question"];
+                itemsToClear.forEach((item) => localStorage.removeItem(item));
+
+                navigate(`/staff/test/${testId}`);
+            } else {
+                toast.error('Failed to add question', {
+                    autoClose: 2000,
+                    hideProgressBar: true
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to add question', {
+                autoClose: 2000,
+                hideProgressBar: true
+            });
+        }
+    }
+
     return (
         <div className={styles.addProgramming_whole_container}>
             <div className={styles.addProgramming_first_container} id='top' ref={topRef}>
@@ -217,56 +441,18 @@ function AddProgramming() {
                         <div className={styles.addProgramming_header_bottom_left}>
                             <h1>Allowed Languages:</h1>
                             <div className={styles.checkbox_container}>
-                            <div>
-                                <input
-                                type="checkbox"
-                                title="Python"
-                                name="python"
-                                onChange={handleCheckboxChange}
-                                checked={selectedLanguages.includes('python')}
-                                />
-                                <label htmlFor="python">Python</label>
-                            </div>
-                            <div>
-                                <input
-                                type="checkbox"
-                                title="C"
-                                name="c"
-                                onChange={handleCheckboxChange}
-                                checked={selectedLanguages.includes('c')}
-                                />
-                                <label htmlFor="c">C</label>
-                            </div>
-                            <div>
-                                <input
-                                type="checkbox"
-                                title="C++"
-                                name="cpp"
-                                onChange={handleCheckboxChange}
-                                checked={selectedLanguages.includes('cpp')}
-                                />
-                                <label htmlFor="cpp">C++</label>
-                            </div>
-                            <div>
-                                <input
-                                type="checkbox"
-                                title="Java"
-                                name="java"
-                                onChange={handleCheckboxChange}
-                                checked={selectedLanguages.includes('java')}
-                                />
-                                <label htmlFor="java">Java</label>
-                            </div>
-                            <div>
-                                <input
-                                type="checkbox"
-                                title="JavaScript"
-                                name="javascript"
-                                onChange={handleCheckboxChange}
-                                checked={selectedLanguages.includes('javascript')}
-                                />
-                                <label htmlFor="javascript">JavaScript</label>
-                            </div>
+                                {programmingLanguages.map((lang) => (
+                                    <div key={lang.id}>
+                                        <input
+                                        type="checkbox"
+                                        title={lang.name}
+                                        name={lang.value}
+                                        onChange={handleCheckboxChange}
+                                        checked={selectedLanguages.includes(lang.value)}
+                                        />
+                                        <label htmlFor={lang.value}>{lang.name}</label>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -282,6 +468,10 @@ function AddProgramming() {
                             ) : (
                                 <FiEdit onClick={handleEditMarksClick} id={styles.editIcon} />
                             )}
+                        </div>
+
+                        <div onClick={handleSaveQuestion}>
+                            <button >Save Question</button>
                         </div>
                     </div>
                 </div>
@@ -308,7 +498,7 @@ function AddProgramming() {
                                 <div>
                                     <div className={styles.select_container}>
                                         <select className={styles.lang_select} onChange={handleLangSelect}>
-                                            {Planguages.map((lang) => (
+                                            {programmingLanguages.map((lang) => (
                                                 <option key={lang.id} value={[lang.value, lang.id.toString()]}>{lang.name}</option>
                                             ))}
                                         </select>
@@ -376,7 +566,10 @@ function AddProgramming() {
                                     </div>
                                     )}
                                 </div>
-                                <div className={styles.addProgramming_third_save}>
+                                <div
+                                    className={styles.addProgramming_third_save}
+                                    onClick={handlePublicOutputChange}
+                                >
                                     <button><IoMdSave /></button>
                                 </div>
                             </> 
@@ -409,7 +602,10 @@ function AddProgramming() {
                                         </div>
                                     )}
                                 </div>
-                                <div className={styles.addProgramming_third_save}>
+                                <div
+                                    className={styles.addProgramming_third_save}
+                                    onClick={handlePvtOutputChange}
+                                >
                                     <button><IoMdSave /></button>
                                 </div>
                             </>
