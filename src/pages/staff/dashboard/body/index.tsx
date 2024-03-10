@@ -11,28 +11,24 @@ import styles from "../StaffDashboard.module.css";
 
 // Assets
 import { MdDeleteOutline } from "react-icons/md";
-
-
-interface ClassRoom {
-    classroom_id: number
-    name: string
-    description: string
-    updated_at: Date
-    created_at: Date
-}
+import { ClassRoom, TestType } from "..";
 
 interface Props {
     classroomList: ClassRoom[];
+    testList: TestType[];
     getClassrooms: () => void;
+    getTests: () => void;
 }
 
 interface DeletePayload {
     classroomId: number
 }
 
-function Body({ classroomList, getClassrooms }: Props) {
+function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
 
-    const handleDelete = async ({ classroomId }: DeletePayload) => {
+    const navigate = useNavigate();
+
+    const handleDeleteClassroom = async ({ classroomId }: DeletePayload) => {
         try {
             const response = await Request(
                 "DELETE",
@@ -49,22 +45,50 @@ function Body({ classroomList, getClassrooms }: Props) {
             }
 
         } catch (error) {
-            alert(error);
+            toast.error((error as any).response.data.message, {
+                autoClose: 2000,
+                theme: "dark",
+                hideProgressBar: true,
+            });
+        }
+    }
+
+    const handleDeleteTest = async (testId: number) => {
+        try {
+            const response = await Request(
+                "DELETE",
+                `/test/${testId}`,
+            );
+
+            if (response.status === HttpStatusCode.Ok) {
+                toast.success(response.data.message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+                getTests();
+            }
+
+        } catch (error) {
+            toast.error((error as any).response.data.message, {
+                autoClose: 2000,
+                theme: "dark",
+                hideProgressBar: true,
+            });
         }
     }
 
     useState(() => {
         getClassrooms();
+        getTests();
     });
-
-    const navigate = useNavigate();
 
     const changeClassRoom = (classRoomId: Number) => {
         navigate(`/staff/classroom/${classRoomId}`);
     }
 
-    const changeTest = () => {
-        navigate("/staff/test");
+    const changeTest = (testId: Number) => {
+        navigate(`/staff/test/${testId}`);
     }
 
     return (
@@ -79,7 +103,7 @@ function Body({ classroomList, getClassrooms }: Props) {
                                 <h1>{classroom.name}</h1>
                             </div>
                             <div className={styles.Classroom_display_footer}>
-                                <MdDeleteOutline id={styles.bin} onClick={() => handleDelete({ classroomId: classroom.classroom_id })}/>
+                                <MdDeleteOutline id={styles.bin} onClick={() => handleDeleteClassroom({ classroomId: classroom.classroom_id })}/>
                             </div>
                         </div>
                     </div>
@@ -96,14 +120,21 @@ function Body({ classroomList, getClassrooms }: Props) {
             </div>
             <h1>Your Tests</h1>
             <div className={styles.Tests_container}>
-            <div className={styles.Tests_display}>
-              <div className={styles.Tests_display_header} onClick={changeTest}>
-                    <h1>Test Name</h1>
-                    </div>
+                {testList.map((test, index) => 
+                <div key={index}>
+                    <div className={styles.Tests_display}>
+                        <div className={styles.Tests_display_header} onClick={() => changeTest(test.test_id)}>
+                            <h1>{test.title}</h1>
+                        </div>
+                        <div>
+                            <p>Duration: {test.duration_in_minutes}</p>
+                            <p>{test.description}</p>
+                        </div>
                         <div className={styles.Tests_display_footer}>
-                            <MdDeleteOutline id={styles.bin}/>
+                            <MdDeleteOutline id={styles.bin} onClick={() => handleDeleteTest(test.test_id)} />
                         </div>
                     </div>
+                </div>)}
             </div>
         </div>
     );

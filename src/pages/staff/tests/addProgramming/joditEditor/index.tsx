@@ -1,18 +1,14 @@
-import React, { useState, useRef, useMemo } from 'react';
-// import Jodit from "jodit";
-// import 'jodit/build/jodit.min.css';
+import  { useRef, useMemo } from 'react';
 import JoditEditor from 'jodit-react';
-import { editorConfig } from './EditorConfig';
-import styles from '../addProgramming.module.css'
-import { IoIosSave } from "react-icons/io";
 
-function Jodit() {
-const [data, setData] = useState('');
+interface Props {
+    value: string;
+    setValue: (value: string) => void;
+}
+
+function Jodit({ value, setValue }: Props) {
+
 const editor = useRef(null);
-
-const handleSaveQuestion = () => {
-    console.log(data);
-};
 
 const config = useMemo(
     () => ({
@@ -55,11 +51,10 @@ const config = useMemo(
         <>
             <JoditEditor
                 ref={editor}
-                value={data}
+                value={value}
                 config={config}
-                onBlur={value => setData(value)}
+                onBlur={value => setValue(value)}
             />
-            <button className={styles.addProgramming_body_bottom_button} onClick={handleSaveQuestion}><IoIosSave /></button>
         </>
 	);
 }

@@ -9,32 +9,13 @@ import OurEditor from "../Editor";
 import { Request } from "../../../../networking";
 import TestCase from "./components/TestCase";
 import Result from "./components/Result";
+import { programmingLanguages } from "../Editor";
 
 // Asset imports
 import styles from './right.module.css';
 
-
-
-// Change the languages variable if using a different api provider
-
-const languages = [
-    { id: 92, name: 'Python', value: 'python' },
-    { id: 50, name: 'C', value: 'c' },
-    { id: 54, name: 'C++', value: 'c++' },
-    { id: 91, name: 'Java', value: 'java' },
-    { id: 93, name: 'JavaScript', value: 'javascript' },
-];
-
-// const languages = [
-//     { id: 71, name: 'Python', value: 'python' },
-//     { id: 50, name: 'C', value: 'c' },
-//     { id: 54, name: 'C++', value: 'cpp' },
-//     { id: 62, name: 'Java', value: 'java' },
-//     { id: 63, name: 'JavaScript', value: 'javascript' },
-// ];
-
 const RightContainer = () => {
-    const [lang, setLang] = useState([languages[0].value, languages[0].id.toString()]);
+    const [lang, setLang] = useState([programmingLanguages[0].value, programmingLanguages[0].id.toString()]);
     const [code, setCode] = useState('');
     const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -192,7 +173,7 @@ const RightContainer = () => {
                 <div>
                     <div className={styles.select_container}>
                         <select className={styles.lang_select} onChange={handleLangSelect}>
-                            {languages.map((lang) => (
+                            {programmingLanguages.map((lang) => (
                                 <option key={lang.id} value={[lang.value, lang.id.toString()]}>{lang.name}</option>
                             ))}
                         </select>

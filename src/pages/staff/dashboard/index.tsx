@@ -20,6 +20,9 @@ import styles from "./StaffDashboard.module.css";
 
 import Body from "./body";
 
+import AddClassroomModal from "./addClassroomModal";
+import AddTestModal from "./addTestModal";
+
 //Assets
 
 import { FaSpotify } from "react-icons/fa";
@@ -27,16 +30,21 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import AddClassroomModal from "./addUserModal";
-import AddTestModal from "./addTestModal";
 import { SiGoogleclassroom, SiTestcafe } from "react-icons/si";
 
-interface ClassRoom {
+export interface ClassRoom {
     classroom_id: number
     name: string
     description: string
     updated_at: Date
     created_at: Date
+}
+
+export interface TestType {
+    test_id: number
+    title: string
+    description: string
+    duration_in_minutes: number
 }
 
 function StaffDashboard () {
@@ -45,6 +53,7 @@ function StaffDashboard () {
     const [modelOpen, setModelOpen] = React.useState(false);
     const [modelTestsOpen, setModelTestsOpen] = React.useState(false);
     const [classroomList, setClassroomList] = React.useState<ClassRoom[]>([]);
+    const [testList, setTestList] = React.useState<TestType[]>([]);
     const [openSpeadDial, setOpenSpeedDial] = React.useState(false);
     const handleSpeedDialOpen = () => setOpenSpeedDial(true);
     const handleSpeedDialClose = () => setOpenSpeedDial(false);
@@ -79,6 +88,31 @@ function StaffDashboard () {
 
             if (response.status === HttpStatusCode.Ok) {
                 setClassroomList(response.data.classrooms);
+            }
+
+        } catch (error) {
+            if ((error as any).response) {
+                toast.error((error as any).response.data.message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+            } else {
+                toast.error((error as Error).message, {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+            }
+        }
+    }
+
+    const getTests = async () => {
+        try {
+            const response = await Request("GET", "/test/user/created-by-me");
+
+            if (response.status === HttpStatusCode.Ok) {
+                setTestList(response.data.tests);
             }
 
         } catch (error) {
@@ -200,10 +234,10 @@ function StaffDashboard () {
                         </SpeedDial>
                     </Box>
                 </div> 
-                <Body classroomList={classroomList} getClassrooms={getClassrooms} />
+                <Body classroomList={classroomList} getClassrooms={getClassrooms} testList={testList} getTests={getTests} />
             </div>
             <AddClassroomModal modelOpen={modelOpen} handleModalClick={handleModalClick} getClassrooms={getClassrooms}/>
-            <AddTestModal modelTestsOpen={modelTestsOpen} handleTestsModalClick={handleTestsModalClick} />
+            <AddTestModal modelTestsOpen={modelTestsOpen} handleTestsModalClick={handleTestsModalClick} getTests={getTests} />
             <ToastContainer />
         </div>
     );
