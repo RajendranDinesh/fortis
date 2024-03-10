@@ -23,3 +23,8 @@ export const runCode = async ({ sourceCode, testCases, languageId }: Props) => {
 
     return response;
 }
+
+export const getQuestionDetail = async (testId: number, questionId: number) => {
+    const response = await Request("GET", `/question/${testId}/${questionId}`);
+    return response;
+}

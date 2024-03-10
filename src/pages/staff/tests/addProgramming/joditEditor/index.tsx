@@ -1,11 +1,12 @@
-import  { useState, useRef, useMemo } from 'react';
+import  { useRef, useMemo } from 'react';
 import JoditEditor from 'jodit-react';
 
-import styles from '../addProgramming.module.css'
-import useLocalStorage from '../../../../../hooks/useLocalStorage';
+interface Props {
+    value: string;
+    setValue: (value: string) => void;
+}
 
-function Jodit() {
-const [question,setQuestion] = useLocalStorage<string>("codeQuestion_question", "");
+function Jodit({ value, setValue }: Props) {
 
 const editor = useRef(null);
 
@@ -50,9 +51,9 @@ const config = useMemo(
         <>
             <JoditEditor
                 ref={editor}
-                value={question}
+                value={value}
                 config={config}
-                onBlur={value => setQuestion(value)}
+                onBlur={value => setValue(value)}
             />
         </>
 	);

@@ -58,6 +58,7 @@ function AddProgramming() {
     const [marks, setMarks] = useLocalStorage<string>("codeQuestion_Marks", 'Add Marks Here');
     const [isEditMarks, setIsEditMarks] = useState(false);
     const [tabvalue, setTabValue] = useState('1');
+    const [question, setQuestion] = useLocalStorage<string>("codeQuestion_question", "");
     const [publicTestCases, setPublicTestCases] = useLocalStorage<TestCase[]>("codeQuestion_PublicTestCases", [{ name: 'Case 1', input: '', output: '' }]);
     const [publicCaseNumber, setPublicCaseNumber] = useState(2);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -72,7 +73,7 @@ function AddProgramming() {
     const [editorHeight, setEditorHeight] = useState("95%");
     const topRef = createRef<HTMLDivElement>();
     const testcaseRef = createRef<HTMLDivElement>();
-    const starterRef = createRef<HTMLDivElement>(); 
+    const starterRef = createRef<HTMLDivElement>();
 
     const { testId } = useParams();
     const navigate = useNavigate();
@@ -91,13 +92,13 @@ function AddProgramming() {
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const checkboxName = event.target.name;
-    
+
         if (event.target.checked) {
-          setSelectedLanguages((prevSelectedLanguages) => [...prevSelectedLanguages, checkboxName]);
+            setSelectedLanguages((prevSelectedLanguages) => [...prevSelectedLanguages, checkboxName]);
         } else {
-          setSelectedLanguages((prevSelectedLanguages) => prevSelectedLanguages.filter((lang) => lang !== checkboxName));
+            setSelectedLanguages((prevSelectedLanguages) => prevSelectedLanguages.filter((lang) => lang !== checkboxName));
         }
-      };
+    };
 
     const handleEditMarksClick = () => {
         setIsEditMarks(!isEditMarks);
@@ -117,14 +118,14 @@ function AddProgramming() {
 
     const handleAddPublicTestCase = () => {
         if (publicCaseNumber <= 5) {
-          setPublicTestCases([...publicTestCases, { name: `Case ${publicCaseNumber}`, input: '', output: '' }]);
-          setPublicCaseNumber(publicCaseNumber + 1);
-          
-          if (publicTestCases.length === 0) {
-            setPublicActiveIndex(0);
-          } else {
-            setPublicActiveIndex(publicTestCases.length);
-          }
+            setPublicTestCases([...publicTestCases, { name: `Case ${publicCaseNumber}`, input: '', output: '' }]);
+            setPublicCaseNumber(publicCaseNumber + 1);
+
+            if (publicTestCases.length === 0) {
+                setPublicActiveIndex(0);
+            } else {
+                setPublicActiveIndex(publicTestCases.length);
+            }
         }
     };
 
@@ -134,11 +135,11 @@ function AddProgramming() {
         newTestCases = newTestCases.map((testCase, i) => ({ ...testCase, name: `Case ${i + 1}` }));
         setPublicTestCases(newTestCases);
         setPublicCaseNumber(newTestCases.length + 1);
-        
+
         if (publicTestCases.length === 0) {
-          setPublicActiveIndex(0);
+            setPublicActiveIndex(0);
         } else {
-          setPublicActiveIndex(publicActiveIndex - 1);
+            setPublicActiveIndex(publicActiveIndex - 1);
         }
     };
 
@@ -167,7 +168,7 @@ function AddProgramming() {
                 const tokenString = tokens.length === 1 ? tokens[0] : tokens.join(",");
 
                 const params = { "tokens": tokenString };
-                
+
                 const getResults = async () => {
                     try {
                         const response = await Request("GET", `/submission`, null, params);
@@ -201,14 +202,14 @@ function AddProgramming() {
     };
 
     const handleAddPvtTestCase = () => {
-          setPrivateTestCases([...privateTestCases, { name: `Case ${privateCaseNumber}`, input: '', output: '' }]);
-          setPrivateCaseNumber(privateCaseNumber + 1);
+        setPrivateTestCases([...privateTestCases, { name: `Case ${privateCaseNumber}`, input: '', output: '' }]);
+        setPrivateCaseNumber(privateCaseNumber + 1);
 
-          if (privateTestCases.length === 0) {
+        if (privateTestCases.length === 0) {
             setPvtActiveIndex(0);
-          } else {
+        } else {
             setPvtActiveIndex(privateTestCases.length);
-          }
+        }
     };
 
     const handleDeletePvtTestCase = (index: number) => {
@@ -249,7 +250,7 @@ function AddProgramming() {
                 const tokenString = tokens.length === 1 ? tokens[0] : tokens.join(",");
 
                 const params = { "tokens": tokenString };
-                
+
                 const getResults = async () => {
                     try {
                         const response = await Request("GET", `/submission`, null, params);
@@ -328,8 +329,6 @@ function AddProgramming() {
             return;
         }
 
-        const question = localStorage.getItem("codeQuestion_question");
-
         if (question == "<p><br></p>" || question == '' || question == null) {
             toast.error('Please add a question', {
                 autoClose: 2000,
@@ -401,7 +400,7 @@ function AddProgramming() {
                     autoClose: 2000,
                     hideProgressBar: true
                 });
-                
+
                 const itemsToClear = ["codeQuestion_Title", "codeQuestion_AllowedLanguages", "codeQuestion_Marks", "codeQuestion_PublicTestCases", "codeQuestion_PrivateTestCases", "codeQuestion_solutionCode", "codeQuestion_question"];
                 itemsToClear.forEach((item) => localStorage.removeItem(item));
 
@@ -432,9 +431,9 @@ function AddProgramming() {
                         </div>
 
                         {isEditable ? (
-                                <FiCheck onClick={handleConfirmTitleClick} id={styles.editIcon} />
-                            ) : (
-                                <FiEdit onClick={handleEditClick} id={styles.editIcon} />
+                            <FiCheck onClick={handleConfirmTitleClick} id={styles.editIcon} />
+                        ) : (
+                            <FiEdit onClick={handleEditClick} id={styles.editIcon} />
                         )}
                     </div>
                     <div className={styles.addProgramming_header_bottom}>
@@ -444,11 +443,11 @@ function AddProgramming() {
                                 {programmingLanguages.map((lang) => (
                                     <div key={lang.id}>
                                         <input
-                                        type="checkbox"
-                                        title={lang.name}
-                                        name={lang.value}
-                                        onChange={handleCheckboxChange}
-                                        checked={selectedLanguages.includes(lang.value)}
+                                            type="checkbox"
+                                            title={lang.name}
+                                            name={lang.value}
+                                            onChange={handleCheckboxChange}
+                                            checked={selectedLanguages.includes(lang.value)}
                                         />
                                         <label htmlFor={lang.value}>{lang.name}</label>
                                     </div>
@@ -476,7 +475,7 @@ function AddProgramming() {
                     </div>
                 </div>
                 <div className={styles.addProgramming_body}>
-                    <Jodit />
+                    <Jodit value={question} setValue={setQuestion} />
                 </div>
                 <div className={styles.scrolldown} onClick={scrollToTestcase}>
                     <div className={styles.chevrons}>
@@ -490,7 +489,7 @@ function AddProgramming() {
             <div className={styles.addProgramming_third_container} id='starter' ref={starterRef}>
                 <div className={styles.addProgramming_third_container_body}>
                     <div className={styles.addProgramming_third_container_header}>
-                        <h1>Add Starter Code</h1>
+                        <h1>Add Solution Code</h1>
                     </div>
                     <div className={styles.addProgramming_third_body}>
                         <div style={{ height: editorContainerHeight }} className={styles.addProgramming_third_lang_container}>
@@ -529,22 +528,22 @@ function AddProgramming() {
                             <TabContext value={tabvalue}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                     <TabList onChange={handleTestCaseTabChange} aria-label="lab API tabs">
-                                        <Tab label="Public" value="1" style={{color: "white", fontSize: "1.2em"}} />
-                                        <Tab label="Private" value="2" style={{color: "white", fontSize: "1.2em"}} />
+                                        <Tab label="Public" value="1" style={{ color: "white", fontSize: "1.2em" }} />
+                                        <Tab label="Private" value="2" style={{ color: "white", fontSize: "1.2em" }} />
                                     </TabList>
                                 </Box>
                             </TabContext>
                         </Box>
                     </div>
                     <div className={styles.addProgramming_second_body}>
-                        {tabvalue === '1' ? 
+                        {tabvalue === '1' ?
                             <>
                                 <div className={styles.addProgramming_second_public_array}>
                                     {publicTestCases.map((testCase, index) => (
                                         <div key={index} className={styles.addProgramming_second_public_case_name}
-                                        onMouseEnter={() => setHoveredIndex(index)}
-                                        onMouseLeave={() => setHoveredIndex(null)}
-                                        onClick={() => setPublicActiveIndex(index)}>
+                                            onMouseEnter={() => setHoveredIndex(index)}
+                                            onMouseLeave={() => setHoveredIndex(null)}
+                                            onClick={() => setPublicActiveIndex(index)}>
                                             <h3>{testCase.name}</h3>
                                             {hoveredIndex === index && <span onClick={() => handleDeletePublicTestCase(index)}>x</span>}
                                         </div>
@@ -553,17 +552,17 @@ function AddProgramming() {
                                 </div>
                                 <div className={styles.addProgramming_second_public_inout}>
                                     {publicTestCases.length > 0 && (
-                                    <div className={styles.addProgramming_second_public_inout_field_container}>
-                                        <div className={styles.addProgramming_second_public_inout_fields}>
-                                            <label htmlFor={`input-${publicActiveIndex}`}>Input:</label>
-                                            <textarea id={`input-${publicActiveIndex}`} name="input" rows={10} value={publicTestCases[publicActiveIndex]?.input} onChange={(event) => handlePublicInputChange(publicActiveIndex, event)}></textarea>
+                                        <div className={styles.addProgramming_second_public_inout_field_container}>
+                                            <div className={styles.addProgramming_second_public_inout_fields}>
+                                                <label htmlFor={`input-${publicActiveIndex}`}>Input:</label>
+                                                <textarea id={`input-${publicActiveIndex}`} name="input" rows={10} value={publicTestCases[publicActiveIndex]?.input} onChange={(event) => handlePublicInputChange(publicActiveIndex, event)}></textarea>
+                                            </div>
+                                            <div className={styles.addProgramming_second_public_inout_fields}>
+                                                <label htmlFor={`output-${publicActiveIndex}`}>Output:</label>
+                                                {/* <textarea id={`output-${publicActiveIndex}`}  name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output} onChange={(event) => handlePublicOutputChange(publicActiveIndex, event)}></textarea> */}
+                                                <textarea disabled id={`output-${publicActiveIndex}`} name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output}></textarea>
+                                            </div>
                                         </div>
-                                        <div className={styles.addProgramming_second_public_inout_fields}>
-                                            <label htmlFor={`output-${publicActiveIndex}`}>Output:</label>
-                                            {/* <textarea id={`output-${publicActiveIndex}`}  name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output} onChange={(event) => handlePublicOutputChange(publicActiveIndex, event)}></textarea> */}
-                                            <textarea disabled id={`output-${publicActiveIndex}`}  name="output" rows={10} value={publicTestCases[publicActiveIndex]?.output}></textarea>
-                                        </div>
-                                    </div>
                                     )}
                                 </div>
                                 <div
@@ -572,15 +571,15 @@ function AddProgramming() {
                                 >
                                     <button><IoMdSave /></button>
                                 </div>
-                            </> 
-                        : 
+                            </>
+                            :
                             <>
                                 <div className={styles.addProgramming_second_pvt_array}>
                                     {privateTestCases.map((testCase, index) => (
                                         <div key={index} className={styles.addProgramming_second_pvt_case_name}
-                                        onMouseEnter={() => setPvtHoveredIndex(index)}
-                                        onMouseLeave={() => setPvtHoveredIndex(null)}
-                                        onClick={() => setPvtActiveIndex(index)}>
+                                            onMouseEnter={() => setPvtHoveredIndex(index)}
+                                            onMouseLeave={() => setPvtHoveredIndex(null)}
+                                            onClick={() => setPvtActiveIndex(index)}>
                                             <h3>{testCase.name}</h3>
                                             {pvtHoveredIndex === index && <span onClick={() => handleDeletePvtTestCase(index)}>x</span>}
                                         </div>
@@ -597,7 +596,7 @@ function AddProgramming() {
                                             <div className={styles.addProgramming_second_pvt_inout_fields}>
                                                 <label htmlFor={`output-${pvtActiveIndex}`}>Output:</label>
                                                 {/* <textarea id={`output-${pvtActiveIndex}`}  name="output" rows={10} value={privateTestCases[pvtActiveIndex]?.output} onChange={(event) => handlePvtOutputChange(pvtActiveIndex, event)}></textarea> */}
-                                                <textarea id={`output-${pvtActiveIndex}`}  name="output" rows={10} value={privateTestCases[pvtActiveIndex]?.output} disabled></textarea>
+                                                <textarea id={`output-${pvtActiveIndex}`} name="output" rows={10} value={privateTestCases[pvtActiveIndex]?.output} disabled></textarea>
                                             </div>
                                         </div>
                                     )}

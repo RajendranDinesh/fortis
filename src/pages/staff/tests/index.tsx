@@ -16,6 +16,7 @@ import { IoIosAddCircle } from 'react-icons/io';
 import AddMCQ from './addMCQ';
 import { Request } from '../../../networking';
 import { TestType } from '../dashboard';
+import QuestionDetailModal from './viewQuestion';
 
 interface Question {
     question_id: number
@@ -85,6 +86,27 @@ function Test() {
         }
     }
 
+    const [questionIdForModal, setQuestionIdForModal] = useState(0);
+    const [isQuestionDetailModalOpen, setQuestionDetailModalOpen] = useState(false);
+
+    const openQuestionDetailModal = (questionId: number) => {
+        setQuestionIdForModal(questionId);
+        setQuestionDetailModalOpen(true);
+    }
+
+    const handleQuestionDetailModalClick = () => {
+        setQuestionDetailModalOpen(false);
+    }
+
+    const renderHTML = (htmlString: any, type: string) => {
+        if (htmlString === null) return;
+        if (type === "code") return { __html: htmlString };
+
+        const cleanedHtml = htmlString.slice(1, -1).replace(/\\n/g, '').replace(/\\t/g, '');
+
+        return { __html: cleanedHtml };
+    };
+
     useEffect(() => {
         getTestDetails();
         getQuestions();
@@ -112,13 +134,14 @@ function Test() {
 
                 {/* Questions are mapped and displayed here... */}
                 { (questions && questions.length > 0) ? questions.map((question, index) => 
-                <div className={styles.Test_question_grid} key={index}>
+                <div className={styles.Test_question_grid} key={index} onClick={() => openQuestionDetailModal(question.question_id)}>
                     <h1>{index+1}</h1>
-                    <h1>{question.question_title}</h1>
+                    <h1 dangerouslySetInnerHTML={renderHTML(question.question_title, question.type_name)} />
                     <h1>{question.type_name}</h1>
                 </div>) : <>No questions have been added yet..</>}
             </div>
             <AddMCQ modalOpen={isMCQModalOpen} handleModalClick={handleMCQModalClick} />
+            <QuestionDetailModal modalOpen={isQuestionDetailModalOpen} handleModalClick={handleQuestionDetailModalClick} questionId={questionIdForModal} />
         </div>
     )
 }

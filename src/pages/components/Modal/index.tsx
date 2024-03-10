@@ -1,4 +1,4 @@
-import { MouseEventHandler } from 'react';
+import React, { MouseEventHandler } from 'react';
 import styles from './modal.module.css';
 import { IoIosCloseCircle } from "react-icons/io";
 
@@ -7,19 +7,28 @@ interface ModalType {
     onClose: MouseEventHandler
     children: JSX.Element
     title?: string
+    height?: string
+    width?: string
 }
 
-function Modal({isOpen, onClose, children, title}: ModalType) {
+function Modal({ isOpen, onClose, children, title, height = "60vh", width = "50vw" }: ModalType) {
     if (!isOpen) {
         return null;
     }
 
     return (
         <div className={styles.top_container} onClick={onClose}>
-            <div className={styles.children_container} onClick={(e) => e.stopPropagation()}>
+            <div
+                className={styles.children_container}
+                style={{
+                    "--height": height,
+                    "--width": width
+                } as React.CSSProperties}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {title && <div className={styles.title_container}>
                     <h1>{title}</h1>
-                    <IoIosCloseCircle onClick={onClose} style={{fontSize: "2em", cursor: "pointer"}} />
+                    <IoIosCloseCircle onClick={onClose} style={{ fontSize: "2em", cursor: "pointer" }} />
                 </div>}
                 <div className={styles.modal_body}>
                     {children}

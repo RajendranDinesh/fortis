@@ -139,6 +139,10 @@
     border-radius: 1em;
     margin: 1vh 1vw 1vh 1vw;
     background: var(--accent);
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .Test_question_grid h1 {

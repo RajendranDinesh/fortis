@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { HttpStatusCode } from "axios";
 
 import Modal from "../../../components/Modal";
 import { Request } from "../../../../networking";
+import Jodit from "../addProgramming/joditEditor";
 
 import styles from './addmcq.module.css';
 
-import { toast, ToastContainer } from "react-toastify";
+import useLocalStorage from "../../../../hooks/useLocalStorage";
 
 interface Props {
     modalOpen: boolean
@@ -14,18 +17,20 @@ interface Props {
 
 function AddMCQ({ modalOpen, handleModalClick }: Props) {
 
-    const [question, setQuestion] = useState("");
+    const { testId } = useParams();
+    const [question, setQuestion] = useLocalStorage("mcQuestion_question", "");
     
     // Do not change the value of questionType unless explicitly required
     // 0 => Single Correct
     // 1 => Multi Correct
-    const [questionType, setQuestionType] = useState(0);
+    const [questionType, setQuestionType] = useLocalStorage("mcQuestion_questionType", 0);
+    const [marks, setMarks] = useLocalStorage("mcQuestion_marks", 0);
 
-    const [options, setOptions] = useState([
+    const [options, setOptions] = useLocalStorage("mcQuestion_options", [
         {
             id: 1,
             value: "",
-            correct: 1
+            correct: 0
         },
         {
             id: 2,
@@ -59,7 +64,29 @@ function AddMCQ({ modalOpen, handleModalClick }: Props) {
             return option;
         });
 
-        const correctOptions = newOptions.filter(option => option.correct == 1);
+        setOptions(newOptions);
+    }
+
+    const handleAddQuestion = async () => {
+
+        if (!question || question.length === 0) {
+            toast.error("Question cannot be empty", {
+                autoClose: 2000,
+                theme: "dark",
+            });
+            return;
+        }
+
+        if (options.length < 2) {
+            toast.error("Minimum 2 options are required", {
+                autoClose: 2000,
+                theme: "dark",
+            });
+            return;
+        }
+
+        const correctOptions = options.filter(option => option.correct == 1);
+
         if (questionType == 0 && correctOptions.length > 1) {
             toast.error("Only one correct option is allowed for single correct question", {
                 autoClose: 2000,
@@ -68,43 +95,42 @@ function AddMCQ({ modalOpen, handleModalClick }: Props) {
             return;
         }
 
-        setOptions(newOptions);
-    }
+        if (questionType == 1 && correctOptions.length < 2) {
+            toast.error("Minimum 2 correct options are required for multi correct question", {
+                autoClose: 2000,
+                theme: "dark",
+            });
+            return;
+        }
 
-    const [file, setFile] = useState<any>();
-    const [fileURL, setFileURL] = useState<any>();
-
-    function handleChange(e: any) {
-        setFile(e.target.files[0]);
-        setFileURL(URL.createObjectURL(e.target.files[0]));
-    }
-
-    const handleChangeQuestion = (e: any) => {
-        setQuestion(e.target.value);
-    }
-
-    const handleAddQuestion = async () => {
-        const formData = new FormData();
+        if (!marks) {
+            toast.error("Marks cannot be empty", {
+                autoClose: 2000,
+                theme: "dark",
+            });
+            return;
+        }
 
         const requestBody = {
-            test_id: 1,
+            test_id: testId,
             question_type: questionType,
             question: question,
             options: options,
+            marks: marks
         }
 
-        formData.append("question_data", JSON.stringify(requestBody));
-
-        if (file) formData.append("question_image", file);
-
         try {
-            const response = await Request("POST", "/question/add-mcq", formData);
+            const response = await Request("POST", "/question/add-mcq", requestBody);
 
-            if (response.status === 200) {
+            if (response.status === HttpStatusCode.Created) {
                 toast.success("Question added successfully", {
                     autoClose: 2000,
                     theme: "dark",
                 });
+                
+                const itemsToClear = ["mcQuestion_question", "mcQuestion_questionType", "mcQuestion_marks", "mcQuestion_options"];
+                itemsToClear.forEach(item => localStorage.removeItem(item));
+
                 handleModalClick();
             }
         } catch (error) {
@@ -130,22 +156,34 @@ function AddMCQ({ modalOpen, handleModalClick }: Props) {
 
     return (
         <>
-            <Modal isOpen={modalOpen} onClose={handleModalClick} title="Add MCQ Question">
+            <Modal
+                isOpen={modalOpen}
+                onClose={handleModalClick}
+                title="Add MCQ Question"
+                height="70vh"
+                width="70vw"
+                >
+
                 <div className={styles.add_mcq_question_container}>
 
                     <div className={styles.input_container}>
                         <div className={styles.question_input}>
                             <label>Question</label>
-                            <input placeholder="Question goes here..." onChange={handleChangeQuestion} />
+                            <Jodit value={question} setValue={setQuestion} />
                         </div>
-                        <input type="file" onChange={handleChange} />
-                        {fileURL && <img src={fileURL} width={"20px"} height={"20px"} alt="uploaded image" />}
                     </div>
 
-                    <h4 className={styles.answers_heading_text}>Answers</h4>
-                    <div className={styles.select_option_container}>
-                        <div className={questionType == 0 && styles.selected_option} onClick={() => setQuestionType(0)}>Single Correct</div>
-                        <div className={questionType == 1 && styles.selected_option} onClick={() => setQuestionType(1)}>Multi Correct</div>
+                    <div className={styles.marks_input}>
+                        <label>Marks</label>
+                        <input type="number" placeholder="Enter mark here" title="Marks" onChange={(e) => setMarks(parseInt(e.target.value))} />
+                    </div>
+
+                    <div>
+                        <h4 className={styles.answers_heading_text}>Answers</h4>
+                        <div className={styles.select_option_container}>
+                            <div className={questionType == 0 && styles.selected_option} onClick={() => setQuestionType(0)}>Single Correct</div>
+                            <div className={questionType == 1 && styles.selected_option} onClick={() => setQuestionType(1)}>Multi Correct</div>
+                        </div>
                     </div>
 
                     <div className={styles.option_container}>
