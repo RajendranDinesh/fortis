@@ -78,3 +78,43 @@ export async function addStaff(id: Number, staffs: Array<{user_name: string, fac
         throw new Error (error as any);
     }
 }
+
+export async function getAvailableTests() {
+    try {
+        const response = await Request("GET", `/test/user/created-by-me`);
+
+        if (response.status === HttpStatusCode.Ok) {
+            return response.data
+        }
+
+    } catch (error) {
+        throw new Error (error as any);
+    }
+}
+
+export async function scheduleTest(classId: Number, test_id: string, date: string) {
+    try {
+        const response = await Request("POST", `/test/schedule`, {
+            classroom_id: classId,
+            test_id: test_id,
+            scheduled_at: date
+        });
+
+        if (response.status === HttpStatusCode.Created) {
+            return response.data
+        }
+
+    } catch (error) {
+        throw new Error (error as any);
+    }
+}
+
+export async function cancelScheduledTest(classroomId: Number, scheduleId: Number) {
+    try {
+        const response = await Request("DELETE", `/test/schedule/${classroomId}/${scheduleId}`);
+        return response.data
+
+    } catch (error) {
+        throw new Error (error as any);
+    }
+}

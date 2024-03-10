@@ -17,15 +17,15 @@ interface studentModalProps {
     setModalOpen: (value: boolean) => void
 }
 
-export default function AddStudentModal({ 
+export default function AddStudentModal({
     isOpen,
     onClose,
     setModalOpen,
- }: studentModalProps) {
+}: studentModalProps) {
     const { id } = useParams();
 
     const [tabValue, setTabValue] = useState("Mail");
-    const [students, setDetails] = useState<{user_name: string, roll_number: string, email: string}[]>([]);
+    const [students, setDetails] = useState<{ user_name: string, roll_number: string, email: string }[]>([]);
     const [fileName, setFileName] = useState('');
     const [nameInput, setNameInput] = useState('');
     const [rollNumberInput, setRollNumberInput] = useState('');
@@ -60,7 +60,7 @@ export default function AddStudentModal({
                         text: "Mail ID already exists!",
                     });
                 } else {
-                    setDetails([...students, {user_name, roll_number, email}]);
+                    setDetails([...students, { user_name, roll_number, email }]);
                     setNameInput('');
                     setRollNumberInput('');
                     setEmailInput('');
@@ -80,7 +80,7 @@ export default function AddStudentModal({
         if (file) {
             setFileName(file.name);
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const contents = e.target?.result as string;
                 const result = Papa.parse(contents, { header: true });
                 const data = result.data.map((row: any) => ({
@@ -127,15 +127,15 @@ export default function AddStudentModal({
     };
 
     return (
-        <Modal isOpen = {isOpen} onClose={onClose} title="Add Students">
+        <Modal isOpen={isOpen} onClose={onClose} title="Add Students">
             <div className={styles.Student_modal_content}>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TabContext value={tabValue}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-                            <Tab label="By Mail" value="Mail" style={{fontSize: "1.2em"}} />
-                            <Tab label="By CSV" value="CSV" style={{fontSize: "1.2em"}} />
-                        </TabList>
+                            <TabList onChange={handleTabChange} aria-label="lab API tabs example">
+                                <Tab label="By Mail" value="Mail" style={{ fontSize: "1.2em" }} />
+                                <Tab label="By CSV" value="CSV" style={{ fontSize: "1.2em" }} />
+                            </TabList>
                         </Box>
                     </TabContext>
                 </Box>
@@ -143,8 +143,8 @@ export default function AddStudentModal({
                     <div className={styles.Student_modal_reciever_container}>
                         <div className={styles.Student_modal_input_fields}>
                             <div className={styles.input_wrapper}>
-                                <input 
-                                    className={styles.input_box} 
+                                <input
+                                    className={styles.input_box}
                                     type="text"
                                     value={nameInput}
                                     onChange={e => setNameInput(e.target.value)}
@@ -154,8 +154,8 @@ export default function AddStudentModal({
                                 <span className={styles.underline}></span>
                             </div>
                             <div className={styles.input_wrapper}>
-                                <input 
-                                    className={styles.input_box} 
+                                <input
+                                    className={styles.input_box}
                                     type="text"
                                     value={rollNumberInput}
                                     onChange={e => setRollNumberInput(e.target.value)}
@@ -165,8 +165,8 @@ export default function AddStudentModal({
                                 <span className={styles.underline}></span>
                             </div>
                             <div className={styles.input_wrapper}>
-                            <input 
-                                    className={styles.input_box} 
+                                <input
+                                    className={styles.input_box}
                                     type="text"
                                     value={emailInput}
                                     onChange={e => setEmailInput(e.target.value)}
@@ -205,8 +205,8 @@ export default function AddStudentModal({
                                 </span>
                             </div>
                             <input type="file" id="file" accept=".csv" onChange={handleFileUpload} />
-                        </label> 
-                    </div>                                   
+                        </label>
+                    </div>
                 }
                 <div className={styles.Student_modal_button_container}>
                     <div className={styles.Student_add_button} onClick={handleAddClick}>Add</div>

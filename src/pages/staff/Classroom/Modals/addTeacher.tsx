@@ -15,16 +15,16 @@ interface teacherModalProps {
     setModalOpen: (value: boolean) => void
 }
 
-export default function AddTeacherModal({ 
+export default function AddTeacherModal({
     isOpen,
     onClose,
     setModalOpen,
- }: teacherModalProps) {
+}: teacherModalProps) {
     const { id } = useParams();
     const [teacherNameInput, setTeacherNameInput] = useState('');
     const [teacherFacultyIdInput, setTeacherFacultyIdInput] = useState('');
     const [teacherEmailInput, setTeacherEmailInput] = useState('');
-    const [teacherDetails, setTeacherDetails] = useState<{user_name: string, faculty_id: string, email: string}[]>([]);
+    const [teacherDetails, setTeacherDetails] = useState<{ user_name: string, faculty_id: string, email: string }[]>([]);
     const [testsModalOpen, setTestsModalOpen] = useState(false);
 
     const handleTeacherKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -42,7 +42,7 @@ export default function AddTeacherModal({
                         text: "Mail ID already exists!",
                     });
                 } else {
-                    setTeacherDetails([...teacherDetails, {user_name, faculty_id, email}]);
+                    setTeacherDetails([...teacherDetails, { user_name, faculty_id, email }]);
                     setTeacherNameInput('');
                     setTeacherFacultyIdInput('');
                     setTeacherEmailInput('');
@@ -86,60 +86,60 @@ export default function AddTeacherModal({
     };
 
     return (
-        <Modal isOpen = {isOpen} onClose={onClose} title="Add Teachers">
+        <Modal isOpen={isOpen} onClose={onClose} title="Add Teachers">
             <div className={styles.Teacher_modal_content}>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TabContext value={"Mail"}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <TabList aria-label="lab API tabs example">
-                            <Tab label="By Mail" value="Mail" style={{fontSize: "1.2em"}} />
-                        </TabList>
+                            <TabList aria-label="lab API tabs example">
+                                <Tab label="By Mail" value="Mail" style={{ fontSize: "1.2em" }} />
+                            </TabList>
                         </Box>
                     </TabContext>
                 </Box>
                 <div className={styles.Teacher_modal_reciever_container}>
                     <div className={styles.Teacher_modal_input_fields}>
-                            <div className={styles.input_wrapper}>
-                                <input 
-                                    className={styles.input_box} 
-                                    type="text"
-                                    value={teacherNameInput}
-                                    onChange={e => setTeacherNameInput(e.target.value)}
-                                    onKeyDown={handleTeacherKeyDown}
-                                    placeholder="Type name..."
-                                />
-                                <span className={styles.underline}></span>
-                            </div>
-                            <div className={styles.input_wrapper}>
-                                <input 
-                                    className={styles.input_box} 
-                                    type="text"
-                                    value={teacherFacultyIdInput}
-                                    onChange={e => setTeacherFacultyIdInput(e.target.value)}
-                                    onKeyDown={handleTeacherKeyDown}
-                                    placeholder="Type roll number..."
-                                />
-                                <span className={styles.underline}></span>
-                            </div>
-                            <div className={styles.input_wrapper}>
-                            <input 
-                                    className={styles.input_box} 
-                                    type="text"
-                                    value={teacherEmailInput}
-                                    onChange={e => setTeacherEmailInput(e.target.value)}
-                                    onKeyDown={handleTeacherKeyDown}
-                                    placeholder="Type email and press comma..."
-                                />
-                                <span className={styles.underline}></span>
-                            </div>
+                        <div className={styles.input_wrapper}>
+                            <input
+                                className={styles.input_box}
+                                type="text"
+                                value={teacherNameInput}
+                                onChange={e => setTeacherNameInput(e.target.value)}
+                                onKeyDown={handleTeacherKeyDown}
+                                placeholder="Type name..."
+                            />
+                            <span className={styles.underline}></span>
                         </div>
-                        <div className={styles.Teacher_modal_mail_list}>
-                            {teacherDetails.map(teacher => (
-                                <div className={styles.Teacher_mail_display} key={teacher.email} onClick={() => handleTeacherEmailClick(teacher.email)}>
-                                    {teacher.user_name} ({teacher.faculty_id}, {teacher.email})
-                                </div>
-                            ))}
+                        <div className={styles.input_wrapper}>
+                            <input
+                                className={styles.input_box}
+                                type="text"
+                                value={teacherFacultyIdInput}
+                                onChange={e => setTeacherFacultyIdInput(e.target.value)}
+                                onKeyDown={handleTeacherKeyDown}
+                                placeholder="Type roll number..."
+                            />
+                            <span className={styles.underline}></span>
                         </div>
+                        <div className={styles.input_wrapper}>
+                            <input
+                                className={styles.input_box}
+                                type="text"
+                                value={teacherEmailInput}
+                                onChange={e => setTeacherEmailInput(e.target.value)}
+                                onKeyDown={handleTeacherKeyDown}
+                                placeholder="Type email and press comma..."
+                            />
+                            <span className={styles.underline}></span>
+                        </div>
+                    </div>
+                    <div className={styles.Teacher_modal_mail_list}>
+                        {teacherDetails.map(teacher => (
+                            <div className={styles.Teacher_mail_display} key={teacher.email} onClick={() => handleTeacherEmailClick(teacher.email)}>
+                                {teacher.user_name} ({teacher.faculty_id}, {teacher.email})
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className={styles.Teacher_modal_button_container}>
                     <div className={styles.Teacher_add_button} onClick={handleAddClick}>Add</div>

@@ -23,6 +23,7 @@ import TeacherList from "./ListItems/teacherList";
 import TestList from "./ListItems/testList";
 import AddStudentModal from "./Modals/addStudent";
 import AddTeacherModal from "./Modals/addTeacher";
+import ScheduleTest from "./Modals/scheduleTest";
 
 function Classroom() {
 
@@ -31,6 +32,7 @@ function Classroom() {
     const [value, setValue] = useState('1');
     const [studentModelOpen, setStudentModelOpen] = useState(false);
     const [teacherModalOpen, setTeacherModalOpen] = useState(false);
+    const [testModalOpen, setTestModalOpen] = useState(false);
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -42,6 +44,10 @@ function Classroom() {
 
     const handleTeacherModalClick = () => {
         setTeacherModalOpen(!teacherModalOpen);
+    };
+
+    const handleTestModalClick = () => {
+        setTestModalOpen(!testModalOpen);
     };
 
     interface headerProps {
@@ -139,8 +145,14 @@ function Classroom() {
                     {value === "3" && 
                         <>
                             <div className={styles.Classroom_tests}>
+                                <div className={styles.Add_tests_container}>
+                                    <div className={styles.Add_tests}>
+                                        <IoIosAddCircle onClick={handleTestModalClick} />
+                                    </div>
+                                </div>
                                 <TestList />
                             </div>
+                            <ScheduleTest isOpen={testModalOpen} onClose={handleTestModalClick} />
                         </>
                     }
                 </div>
