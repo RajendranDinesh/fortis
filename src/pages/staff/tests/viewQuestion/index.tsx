@@ -66,13 +66,16 @@ type Question = McqQuestion | CodeQuestion;
 export default function QuestionDetailModal({ modalOpen, handleModalClick, questionId }: Props) {
 
     const { testId } = useParams();
-    const [details, setDetails] = useState<Question>({} as Question)
+    const [details, setDetails] = useState<Question>({} as Question);
+    const [loading, setLoading] = useState(false);
 
     const getQuestionDetails = async () => {
+        setLoading(true);
         const response = await getQuestionDetail(Number(testId), questionId);
         if (response.status === 200) {
             setDetails(response.data);
         }
+        setLoading(false);
     }
 
     const renderHTML = (htmlString: any) => {
@@ -91,84 +94,88 @@ export default function QuestionDetailModal({ modalOpen, handleModalClick, quest
     return (
         <Modal isOpen={modalOpen} onClose={handleModalClick} >
             <div className={styles.question_details_container}>
-                <h1>{details.question_title}</h1>
-                {details.question && <div>
-                    <div dangerouslySetInnerHTML={renderHTML(details.question)} />
-                </div>}
-                <p>Question Type: {details.type_name}</p>
-                <p>Marks: {details.marks}</p>
-
-                {details.type_name === 'code' && (
+                {!loading ?
                     <>
-                        {details.allowed_languages && (
-                            <p>Allowed Languages: {details.allowed_languages.join(', ')}</p>
-                        )}
-                        {details.private_test_case && (
+                        <h1>{details.question_title}</h1>
+                        {details.question && <div>
+                            <div dangerouslySetInnerHTML={renderHTML(details.question)} />
+                        </div>}
+                        <p>Question Type: {details.type_name}</p>
+                        <p>Marks: {details.marks}</p>
+
+                        {details.type_name === 'code' && (
                             <>
-                                <h2>Public Test Cases</h2>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Input</th>
-                                            <th>Output</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {details.public_test_case.map((testCase, index) => (
-                                            <tr key={index}>
-                                                <td>{testCase.name}</td>
-                                                <td>{testCase.input}</td>
-                                                <td>{testCase.output}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                {details.allowed_languages && (
+                                    <p>Allowed Languages: {details.allowed_languages.join(', ')}</p>
+                                )}
+                                {details.private_test_case && (
+                                    <>
+                                        <h2>Public Test Cases</h2>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Input</th>
+                                                    <th>Output</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {details.public_test_case.map((testCase, index) => (
+                                                    <tr key={index}>
+                                                        <td>{testCase.name}</td>
+                                                        <td>{testCase.input}</td>
+                                                        <td>{testCase.output}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </>
+                                )}
+
+                                {details.private_test_case && (
+                                    <>
+                                        <h2>Private Test Cases</h2>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Input</th>
+                                                    <th>Output</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {details.private_test_case.map((testCase, index) => (
+                                                    <tr key={index}>
+                                                        <td>{testCase.name}</td>
+                                                        <td>{testCase.input}</td>
+                                                        <td>{testCase.output}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </>
+                                )}
                             </>
                         )}
 
-                        {details.private_test_case && (
+                        {details.type_name === 'mcq' && (
                             <>
-                                <h2>Private Test Cases</h2>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Input</th>
-                                            <th>Output</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {details.private_test_case.map((testCase, index) => (
-                                            <tr key={index}>
-                                                <td>{testCase.name}</td>
-                                                <td>{testCase.input}</td>
-                                                <td>{testCase.output}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                {details.options && (
+                                    <>
+                                        <h2>MCQ Options</h2>
+                                        <ul>
+                                            {details.options.map((option, index) => (
+                                                <li key={index} className={option.is_correct ? styles.correct_option : ''}>
+                                                    {option.option_text}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </>
+                                )}
                             </>
                         )}
                     </>
-                )}
-
-                {details.type_name === 'mcq' && (
-                    <>
-                        {details.options && (
-                            <>
-                                <h2>MCQ Options</h2>
-                                <ul>
-                                    {details.options.map((option, index) => (
-                                        <li key={index} className={option.is_correct ? styles.correct_option : ''}>
-                                            {option.option_text}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
-                    </>
-                )}
+                    : <p>Loading...</p>}
             </div>
         </Modal>
     )
