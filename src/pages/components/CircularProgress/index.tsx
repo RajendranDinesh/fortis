@@ -1,18 +1,34 @@
 import styles from './circle_progress.module.css';
-const ProgressBar = (props: any) => {
-    let {
-        size = 150,
-        progress = 0,
-        trackWidth = 10,
-        trackColor = `#ddd`,
-        indicatorWidth = 10,
-        indicatorColor = `#07c`,
-        indicatorCap = `round`,
-        label = `Loading...`,
-        labelColor = `#ddd`,
-        spinnerMode = false,
-        spinnerSpeed = 1
-    } = props
+
+interface Props {
+    size?: number;
+    progress: number;
+    trackWidth?: number;
+    trackColor?: string;
+    indicatorWidth?: number;
+    indicatorColor?: string;
+    indicatorCap?: 'butt' | 'round' | 'square';
+    labelColor?: string;
+    spinnerMode?: boolean;
+    spinnerSpeed?: number;
+    label?: string;
+    labelProgress?: string | number;
+}
+
+export default function CircularProgressBar({
+    size = 150,
+    progress = 0,
+    trackWidth = 10,
+    trackColor = `#ddd`,
+    indicatorWidth = 10,
+    indicatorColor = `#07c`,
+    indicatorCap = `round`,
+    labelColor = `#ddd`,
+    spinnerMode = false,
+    spinnerSpeed = 1,
+    label = `Loading...`,
+    labelProgress = progress > 100 ? 100 : `${progress}%`
+}: Props) {
 
     const center = size / 2,
         radius = center - (trackWidth > indicatorWidth ? trackWidth : indicatorWidth),
@@ -66,8 +82,7 @@ const ProgressBar = (props: any) => {
 
                             {!spinnerMode && (
                                 <span className={styles.svg_pi_label__progress}>
-                                    {`${progress > 100 ? 100 : progress
-                                        }%`}
+                                    {labelProgress}
                                 </span>
                             )}
                         </div>
@@ -77,5 +92,3 @@ const ProgressBar = (props: any) => {
         </>
     )
 }
-
-export default ProgressBar;

@@ -34,7 +34,9 @@ function ProtectedRoutes() {
                 <Route path="student/*" element={<Student />} />
                 <Route path="supervisor/*" element={<Supervisor />} />
 
-                <Route path="questions" element={<Questions />} />
+                <Route path="questions/:testId" element={<Questions />} />
+
+                <Route path="logout" element={<Logout />} />
             </Route>
         </Routes>
     );
@@ -45,5 +47,10 @@ function ProtectedRoute() {
 
     return (result ? <Outlet /> : <Navigate to="/login" />);
 };
+
+function Logout() {
+    localStorage.removeItem("authToken");
+    return <Navigate to="/login" />;
+}
 
 export { AppRoutes, ProtectedRoutes };

@@ -4,11 +4,15 @@ import JoditEditor from 'jodit-react';
 interface Props {
     value: string;
     setValue: (value: string) => void;
+    placeholder: string;
+    width?: number;
+    height?: number;
 }
 
-function Jodit({ value, setValue }: Props) {
+function Jodit({ value, setValue, placeholder, width=1000, height=500 }: Props) {
 
 const editor = useRef(null);
+console.log(height, width)
 
 const config = useMemo(
     () => ({
@@ -24,9 +28,9 @@ const config = useMemo(
         uploader: {
             insertImageAsBase64URI: true
         },
-        width: 1000,
-        height: 500,
-        placeholder: "Start Typing in your question...",
+        width: width,
+        height: height,
+        placeholder: placeholder,
         controls: {
             font: {
                 command: 'fontname',

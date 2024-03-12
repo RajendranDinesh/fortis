@@ -4,7 +4,7 @@ import { HttpStatusCode } from "axios";
 
 import Modal from "../../../components/Modal";
 import { Request } from "../../../../networking";
-import Jodit from "../addProgramming/joditEditor";
+import Jodit from "../../../components/joditEditor";
 
 import styles from './addmcq.module.css';
 
@@ -169,7 +169,7 @@ function AddMCQ({ modalOpen, handleModalClick }: Props) {
                     <div className={styles.input_container}>
                         <div className={styles.question_input}>
                             <label>Question</label>
-                            <Jodit value={question} setValue={setQuestion} />
+                            <Jodit value={question} setValue={setQuestion} placeholder="Start typing the question over here..." />
                         </div>
                     </div>
 

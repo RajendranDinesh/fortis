@@ -17,6 +17,7 @@ import AddMCQ from './addMCQ';
 import { Request } from '../../../networking';
 import { TestType } from '../dashboard';
 import QuestionDetailModal from './viewQuestion';
+import { HttpStatusCode } from 'axios';
 
 interface Question {
     question_id: number
@@ -60,11 +61,15 @@ function Test() {
     const getTestDetails = async () => {
         try {
             const response = await Request("GET", `/test/${testId}`);
-            if (response.status === 200) {
+            if (response.status === HttpStatusCode.Ok) {
                 setTestDetails(response.data);
             }
         } catch(error) {
             console.log(error);
+            if ((error as any).response.status === HttpStatusCode.NotFound)  {
+                window.location.href = "/staff/dashboard";
+                return;
+            }
             toast.error("Failed to fetch test details");
         }
     }

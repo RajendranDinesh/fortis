@@ -5,11 +5,11 @@ import { CiCircleChevUp, CiCircleChevDown, CiMaximize1 } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 
 // Component imports
-import OurEditor from "../Editor";
+import OurEditor from "../../../components/Editor";
 import { Request } from "../../../../networking";
 import TestCase from "./components/TestCase";
 import Result from "./components/Result";
-import { programmingLanguages } from "../Editor";
+import { programmingLanguages } from "../../../components/Editor";
 
 // Asset imports
 import styles from './right.module.css';
@@ -112,7 +112,6 @@ const RightContainer = () => {
 
         const onFullScreenChange = () => {
             setIsFullScreen(Boolean(document.fullscreenElement));
-            console.log(isFullScreen);
         };
 
         document.addEventListener('visibilitychange', onVisibilityChange);

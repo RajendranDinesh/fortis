@@ -80,7 +80,7 @@ export default function QuestionDetailModal({ modalOpen, handleModalClick, quest
 
     const renderHTML = (htmlString: any) => {
         if (htmlString === null) return;
-        const cleanedHtml = htmlString.slice(1, -1).replace(/\\n/g, '').replace(/\\t/g, '');
+        const cleanedHtml = htmlString.slice(1, -1).replace(/\\n/g, '').replace(/\\t/g, '<br />');
 
         return { __html: cleanedHtml };
     };
