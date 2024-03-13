@@ -6,7 +6,25 @@ import Submissions from './components/Submissions';
 
 import styles from './left.module.css';
 
-const LeftContainer = () => {
+export interface questionPaneData {
+    startTime: Date;
+    endTime: Date;
+    questions: {
+        id: number;
+        status: string;
+        type_name: string;
+    }[];
+}
+
+interface Props {
+    questionPaneData: questionPaneData;
+    setQuestionPaneData: (questionPaneData: questionPaneData) => void;
+}
+
+const LeftContainer = ({
+    questionPaneData,
+    setQuestionPaneData,
+}: Props) => {
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -14,7 +32,7 @@ const LeftContainer = () => {
         {
             id: 0,
             name: 'Questions',
-            content: <QuestionsPane />
+            content: <QuestionsPane questionPaneData={questionPaneData} setQuestionPaneData={setQuestionPaneData} />
         },
         {
             id: 1,
