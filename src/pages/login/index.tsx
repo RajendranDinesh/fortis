@@ -90,7 +90,7 @@ const Login = () => {
 
             SetHeader("Authorization ", `Bearer ${token}`);
 
-            if (userRoles.length === 1) {
+            if (userRoles?.length === 1) {
                 const userRole = userRoles[0];
                 redirect({userRole});
             }

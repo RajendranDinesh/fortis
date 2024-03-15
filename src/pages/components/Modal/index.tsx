@@ -7,17 +7,23 @@ interface ModalType {
     onClose: MouseEventHandler
     children: JSX.Element
     title?: string
+    bgOpacity?: number
     height?: string
     width?: string
 }
 
-function Modal({ isOpen, onClose, children, title, height = "60vh", width = "50vw" }: ModalType) {
+function Modal({
+    isOpen, onClose,
+    children, title,
+    bgOpacity = 0.5,
+    height = "60vh", width = "50vw"
+}: ModalType) {
     if (!isOpen) {
         return null;
     }
 
     return (
-        <div className={styles.top_container} onClick={onClose}>
+        <div className={styles.top_container} style={{ backgroundColor: `rgba(0, 0, 0, ${bgOpacity})` }} onClick={onClose}>
             <div
                 className={styles.children_container}
                 style={{

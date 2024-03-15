@@ -48,7 +48,7 @@ const config = useMemo(
             }
         }
     }),
-    []
+    [ height, placeholder, width ]
 );
 
 	return (

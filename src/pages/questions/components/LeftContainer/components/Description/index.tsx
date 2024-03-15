@@ -1,69 +1,75 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 
 import styles from './description.module.css';
 
+import { QuestionPaneDataContext, questionDataPayload, McqQuestion, McqOption } from '../../../../context';
+
 const Description = () => {
-    const [activeLevel, setActiveLevel] = useState(0);
+
+    const { questionData, questionPaneData, setCurrentQuestionId } = useContext(QuestionPaneDataContext) as questionDataPayload;
+
+    const currentQuestionId = questionPaneData.currentQuestionId;
+    const currentQuestionType = questionPaneData.questions.filter((question) => question.id === currentQuestionId)[0]?.type_name === 'mcq' ? 'MCQ' : 'Code';
+
+    const renderHTML = (htmlString: any) => {
+        if ((htmlString === null) || (htmlString === undefined)) return;
+        const cleanedHtml = htmlString.slice(1, -1).replace(/\\n/g, '').replace(/\\t/g, '<br />');
+
+        return { __html: cleanedHtml };
+    };
+
+    const getCurrentQuestionIndex = (): number => {
+        return questionPaneData.questions.findIndex((question) => question.id === currentQuestionId);
+    }
+
+    const handlePrevQuestion = () => {
+        console.log(questionData)
+        const indexOfPrevQuestion = getCurrentQuestionIndex() - 1;
+
+        if (indexOfPrevQuestion < 0) {
+            setCurrentQuestionId(questionPaneData.questions[questionPaneData.questions.length - 1].id);
+        } else {
+            setCurrentQuestionId(questionPaneData.questions[indexOfPrevQuestion].id);
+        }
+    }
+
+    const handleNextQuestion = () => {
+        const indexOfNextQuestion = getCurrentQuestionIndex() + 1;
+
+        if (indexOfNextQuestion === questionPaneData.questions.length) {
+            setCurrentQuestionId(questionPaneData.questions[0].id);
+        } else {
+            setCurrentQuestionId(questionPaneData.questions[indexOfNextQuestion].id);
+        }
+    }
 
     return (
         <div className={styles.main_container}>
             <div className={styles.title_container}>
-                <h2>Path Crossing</h2>
-                <div style={ activeLevel === 0 ? { color: "#1DB954" } : activeLevel === 1 ? { color: "#FFFC00" } : { color: "#E60023" }}>Easy</div>
+                <div>
+                    <h1>{`${getCurrentQuestionIndex() + 1}${(questionData && questionData[currentQuestionId]?.question_title) === null ? "" : questionData && `.${questionData[currentQuestionId]?.question_title}`}`}</h1>
+                </div>
+
+                <div>
+                    {questionData && <p><span>Question Type:</span> {currentQuestionType}</p>}
+                    {questionData && <p><span>Marks:</span> {questionData[currentQuestionId]?.marks}</p>}
+                    <div className={styles.next_prev_container}>
+                        <button onClick={handlePrevQuestion} className={styles.next_prev_button}>&lt;</button>
+                        <button onClick={handleNextQuestion} className={styles.next_prev_button}>&gt;</button>
+                    </div>
+                </div>
             </div>
-
             <div className={styles.description_container}>
-                <p>
-                    Given a string path, where path[i] = 'N', 'S', 'E' or 'W', each representing moving one unit north, south, east, or west, respectively. 
-                    You start at the origin (0, 0) on a 2D plane and walk on the path specified by path.
-                    Return True if the path crosses itself at any point, that is, if at any time you are on a location you have previously visited. 
-                    Return False otherwise.
-                </p>
-
-                <p>
-                    Example 1:
-                </p>
-
-                <p>
-                    Input: path = "NES"
-                </p>
-
-                <p>
-                    Output: false
-                </p>
-
-                <p>
-                    Explanation: Notice that the path doesn't cross any point more than once.
-                </p>
-
-                <p>
-                    Example 2:
-                </p>
-
-                <p>
-                    Input: path = "NESWW"
-                </p>
-
-                <p>
-                    Output: true
-                </p>
-
-                <p>
-                    Explanation: Notice that the path visits the origin twice.
-                </p>
-
-                <p>
-                    Constraints:
-                </p>
-
-                <p>
-                    1 = path.length = 10^4
-                </p>
-
-                <p>
-                    path will only consist of characters in {'{'}'N', 'S', 'E', 'W'{'}'}.
-                </p>
-                <hr />
+                {questionData && <div dangerouslySetInnerHTML={renderHTML(questionData[currentQuestionId]?.question)} />}
+                {questionData &&
+                    <div className={styles.option_container}>
+                        {(questionData[currentQuestionId] as McqQuestion)?.options?.map((option: McqOption, index: number) => (
+                            <div className={styles.option} key={index}>
+                                {option.option_text}
+                            </div>
+                        ))}
+                    </div>
+                }
             </div>
         </div>
     );

@@ -1,27 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import styles from './questions.module.css';
 import Circle from '../../../../../components/CircularProgress';
-import Modal from '../../../../../components/Modal';
 
-import useLocalStorage from '../../../../../../hooks/useLocalStorage';
+import { QuestionPaneDataContext, questionDataPayload } from '../../../../context';
 
-import { questionPaneData } from '../..';
+const QuestionsPane = () => {
 
-interface Props {
-  questionPaneData: questionPaneData;
-  setQuestionPaneData: (questionPaneData: questionPaneData) => void;
-}
-
-const QuestionsPane = ({
-  questionPaneData,
-  setQuestionPaneData,
-}: Props) => {
+  const { questionPaneData, setCurrentQuestionId } = useContext(QuestionPaneDataContext) as questionDataPayload;
 
   const [progress, setProgress] = useState(0)
   const [labelProgress, setLabelProgress] = useState<string>()
-  const startTime = questionPaneData.startTime;
-  const endTime = questionPaneData.endTime;
 
   const [isFinished, setIsFinished] = useState(false);
 
@@ -41,6 +30,9 @@ const QuestionsPane = ({
 
   useEffect(() => {
     const updateProgress = () => {
+      const startTime = questionPaneData.startTime;
+      const endTime = questionPaneData.endTime;
+
       const now = new Date();
       const remainingTime = endTime.getTime() - now.getTime();
       const elapsedTime = now.getTime() - startTime.getTime();
@@ -63,43 +55,19 @@ const QuestionsPane = ({
     return () => {
       clearInterval(progressInterval);
     };
-  }, [startTime, endTime]);
+  }, [questionPaneData, isFinished]);
 
 
   const questions = questionPaneData.questions;
 
-  // this one has the questionId
-  const [currentQuestionId, setCurrentQuestionId] = useLocalStorage("assessment_currentQuestion", questions[0].id);
-
   const handleQuestionChange = (questionId: number) => {
-    const questionStatus = questions.find((question) => question.id == questionId)?.status;
+    const questionStatus = questions.find((question) => question.id === questionId)?.status;
 
-    setQuestionPaneData({...questionPaneData, questions: {
-      ...questions,
-      
-    }})
+    if (questionStatus === "not_viewed") {
+      questions.find((question) => question.id === questionId)!.status = "not_attempted";
+    }
+
     setCurrentQuestionId(questionId);
-  }
-
-  const classNameForQuestion = (questionId: number) => {
-    if (questionId === currentQuestionId) {
-      return `${styles.selected} ${styles.question}`;
-    }
-
-    const question = questions.find((question) => question.id === questionId);
-
-    switch (question?.status) {
-      case "error":
-        return `${styles.error} ${styles.question}`;
-      case "attempted":
-        return `${styles.success} ${styles.question}`;
-      case "not_viewed":
-        return `${styles.info} ${styles.question}`;
-      case "not_attempted":
-        return `${styles.warning} ${styles.question}`;
-      default:
-        return `${styles.info} ${styles.question}`;
-    }
   }
 
   return (
@@ -110,9 +78,19 @@ const QuestionsPane = ({
           {questions.map((question, index) =>
             <div
               key={question.id}
-              className={classNameForQuestion(question.id)}
+              className={`${question.id === questionPaneData.currentQuestionId ? `${styles.selected}` :
+                (question.status === "error" ? `${styles.error}` :
+                  (question.status === "attempted" ? `${styles.success}` :
+                    (question.status === "not_viewed" ? `${styles.info}` :
+                      (question.status === "not_attempted" ? `${styles.warning}` :
+                        `${styles.info}`
+                      )
+                    )
+                  )
+                )
+                } ${styles.question}`}
               onClick={() => handleQuestionChange(question.id)}>
-              <span>{index+1}</span>
+              <span>{index + 1}</span>
             </div>)}
         </div>
 
@@ -128,39 +106,6 @@ const QuestionsPane = ({
         </div>
 
       </div>
-
-      <Modal isOpen={isFinished} onClose={() => { }}>
-        <div className={styles.modal_top_div}>
-          <div className={styles.modal_header}>
-            <h1>Assessment has been submitted</h1>
-            <h4>Thank you for attending the assessment 🫶</h4>
-          </div>
-
-          <h3 style={{ alignSelf: 'flex-start' }}>Here are your stats</h3>
-          <div className={styles.stats}>
-            <div>
-              <h5>Total questions</h5>
-              <p>10</p>
-            </div>
-            <div>
-              <h5>Questions attempted</h5>
-              <p>5</p>
-            </div>
-            <div>
-              <h5>Questions not attempted</h5>
-              <p>5</p>
-            </div>
-            <div>
-              <h5>Questions with errors</h5>
-              <p>1</p>
-            </div>
-            <div>
-              <h5>Questions not viewed</h5>
-              <p>3</p>
-            </div>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 }

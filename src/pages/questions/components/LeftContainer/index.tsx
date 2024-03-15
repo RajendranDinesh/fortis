@@ -1,30 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+
+import { QuestionPaneDataContext, questionDataPayload } from '../../context';
 
 import Description from './components/Description';
 import QuestionsPane from './components/Questions';
 import Submissions from './components/Submissions';
+import CompletedModal from '../CompletedModal';
 
 import styles from './left.module.css';
 
-export interface questionPaneData {
-    startTime: Date;
-    endTime: Date;
-    questions: {
-        id: number;
-        status: string;
-        type_name: string;
-    }[];
-}
-
-interface Props {
-    questionPaneData: questionPaneData;
-    setQuestionPaneData: (questionPaneData: questionPaneData) => void;
-}
-
-const LeftContainer = ({
-    questionPaneData,
-    setQuestionPaneData,
-}: Props) => {
+const LeftContainer = () => {
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -32,7 +17,7 @@ const LeftContainer = ({
         {
             id: 0,
             name: 'Questions',
-            content: <QuestionsPane questionPaneData={questionPaneData} setQuestionPaneData={setQuestionPaneData} />
+            content: <QuestionsPane />
         },
         {
             id: 1,
@@ -45,6 +30,33 @@ const LeftContainer = ({
             content: <Submissions />
         }
     ];
+
+
+    const [isFinished, setIsFinished] = useState(false);
+
+    const { questionPaneData } = useContext(QuestionPaneDataContext) as questionDataPayload;
+
+    useEffect(() => {
+        const updateProgress = () => {
+            const endTime = questionPaneData.endTime;
+
+            const now = new Date();
+            const remainingTime = endTime.getTime() - now.getTime();
+
+            if (remainingTime <= 0) {
+                setIsFinished(true);
+                return;
+            }
+
+            setIsFinished(false);
+        };
+
+        const progressInterval = setInterval(updateProgress, 1000);
+
+        return () => {
+            clearInterval(progressInterval);
+        };
+    }, [questionPaneData]);
 
     return (
         <>
@@ -59,14 +71,14 @@ const LeftContainer = ({
             </div>
 
             <div className={styles.middle_container}>
-                <div>
-                    {tabContent.map((tab) => activeTab === tab.id && tab.content)}
-                </div>
+                {tabContent.map((tab) => activeTab === tab.id && (<div key={tab.id}>{tab.content}</div>))}
             </div>
 
             <div className={styles.bottom_container}>
                 Copyright ©️ 2023 HexaVert
             </div>
+
+            <CompletedModal isFinished={isFinished} />
         </>
     );
 }
