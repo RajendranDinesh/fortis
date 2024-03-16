@@ -125,8 +125,6 @@ function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
                     <div className={styles.Tests_display}>
                         <div className={styles.Tests_display_header} onClick={() => changeTest(test.test_id)}>
                             <h1>{test.title}</h1>
-                        </div>
-                        <div>
                             <p>Duration: {test.duration_in_minutes}</p>
                             <p>{test.description}</p>
                         </div>
