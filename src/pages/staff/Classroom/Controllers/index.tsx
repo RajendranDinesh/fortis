@@ -40,9 +40,9 @@ export async function getClassroomTeachers(id: Number) {
     }
 }
 
-export async function getClassroomTests(id: Number) {
+export async function getClassroomTests(classRoomId: Number) {
     try {
-        const response = await Request("GET", `/test/${id}/tests`);
+        const response = await Request("GET", `/test/${classRoomId}/tests`);
 
         if (response.status === HttpStatusCode.Ok) {
             return response.data

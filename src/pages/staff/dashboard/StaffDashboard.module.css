@@ -311,7 +311,7 @@
     width: 100%;
     height: 22vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
     border-radius: 1em 1em 0 0;
@@ -359,6 +359,14 @@
     font-size: 2em;
     color: var(--background);
     letter-spacing: .05em;
+    font-style: italic;
+}
+
+.Tests_display_header p{
+    margin: 1vh 0 0 1vw;
+    font-family: "Poppins", sans-serif;
+    font-size: 1em;
+    color: var(--background);
     font-style: italic;
 }
 

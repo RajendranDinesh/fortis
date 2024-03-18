@@ -1,4 +1,4 @@
-import { AxiosError, HttpStatusCode } from "axios";
+import { HttpStatusCode } from "axios";
 import { Request } from "../../../../networking";
 
 import { staffDetails } from "../staffModal";

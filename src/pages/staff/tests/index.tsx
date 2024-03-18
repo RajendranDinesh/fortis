@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import { TabList, TabContext } from '@mui/lab';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
 
 //Styles
 
@@ -17,6 +22,7 @@ import AddMCQ from './addMCQ';
 import { Request } from '../../../networking';
 import { TestType } from '../dashboard';
 import QuestionDetailModal from './viewQuestion';
+import { HttpStatusCode } from 'axios';
 
 interface Question {
     question_id: number
@@ -35,6 +41,11 @@ function Test() {
     const [testDetails, setTestDetails] = useState<TestType>();
 
     const [isMCQModalOpen, setMCQModalOpen] = useState(false);
+    const [value, setValue] = useState('1');
+
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        setValue(newValue);
+    };
 
     const handleMCQModalClick = () => {
         setMCQModalOpen(false);
@@ -60,11 +71,15 @@ function Test() {
     const getTestDetails = async () => {
         try {
             const response = await Request("GET", `/test/${testId}`);
-            if (response.status === 200) {
+            if (response.status === HttpStatusCode.Ok) {
                 setTestDetails(response.data);
             }
         } catch(error) {
             console.log(error);
+            if ((error as any).response.status === HttpStatusCode.NotFound)  {
+                window.location.href = "/staff/dashboard";
+                return;
+            }
             toast.error("Failed to fetch test details");
         }
     }
@@ -112,6 +127,47 @@ function Test() {
         getQuestions();
     }, []);
 
+    const options = {
+        plugins: {
+          title: {
+            display: false
+          },
+          afterDraw: (chart: Chart<'doughnut', number[], string>) => {
+            let width = chart.width,
+                height = chart.height,
+                ctx = chart.ctx;
+
+            ctx.restore();
+            let fontSize = (height / 114).toFixed(2);
+            ctx.font = fontSize + "em sans-serif";
+            ctx.textBaseline = "middle";
+
+            let text = '350', // replace this with your total count
+                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                textY = height / 2;
+
+            ctx.fillText(text, textX, textY);
+            ctx.save();
+          }
+        },
+        cutout: '50%',
+        responsive: true,
+        maintainAspectRatio: false
+      };
+
+      Chart.register(...registerables);
+
+      const data = {
+        labels: ['Present', 'Absent'],
+        datasets: [
+          {
+            data: [300, 50], // replace these numbers with your actual data
+            backgroundColor: ['#36A2EB', '#FF6384'],
+            hoverBackgroundColor: ['#36A2EB', '#FF6384']
+          }
+        ]
+        };
+
     return (
         <div className={styles.Test_whole_container}>
             <div className={styles.Test_header_container}>
@@ -122,24 +178,76 @@ function Test() {
                     <p>{testDetails?.description}</p>
                 </div>
             </div>
-            <div className={styles.Test_button_container}>
-                <IoIosAddCircle className={styles.Test_add_question_button} onClick={handleAddQuestion} />
-            </div>
-            <div className={styles.Test_question_container}>
-                <div className={styles.Test_question_table_title_grid}>
-                    <h1>Sl.No</h1>
-                    <h1>Question Title</h1>
-                    <h1>Question Type</h1>
+            <Box sx={{ width: '100%', typography: 'body1' }}>
+                <TabContext value={value}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList onChange={handleChange} aria-label="lab API tabs">
+                            <Tab label="Questions" value="1" style={{color: "white", fontSize: "1.2em"}} />
+                            <Tab label="Stats" value="2" style={{color: "white", fontSize: "1.2em"}} />
+                        </TabList>
+                    </Box>
+                </TabContext>
+            </Box>
+            {value === '1' &&
+                <>
+                <div className={styles.Test_button_container}>
+                    <IoIosAddCircle className={styles.Test_add_question_button} onClick={handleAddQuestion} />
                 </div>
+                <div className={styles.Test_question_container}>
+                    <div className={styles.Test_question_table_title_grid}>
+                        <h1>Sl.No</h1>
+                        <h1>Question Title</h1>
+                        <h1>Question Type</h1>
+                    </div>
 
-                {/* Questions are mapped and displayed here... */}
-                { (questions && questions.length > 0) ? questions.map((question, index) => 
-                <div className={styles.Test_question_grid} key={index} onClick={() => openQuestionDetailModal(question.question_id)}>
-                    <h1>{index+1}</h1>
-                    <h1 dangerouslySetInnerHTML={renderHTML(question.question_title, question.type_name)} />
-                    <h1>{question.type_name}</h1>
-                </div>) : <>No questions have been added yet..</>}
-            </div>
+                    {/* Questions are mapped and displayed here... */}
+                    { (questions && questions.length > 0) ? questions.map((question, index) => 
+                    <div className={styles.Test_question_grid} key={index} onClick={() => openQuestionDetailModal(question.question_id)}>
+                        <h1>{index+1}</h1>
+                        <h1 dangerouslySetInnerHTML={renderHTML(question.question_title, question.type_name)} />
+                        <h1>{question.type_name}</h1>
+                    </div>) : <>No questions have been added yet..</>}
+                </div>
+                </>
+            }
+            { value === '2' &&
+                <>
+                    <div className={styles.stats_container}>
+                        <div className={styles.stats_staff_sup_container}>
+                            <div className={styles.stats_staff_sup_container_left}>
+                                <h1>Faculty: </h1>
+                                <p>Staff name 1, Staff name 2</p>
+                            </div>
+                            <div className={styles.stats_staff_sup_container_right}>
+                                <h1>Supervisor: </h1>
+                                <p>Supervisor name 1, Supervisor name 2</p>
+                            </div>
+                        </div>
+                        <div className={styles.stats_stu_inf_container}>
+                            <div className={styles.stats_stu_list_container}>
+                                <div className={styles.stats_stu_list_container_header}>
+                                    <h1>Average Mark: 90</h1>
+                                </div>
+                                <div className={styles.stats_stu_list_content}>
+                                    <div className={styles.stats_stu_list_content_element}>
+                                        <h1>1.</h1>
+                                        <h1>Adesh</h1>
+                                        <h1>90</h1>
+                                    </div>
+                                    <div className={styles.stats_stu_list_content_element}>
+                                        <h1>2.</h1>
+                                        <h1>Dinesh</h1>
+                                        <h1>90</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={styles.stats_stu_count_container}>
+                                <Doughnut data={data} options={options} />
+                            </div>
+                        </div>
+                    </div>
+                </>
+            }
             <AddMCQ modalOpen={isMCQModalOpen} handleModalClick={handleMCQModalClick} />
             <QuestionDetailModal modalOpen={isQuestionDetailModalOpen} handleModalClick={handleQuestionDetailModalClick} questionId={questionIdForModal} />
         </div>

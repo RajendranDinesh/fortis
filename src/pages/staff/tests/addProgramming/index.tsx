@@ -20,9 +20,9 @@ import { IoMdSave, IoMdAddCircle } from "react-icons/io";
 
 //Components
 
-import Jodit from './joditEditor';
-import OurEditor from '../../../questions/components/Editor';
-import { programmingLanguages } from '../../../questions/components/Editor';
+import Jodit from '../../../components/joditEditor';
+import OurEditor from '../../../components/Editor';
+import { programmingLanguages } from '../../../components/Editor';
 
 //Hooks
 
@@ -475,7 +475,7 @@ function AddProgramming() {
                     </div>
                 </div>
                 <div className={styles.addProgramming_body}>
-                    <Jodit value={question} setValue={setQuestion} />
+                    <Jodit value={question} setValue={setQuestion} placeholder='Start typing the question over here' />
                 </div>
                 <div className={styles.scrolldown} onClick={scrollToTestcase}>
                     <div className={styles.chevrons}>

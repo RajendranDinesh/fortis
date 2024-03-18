@@ -1,0 +1,55 @@
+.modal_top_div {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    flex-direction: column;
+
+    color: #efefef;
+}
+
+.modal_header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    flex-direction: column;
+}
+
+.stats {
+    display: flex;
+    gap: 2rem;
+
+    flex-wrap: wrap;
+}
+
+.stats > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    text-wrap: nowrap;
+
+    padding-left: 2rem;
+    padding-right: 1rem;
+
+    border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 14px 0 rgba(0, 0, 0, 0.19);
+    background-color: #262626;
+
+    cursor: pointer;
+    user-select: none;
+
+    .question {
+        border: 2px solid;
+
+        &:hover {
+            transform: none;
+        }
+    }
+}
