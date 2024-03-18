@@ -1,8 +1,10 @@
-import { toast } from 'react-toastify';
-import { getClassrooms } from '../controllers';
-import styles from '../dashboard.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { getClassrooms } from '../controllers';
+
+import styles from '../dashboard.module.css';
 
 
 interface studentClass {
@@ -13,7 +15,7 @@ interface studentClass {
     created_at: Date
 }
 
-export default function StudentBody() {
+export default function ClassBody() {
 
     const navigate = useNavigate();
     const [studentClasses, setStudentClasses] = useState<studentClass[]>();
@@ -23,7 +25,9 @@ export default function StudentBody() {
         try {
             setLoading(true);
             const resposne = await getClassrooms();
-            setStudentClasses(resposne.data);
+
+            const classrooms = resposne.data.classrooms;
+            setStudentClasses(classrooms);
         } catch (error) {
             console.log(error);
             toast.error("An error occurred while fetching your classes.", {
