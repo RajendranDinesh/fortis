@@ -4,6 +4,7 @@ import Layout from "./layout";
 import StudentDashboard from "./dashboard";
 import Class from "./class";
 import Test from './test';
+import NotFoundPage from "../404";
 
 function Student() {
     return (
@@ -22,6 +23,8 @@ function Student() {
                 <Layout>
                     <Test />
                 </Layout>} />
+
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
 };

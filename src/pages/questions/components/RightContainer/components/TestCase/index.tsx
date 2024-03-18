@@ -94,6 +94,7 @@ const TestCase = ({ testCases, setTestCases }: props) => {
                             value={testCases[activeTab].output}
                             onChange={(e) => handleModifyTestCase(activeTab, 'output', e.target.value)}
                             placeholder="Enter test case output"
+                            disabled
                         />
                     </div>
                 </div>
