@@ -13,7 +13,7 @@ interface Student {
     blocked: boolean;
     status: string;
     blockReason?: string;
-    blockedAt?: string;
+
 }
 
 interface TestTitle {
@@ -31,7 +31,6 @@ const StudentDetailsPage = () => {
     const [inputValue, setInputValue] = useState('');
     const [isBlockInputEnabled, setIsBlockInputEnabled] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [blockedAt, setBlockedAt] = useState('');
     const [blockedBy, setBlockedBy] = useState('');
     const [blockReason, setBlockReason] = useState('');
     const [hideBlockButton, setHideBlockButton] = useState(false);
@@ -77,7 +76,6 @@ const StudentDetailsPage = () => {
                     blocked: student.is_active !== 1, // Convert is_active to blocked status
                     status: student.is_active === 1 ? 'Active' : 'Blocked',
                     blockReason: student.blockReason,
-                    blockedAt: student.blockedAt
                 }));
                 setStudents(transformedData);
 
@@ -105,7 +103,7 @@ const StudentDetailsPage = () => {
     const blocked_details = async (studentId: any) => {
         try {
             
-            const response = await Request("POST", `/supervisor/blocked-details/${id}`, {student_id: studentId});
+            const response = await Request("GET", `/supervisor/blocked-details/${id}/${studentId}`);
             if (response.status === 200) {
                 return response; // Return the response 
             } else {
@@ -184,9 +182,6 @@ const StudentDetailsPage = () => {
             // Clear the input value and disable block input
             setInputValue('');
             setIsBlockInputEnabled(false);
-          
-
-
         } catch (error) {
 
             console.error('Error blocking student:', error);
@@ -212,15 +207,12 @@ const StudentDetailsPage = () => {
         if (clickedStudent && clickedStudent.status === 'Blocked') {
             try {
                 const response = await blocked_details(clickedStudent.id);
-                if (response && response.data && response.data.blocked_setails && response.data.blocked_setails.length > 0) {
-                    const blockedDetails = response.data.blocked_setails[0];
+                if (response && response.data && response.data.blocked_details && response.data.blocked_details.length > 0) {
+                    const blockedDetails = response.data.blocked_details[0];
                     const { block_reason, blocked_by_user_name } = blockedDetails;
-                    // setBlockedAt(blockedDetails.blocked_at || ''); 
                     setBlockReason(block_reason || '');
                     setBlockedBy(blocked_by_user_name || '');
                 } else {
-                   
-                    setBlockedAt('');
                     setBlockReason('');
                     setBlockedBy('');
                 }
@@ -228,17 +220,10 @@ const StudentDetailsPage = () => {
                 console.error('Error fetching blocked details:', error);
             }
         } else {
-           
-            setBlockedAt('');
             setBlockReason('');
             setBlockedBy('');
         }
     };
-    
-
-    
-    
-    
 
     const handleModalClick = () => {
         setModalOpen(!modalOpen);
@@ -261,15 +246,15 @@ const StudentDetailsPage = () => {
             </div>
             <div className={styles.body_container}>
                 <div className={styles.left_container}>
+                    <div className={styles.button_container}>
+                        <button className={`${styles.left_buttons} ${active ? styles.active : ''}`} onClick={handleActivestudents}>Active  Students</button>
+                        <button className={`${styles.left_buttons} ${!active ? styles.active : ''}`} onClick={handleBlockedStudents}>Blocked Students</button>
+                    </div>
                     <div className={styles.heading_container}>
                         <h1>Student Name</h1>
                         <div className={styles.count_container}>
                             <h1>Tab Count</h1>
                         </div>
-                    </div>
-                    <div className={styles.button_container}>
-                        <button className={`${styles.left_buttons} ${active ? styles.active : ''}`} onClick={handleActivestudents}>Active  Students</button>
-                        <button className={`${styles.left_buttons} ${!active ? styles.active : ''}`} onClick={handleBlockedStudents}>Blocked Students</button>
                     </div>
                     {active && students
                                 .filter(student => student.status === 'Active')
@@ -294,9 +279,9 @@ const StudentDetailsPage = () => {
                     {selectedStudent && (
                         <div className={styles.content_container}>
                             <hr className={styles.hr_line} />
-                            <div className={styles.content_student}>
-                                <h1 className={styles.content_details}>Student Name :</h1>
-                                <h1 className={styles.content_details}>{selectedStudent.name}</h1>
+                            <div className={styles.content_studentname}>
+                                <h1 className={styles.content_details}>Student Name:</h1>
+                                <h2 className={styles.content_details}>{selectedStudent.name}</h2>
                             </div>
 
                             {selectedStudent.status === 'Active' && (
@@ -348,17 +333,22 @@ const StudentDetailsPage = () => {
                             <div className={styles.test_details_container}>
                                 <h1>Test Details</h1>
                             </div>
-
-                            <div className={styles.test_details}>
-                                <h2>Blocked at : {blockedAt}</h2>
-                            </div>
-                            <div className={styles.test_details}>
-                                <h2>Blocked by :{blockedBy}</h2>
-                            </div>
-
                             <div className={styles.test_Blocked_details}>
+                            <h2>Blocked by: {blockedBy}</h2>
                                 <h2>Blocked Reason :</h2>
-                                <h3>{blockReason}</h3>
+                                <h3>
+                                    {blockReason.length > 0 ? blockReason : 'No reason provided'}
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                    I am monkey D luffy, I am gonna be the king of the pirates 
+                                </h3>
                             </div>
                         </>
                     )}

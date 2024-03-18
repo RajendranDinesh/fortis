@@ -6,6 +6,7 @@ interface ModalType {
     isOpen: boolean
     onClose: MouseEventHandler
     children: JSX.Element
+    backgroundColor?: string
     title?: string
     bgOpacity?: number
     height?: string
@@ -18,6 +19,7 @@ function Modal({
     bgOpacity = 0.5,
     height = "60vh", width = "50vw"
 }: ModalType) {
+  
     if (!isOpen) {
         return null;
     }
@@ -28,7 +30,8 @@ function Modal({
                 className={styles.children_container}
                 style={{
                     "--height": height,
-                    "--width": width
+                    "--width": width,
+                    backgroundColor: backgroundColor
                 } as React.CSSProperties}
                 onClick={(e) => e.stopPropagation()}
             >

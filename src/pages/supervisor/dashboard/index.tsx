@@ -12,17 +12,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useState, useEffect } from 'react';
 import { Request } from '../../../networking';
-// import { format } from 'date-fns';
 
 
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-
-// import AddClassroomModal from "./addUserModal";
-// import AddTestModal from "./addTestModal";
-// import { SiGoogleclassroom, SiTestcafe } from "react-icons/si";
-
 
 interface Test {
     scheduled_at: string;
@@ -47,22 +41,9 @@ const SupervisorDashboard = () => {
 
     const handleCardClick = (testId: number) => {
         navigate(`/supervisor/StudentDetailsPage/${testId}`);
-    }
-
-    const [tests, setTests] = useState([
-        {
-            scheduled_at: '01.02.2024',
-            title: 'Python Programming Test...',
-            test_id : 1,
-            total_students: 0
-        },{
-            scheduled_at: '03.06.2024',
-            title: 'C Programming',
-            test_id : 2,
-            total_students: 2
-        },
-    ]);
-
+    }   
+    
+    const [tests, setTests] =useState<Test[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
