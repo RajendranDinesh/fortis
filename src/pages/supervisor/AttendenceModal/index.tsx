@@ -168,7 +168,7 @@ const handleUnmarkCheckbox = async (unselectedRowId: GridRowId) => {
   
 
     return (
-        <Modal isOpen={modalOpen} onClose={handleModalClick} title="">
+        <Modal isOpen={modalOpen} onClose={handleModalClick} backgroundColor="#efefef" >
             <>
                 <div className={styles.table_container}>
                     <input

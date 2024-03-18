@@ -6,12 +6,13 @@ interface ModalType {
     isOpen: boolean
     onClose: MouseEventHandler
     children: JSX.Element
+    backgroundColor?: string
     title?: string
     height?: string
     width?: string
 }
 
-function Modal({ isOpen, onClose, children, title, height = "60vh", width = "50vw" }: ModalType) {
+function Modal({ isOpen, onClose, children, title, height = "60vh", width = "50vw", backgroundColor = "#212121" }: ModalType) {
     if (!isOpen) {
         return null;
     }
@@ -22,7 +23,8 @@ function Modal({ isOpen, onClose, children, title, height = "60vh", width = "50v
                 className={styles.children_container}
                 style={{
                     "--height": height,
-                    "--width": width
+                    "--width": width,
+                    backgroundColor: backgroundColor
                 } as React.CSSProperties}
                 onClick={(e) => e.stopPropagation()}
             >
