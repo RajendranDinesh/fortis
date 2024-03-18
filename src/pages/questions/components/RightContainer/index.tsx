@@ -1,5 +1,5 @@
 // Module imports
-import { useState, ChangeEvent, useEffect, useLayoutEffect } from "react";
+import { useContext, useState, ChangeEvent, useEffect, useLayoutEffect } from "react";
 import * as monaco from 'monaco-editor';
 import { CiCircleChevUp, CiCircleChevDown, CiMaximize1 } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,10 +14,16 @@ import { programmingLanguages } from "../../../components/Editor";
 // Asset imports
 import styles from './right.module.css';
 
+import { AnswerDataContext } from "../../answerContext";
+import { QuestionPaneDataContext } from "../../questionContext";
+
 const RightContainer = () => {
     const [lang, setLang] = useState([programmingLanguages[0].value, programmingLanguages[0].id.toString()]);
     const [code, setCode] = useState('');
     const [isFullScreen, setIsFullScreen] = useState(false);
+
+    const { answerData, addAnswer, editAnswer } = useContext(AnswerDataContext);
+    const { questionPaneData, questionData } = useContext(QuestionPaneDataContext);
 
     const [isTestTabActive, setIsTestTabActive] = useState(true);
     const [isResultTabActive, setIsResultTabActive] = useState(false);
@@ -34,12 +40,28 @@ const RightContainer = () => {
     
     const consoleVisible = Number(consoleHeight.replace("%", "")) > 7 ? true : false;
 
+    const questionId = questionPaneData?.currentQuestionId;
+
     const handleLangSelect = (e: ChangeEvent<HTMLSelectElement>) => {
         setLang([e.target.value.split(',')[0], e.target.value.split(',')[1]]);
     }
 
     const handleCodeChange = (value: string | undefined, event: monaco.editor.IModelContentChangedEvent) => {
+        
         value && setCode(value);
+
+        if (questionId === undefined) {
+            return;
+        }
+
+        const answer = answerData.find((data) => data.question_id === questionId);
+
+        if (answer || answer !== undefined) {
+            editAnswer(value || "", questionId);
+        } else {
+            addAnswer(value || "", questionId);
+        }
+
     }
 
     const handleFullScreen = () => {
@@ -165,6 +187,23 @@ const RightContainer = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (questionId === undefined) {
+            return;
+        }
+
+        const question = questionData?.[questionId];
+
+        if (question !== undefined && 'allowed_languages' in question) {
+            setTestCases(question.public_test_case.map((testCase, index) => ({
+                id: index,
+                name: testCase.name,
+                input: testCase.input,
+                output: testCase.output
+            })));
+        }
+    })
+
     return (
         <>
         <div style={{ height: editorContainerHeight }} className={styles.top_container}>
@@ -184,7 +223,7 @@ const RightContainer = () => {
             </div>
 
             <div className={styles.editor_container} style={{ width: '100%', height: editorHeight }}>
-                <OurEditor lang={lang[0]} onChange={handleCodeChange} />
+                <OurEditor value={answerData.find((answer) => answer.question_id === questionId)?.answer} lang={lang[0]} onChange={handleCodeChange} />
             </div>
         </div>
 

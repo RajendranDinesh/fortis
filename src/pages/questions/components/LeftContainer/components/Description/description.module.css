@@ -11,10 +11,21 @@
 
     padding-left: 14px;
 
+    .info_container {
+        border: 1px solid #efefef;
+        border-radius: 4px;
+        padding-left: 2px;
+        padding-right: 4px;
+    }
+
     > div {
         display: flex;
         align-items: center;
         gap: 2rem;
+
+        h1 {
+            line-height: normal;
+        }
 
         p {
             display: flex;
@@ -31,7 +42,7 @@
             display: flex;
             align-items: center;
 
-            border: 1px solid #efefef;
+            border: 1px solid #efefef50;
             border-radius: 4px;
 
             button {
@@ -41,7 +52,7 @@
                 font-size: large;
 
                 border: none;
-                color: #efefef;
+                color: #efefef50;
                 background-color: transparent;
                 cursor: pointer;
                 transition: all 0.3s ease;

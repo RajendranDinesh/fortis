@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import styles from './questions.module.css';
 import Circle from '../../../../../components/CircularProgress';
 
-import { QuestionPaneDataContext, questionDataPayload } from '../../../../context';
+import { QuestionPaneDataContext, questionDataPayload } from '../../../../questionContext';
 
 const QuestionsPane = () => {
 
@@ -29,9 +29,18 @@ const QuestionsPane = () => {
   };
 
   useEffect(() => {
+
+    if (!questionPaneData) {
+      return;
+    }
+
     const updateProgress = () => {
       const startTime = questionPaneData.startTime;
       const endTime = questionPaneData.endTime;
+
+      if (!startTime || !endTime) {
+        return;
+      }
 
       const now = new Date();
       const remainingTime = endTime.getTime() - now.getTime();
@@ -58,9 +67,13 @@ const QuestionsPane = () => {
   }, [questionPaneData, isFinished]);
 
 
-  const questions = questionPaneData.questions;
+  const questions = questionPaneData?.questions;
 
   const handleQuestionChange = (questionId: number) => {
+    if (!questions) {
+      return;
+    }
+
     const questionStatus = questions.find((question) => question.id === questionId)?.status;
 
     if (questionStatus === "not_viewed") {
@@ -75,7 +88,7 @@ const QuestionsPane = () => {
       <div className={styles.top_row}>
 
         <div className={styles.question_pane}>
-          {questions.map((question, index) =>
+          {questions && questions.map((question, index) =>
             <div
               key={question.id}
               className={`${question.id === questionPaneData.currentQuestionId ? `${styles.selected}` :

@@ -5,8 +5,8 @@ interface urlCollection {
 }
 
 const IgressURLs: urlCollection = {
-    "dev": "http://192.168.186.25:5000/api/",
-    "prod": "something_soon",
+    "dev": "http://127.0.0.1:5000/api/",
+    "prod": "https://igress.vercel.app/api/",
 }
 
 const BASE_URL = process.env.REACT_APP_ENV ? IgressURLs[process.env.REACT_APP_ENV] : IgressURLs["dev"];
@@ -37,6 +37,7 @@ const RemoveHeader = (key: string) => {
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const Request = async (method: RequestMethod, url: string, body?: any, params?: any) => {
+    console.log(process.env.REACT_APP_ENV)
     const requestOptions = {
         method: method,
         url: url,
