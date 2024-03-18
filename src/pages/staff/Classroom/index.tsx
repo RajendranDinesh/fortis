@@ -150,7 +150,9 @@ function Classroom() {
                                         <IoIosAddCircle onClick={handleTestModalClick} />
                                     </div>
                                 </div>
-                                <TestList />
+                                <div className={styles.Tests_list_container}>
+                                    <TestList />
+                                </div>
                             </div>
                             <ScheduleTest isOpen={testModalOpen} onClose={handleTestModalClick} />
                         </>

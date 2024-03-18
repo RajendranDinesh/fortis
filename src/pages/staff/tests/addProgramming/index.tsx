@@ -426,7 +426,7 @@ function AddProgramming() {
                 <div className={styles.addProgramming_header}>
                     <div className={styles.addProgramming_header_top}>
                         <div className={styles.input_container}>
-                            <input type="text" id="input" value={titleValue} onChange={handleTitleChange} disabled={!isEditable} />
+                            <input type="text" id="input" placeholder='Add Your Question Here' onChange={handleTitleChange} disabled={!isEditable} />
                             <div className={styles.underline}></div>
                         </div>
 
@@ -435,6 +435,10 @@ function AddProgramming() {
                         ) : (
                             <FiEdit onClick={handleEditClick} id={styles.editIcon} />
                         )}
+
+                        <div className={styles.save_question_button_container} onClick={handleSaveQuestion}>
+                            <button >Save Question</button>
+                        </div>
                     </div>
                     <div className={styles.addProgramming_header_bottom}>
                         <div className={styles.addProgramming_header_bottom_left}>
@@ -458,7 +462,7 @@ function AddProgramming() {
                         <div className={styles.addProgramming_header_bottom_right}>
                             <h1>Mark:</h1>
                             <div className={styles.marks_container}>
-                                <input type="text" id="input" value={marks} onChange={handleMarksChange} disabled={!isEditMarks} />
+                                <input type="text" id="input" placeholder='Add test mark here' onChange={handleMarksChange} disabled={!isEditMarks} />
                                 <div className={styles.underline}></div>
                             </div>
 
@@ -467,10 +471,6 @@ function AddProgramming() {
                             ) : (
                                 <FiEdit onClick={handleEditMarksClick} id={styles.editIcon} />
                             )}
-                        </div>
-
-                        <div onClick={handleSaveQuestion}>
-                            <button >Save Question</button>
                         </div>
                     </div>
                 </div>

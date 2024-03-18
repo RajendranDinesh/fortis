@@ -93,7 +93,7 @@ function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
 
     return (
         <div>
-            <h1>Your Classes</h1>
+            <h1 style={{marginLeft: '2vw'}}>Your Classes</h1>
             <div className={styles.Classes_container}>
                 {classroomList.slice().reverse().slice(0,3).map((classroom, index) => {
                 return (
@@ -118,17 +118,17 @@ function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
                     </button>
                 )}
             </div>
-            <h1>Your Tests</h1>
+            <h1 style={{marginLeft: '2vw'}}>Your Tests</h1>
             <div className={styles.Tests_container}>
                 {testList.map((test, index) => 
                 <div key={index}>
                     <div className={styles.Tests_display}>
                         <div className={styles.Tests_display_header} onClick={() => changeTest(test.test_id)}>
                             <h1>{test.title}</h1>
-                            <p>Duration: {test.duration_in_minutes}</p>
                             <p>{test.description}</p>
                         </div>
                         <div className={styles.Tests_display_footer}>
+                            <p>Duration: {test.duration_in_minutes}</p>
                             <MdDeleteOutline id={styles.bin} onClick={() => handleDeleteTest(test.test_id)} />
                         </div>
                     </div>

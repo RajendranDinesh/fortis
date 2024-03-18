@@ -10,6 +10,9 @@
     justify-content: flex-start;
     height: 100vh;
     width: 100vw;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100vw;
     background: var(--background);
     overflow-x: hidden;
 }
@@ -19,8 +22,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 100vw;
     height: 10vh;
+    flex-grow: 0;
+    flex-shrink: 0;
     background: transparent;
     color: var(--text);
 }
@@ -45,6 +50,10 @@
     border-radius: 5em;
     font-size: 10em;
     margin: 0 0 0 5vw;
+
+    @media screen and (max-width: 512px) {
+        height: 4vh;
+    }
 }
 
 .DashBoard_header_left h1 {
@@ -52,6 +61,10 @@
     font-family: "Poppins", sans-serif;
     font-style: italic;
     margin: 0 0 0 5vw;
+
+    @media screen and (max-width: 512px) {
+        font-size: 2em;
+    }
 }
 
 .DashBoard_header_right {
@@ -62,6 +75,22 @@
     width: 50%;
     height: 100%;
     color: var(--text);
+}
+
+.account_center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 3.5vw;
+    height: 6vh;
+    margin-right: 1vw;
+    font-size: 1.5em;
+
+    @media screen and (max-width: 512px){
+        width: 7vw;
+        height: 6vh;
+    }
 }
 
 .DashBoard_body {
@@ -87,10 +116,14 @@
     color: var(--primary);
     border-radius: 10em;
     position: fixed;
-    right: 1vw;
-    bottom: 1vh;
+    right: 0;
+    bottom: 0;
     cursor: pointer;
     transition: all ease-in-out .5s;
+
+    @media screen and (max-width: 512px){
+        right: -5vw;
+    }
 }
 
 .Add_classroom:hover {
@@ -168,6 +201,12 @@
     border: 1px solid var(--text);
     border-radius: 1em;
     margin: 1vh 1vw 1vh 1vw;
+
+    @media screen and (max-width: 512px){
+        width: 75vw;
+        height: 30vh;
+        margin: 1vh 1vw 1vh 5vw;
+    }
 }
 
 .Classroom_display_header {
@@ -206,7 +245,17 @@
 
 .Classes_container {
     display: flex;
+    width: 100vw;
     margin: 5vh 0 5vh 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    @media screen and (max-width: 512px){
+        width: 100vw;
+        overflow-y: hidden;
+        margin: 3vh 0 3vh 0;
+        gap: 1em;
+    }
 }
 
 .Classroom_display_header h1 {
@@ -305,6 +354,12 @@
     border: 1px solid var(--text);
     border-radius: 1em;
     margin: 1vh 1vw 1vh 1vw;
+
+    @media screen and (max-width: 512px){
+        width: 75vw;
+        height: 30vh;
+        margin: 1vh 1vw 1vh 5vw;
+    }
 }
 
 .Tests_display_header {
@@ -350,7 +405,17 @@
 
 .Tests_container {
     display: flex;
+    width: 100vw;
     margin: 5vh 0 5vh 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    @media screen and (max-width: 512px){
+        width: 100vw;
+        overflow-y: hidden;
+        margin: 3vh 0 3vh 0;
+        gap: 1em;
+    }
 }
 
 .Tests_display_header h1 {
@@ -365,7 +430,7 @@
 .Tests_display_header p{
     margin: 1vh 0 0 1vw;
     font-family: "Poppins", sans-serif;
-    font-size: 1em;
+    font-size: 1.2em;
     color: var(--background);
     font-style: italic;
 }
@@ -378,4 +443,15 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
+}
+
+.Tests_display_footer p {
+    margin: 0 8vw 0 0;
+    font-size: 1.2em;
+    color: var(--text);
+    cursor: pointer;
+
+    @media screen and (max-width: 512px){
+        margin: 0 20vw 0 0;
+    }
 }
