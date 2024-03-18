@@ -17,6 +17,7 @@ function Modal({
     isOpen, onClose,
     children, title,
     bgOpacity = 0.5,
+    backgroundColor = "#212121",
     height = "60vh", width = "50vw"
 }: ModalType) {
   
