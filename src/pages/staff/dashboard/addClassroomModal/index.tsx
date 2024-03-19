@@ -56,7 +56,7 @@ export default function AddClassroomModal({ modelOpen, handleModalClick, getClas
 
     return(
         <>
-            <Modal isOpen={modelOpen} onClose={handleModalClick} title="Add Classroom">
+            <Modal isOpen={modelOpen} onClose={handleModalClick} title="Add Classroom" backgroundColor="#efefef">
                 <div className={styles.Modal_content}>
                     <Box
                     display={"flex"}

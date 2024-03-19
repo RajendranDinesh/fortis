@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import Modal from "../../../components/Modal";
 import { getAvailableTests, scheduleTest } from "../Controllers";
 
+import styles from "../Classroom.module.css";
+
 interface Props {
     isOpen: boolean
     onClose: () => void
@@ -95,24 +97,31 @@ export default function ScheduleTest({ isOpen, onClose }: Props) {
     }, []);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Schedule Test">
+        <Modal isOpen={isOpen} onClose={onClose} title="Schedule Test" backgroundColor="#efefef">
+            <div className={styles.Test_modal_content}>
             {
                 loading ? <div>Loading...</div> :
-                    <div>
-                        <div>
-                            <label htmlFor="test">Select Test</label>
+                    <>
+                    <div className={styles.Test_modal_reciever_container}>
+                        <div className={styles.test_select}>
+                            <label htmlFor="test">Select Test: </label>
                             <select name="test" onChange={handleTestChange}>
                                 <option value="">Select a test</option>
                                 {availableTests.map((test) => <option key={test.id} value={test.id}>{test.name}</option>)}
                             </select>
                         </div>
-                        <div>
-                            <label htmlFor="date">Select Date and Time</label>
+                        <div className={styles.test_date_time}>
+                            <label htmlFor="date">Select Date and Time: </label>
                             <input type="datetime-local" onChange={(e) => setSelectedDateAndTime(new Date(e.target.value))} />
                         </div>
-                        <button onClick={handleScheduleClick}>Schedule</button>
                     </div>
+                    <div className={styles.Test_modal_button_container}>
+                        <button onClick={handleScheduleClick} className={styles.Test_schedule_button}>Schedule</button>
+                        <button onClick={() => onClose()} className={styles.Test_cancel_button}>Cancel</button>
+                    </div>
+                    </>
             }
+            </div>
         </Modal>
     );
 }
