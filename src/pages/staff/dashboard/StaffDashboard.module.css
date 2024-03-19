@@ -131,17 +131,25 @@
 }
 
 .Modal_content {
-    height: 100%;
+    height: 50vh;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    @media screen and (max-width: 512px){
+        height: 68vh;
+    }
 }
 
 #text_field {
     width: 25vw;
     margin:  0 0 0 0;
+
+    @media screen and (max-width: 512px){
+        margin: 2vh 0 0 0;
+    }
 }
 
 .Modal_buttons {
@@ -152,6 +160,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+
+    @media screen and (max-width: 512px){
+        width: 100vw;
+        height: 30vh;
+    }
 }
 
 .save_button {
@@ -172,6 +185,14 @@
     border: none;
     height: 8vh;
     width: 10vw;
+
+    @media screen and (max-width: 512px){
+        height: 10vh;
+        width: 30vw;
+        font-size: 1.5em;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
 }
 
 .cancel_button {
@@ -192,6 +213,15 @@
     border: none;
     height: 8vh;
     width: 10vw;
+
+    @media screen and (max-width: 512px){
+        height: 10vh;
+        width: 30vw;
+        font-size: 1.5em;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin: 2vh 0 0 0;
+    }
 }
 
 .Classroom_display {

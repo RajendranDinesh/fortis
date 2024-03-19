@@ -11,6 +11,8 @@ import styles from "../Classroom.module.css";
 import { addStudents } from "../Controllers";
 import { useParams } from "react-router-dom";
 
+import { VscNewline } from "react-icons/vsc";
+
 interface studentModalProps {
     isOpen: boolean
     onClose: () => void
@@ -126,8 +128,35 @@ export default function AddStudentModal({
         setModalOpen(!isOpen);
     };
 
+    const handleAddInMobile = () => {
+        const user_name = nameInput.trim();
+        const roll_number = rollNumberInput.trim();
+        const email = emailInput.trim();
+        const emailRegex = /^[^\s@]+@bitsathy\.ac\.in$/; // Regex for email validation
+        if (user_name && roll_number && (email && emailRegex.test(email))) {
+            if (students.some(student => student.email === email)) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Mail ID already exists!",
+                });
+            } else {
+                setDetails([...students, { user_name, roll_number, email }]);
+                setNameInput('');
+                setRollNumberInput('');
+                setEmailInput('');
+            }
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Enter mail ID that ends with @bitsathy.ac.in",
+            });;
+        }
+    };
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Add Students">
+        <Modal isOpen={isOpen} onClose={onClose} title="Add Students" backgroundColor="#efefef">
             <div className={styles.Student_modal_content}>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TabContext value={tabValue}>
@@ -175,6 +204,7 @@ export default function AddStudentModal({
                                 />
                                 <span className={styles.underline}></span>
                             </div>
+                            <button onClick={handleAddInMobile} className={styles.add_in_mobile}><VscNewline /></button>
                         </div>
                         <div className={styles.Student_modal_mail_list}>
                             {students.map(student => (
@@ -209,7 +239,7 @@ export default function AddStudentModal({
                     </div>
                 }
                 <div className={styles.Student_modal_button_container}>
-                    <div className={styles.Student_add_button} onClick={handleAddClick}>Add</div>
+                    <div className={styles.Student_add_button} onClick={handleAddClick}>Save</div>
                     <div className={styles.Student_cancel_button} onClick={onClose}>Cancel</div>
                 </div>
             </div>

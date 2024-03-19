@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { HttpStatusCode } from "axios";
 import { Request } from "../../../../networking";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 // Styles
 import styles from "../StaffDashboard.module.css";
@@ -103,7 +104,29 @@ function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
                                 <h1>{classroom.name}</h1>
                             </div>
                             <div className={styles.Classroom_display_footer}>
-                                <MdDeleteOutline id={styles.bin} onClick={() => handleDeleteClassroom({ classroomId: classroom.classroom_id })}/>
+                                <MdDeleteOutline 
+                                    id={styles.bin} 
+                                    onClick={() => {
+                                        Swal.fire({
+                                            title: 'Are you sure?',
+                                            text: "You won't be able to revert this!",
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Yes, delete it!'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                handleDeleteClassroom({ classroomId: classroom.classroom_id });
+                                                Swal.fire(
+                                                    'Deleted!',
+                                                    'Your file has been deleted.',
+                                                    'success'
+                                                )
+                                            }
+                                        })
+                                    }}
+                                />                            
                             </div>
                         </div>
                     </div>
@@ -129,7 +152,29 @@ function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
                         </div>
                         <div className={styles.Tests_display_footer}>
                             <p>Duration: {test.duration_in_minutes}</p>
-                            <MdDeleteOutline id={styles.bin} onClick={() => handleDeleteTest(test.test_id)} />
+                            <MdDeleteOutline 
+                                id={styles.bin} 
+                                onClick={() => {
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: "You won't be able to revert this!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes, delete it!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            handleDeleteTest(test.test_id);
+                                            Swal.fire(
+                                                'Deleted!',
+                                                'Your file has been deleted.',
+                                                'success'
+                                            )
+                                        }
+                                    })
+                                }}
+                            />                        
                         </div>
                     </div>
                 </div>)}
