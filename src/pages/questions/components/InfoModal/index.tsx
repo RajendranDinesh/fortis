@@ -30,7 +30,7 @@ export default function InfoModal({
     }
 
     return (
-        <Modal isOpen={isInfoModalOpen} onClose={handleCloseInfoModal}>
+        <Modal isOpen={isInfoModalOpen} onClose={() => {}}>
             <div className={styles.container}>
                 <h1>Instructions</h1>
                 <div className={styles.bottom_row}>

@@ -50,12 +50,12 @@ const LeftContainer = () => {
             const now = new Date();
             const remainingTime = endTime.getTime() - now.getTime();
 
-            if (remainingTime <= -100000) {
-                navigate('/');
-            } else if (remainingTime <= 0) {
-                setIsFinished(true);
-                return;
-            }
+            // if (remainingTime <= -100000) {
+            //     navigate('/');
+            // } else if (remainingTime <= 0) {
+            //     setIsFinished(true);
+            //     return;
+            // }
 
             setIsFinished(false);
         };

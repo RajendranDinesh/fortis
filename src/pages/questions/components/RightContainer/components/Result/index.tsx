@@ -52,6 +52,13 @@ const Result = ({ token }: props) => {
         }
     ]);
 
+    const renderHTML = (htmlString: any) => {
+        if ((htmlString === null) || (htmlString === undefined)) return;
+        const cleanedHtml = htmlString
+
+        return { __html: cleanedHtml };
+    };
+
     useEffect(() => {
         const tokenString = token.length === 1 ? token[0] : token.join(",");
 
@@ -122,9 +129,8 @@ const Result = ({ token }: props) => {
                         <div className={styles.input_container}>
                             <label>Input</label>
                             { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
-                            <textarea
-                                value={atob(results[activeTab].stdin) || "No input"}
-                                disabled
+                            <div
+                                dangerouslySetInnerHTML={renderHTML(atob(results[activeTab].stdin) || "No input")}
                             /> : <Skeleton height={"60px"} />}
                         </div>
 
@@ -132,9 +138,8 @@ const Result = ({ token }: props) => {
                         <div className={styles.input_container}>
                             <label>Output</label>
                             { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
-                            <textarea
-                                value={atob(results[activeTab].stdout || results[activeTab].stderr || results[activeTab].compile_output) || "No output"}
-                                disabled
+                            <div
+                                dangerouslySetInnerHTML={renderHTML(atob(results[activeTab].stdout || results[activeTab].stderr || results[activeTab].compile_output) || "No output")}
                             /> : <Skeleton height={"60px"} />}
                         </div>
 
@@ -142,9 +147,8 @@ const Result = ({ token }: props) => {
                         <div className={styles.input_container}>
                             <label>Expected output</label>
                             { results[activeTab].status.id === 3 || results[activeTab].status.id === 4 || results[activeTab].status.id === 6 || results[activeTab].status.id === 11 ?
-                            <textarea
-                                value={atob(results[activeTab].expected_output) || "No expected output"}
-                                disabled
+                            <div
+                                dangerouslySetInnerHTML={renderHTML(atob(results[activeTab].expected_output) || "No expected output")}
                             /> : <Skeleton height={"60px"} />}
                         </div>
                     </div>

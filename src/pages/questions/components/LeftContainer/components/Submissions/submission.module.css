@@ -1,0 +1,150 @@
+.submissions {
+    table {
+        user-select: none;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+
+        tr {
+            cursor: pointer;
+        }
+
+        thead {
+
+            tr:first-child {
+                background-color: transparent;
+            }
+
+            th {
+                font-weight: 400;
+                border-bottom: 2px solid #e0e0e050;
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: #262626;
+        }
+
+        tr:nth-child(odd) {
+            background-color: transparent;
+        }
+
+        td {
+            text-align: center;
+
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+    }
+}
+
+.submission {
+
+    --padding: 2rem;
+
+    height: 100%;
+
+    .header {
+        display: flex;
+        width: 100%;
+        align-items: flex-end;
+
+        color: #a3a3a3;
+
+        span {
+            margin-right: 1rem;
+        }
+
+        .back_btn {
+            display: flex;
+            align-items: flex-end;
+
+            background-color: transparent;
+            color: #a3a3a3;
+
+            outline: none;
+            border: none;
+
+            font-size: large;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .status {
+        display: flex;
+        justify-content: space-between;
+
+        padding-top: 1rem;
+        padding-left: var(--padding);
+        padding-right: var(--padding);
+
+        .text {
+            font-size: larger;
+        }
+    }
+
+    .timeframe_container {
+        display: flex;
+        justify-content: space-evenly;
+
+        border: 1px solid #a3a3a350;
+        border-radius: 8px;
+
+        gap: 1rem;
+        padding: 1rem;
+        margin: var(--padding);
+
+        color: #a3a3a3;
+
+        .runtime_container{
+            width: 50%;
+            background-color: #a3a3a350;
+
+            border-radius: 8px;
+            padding-left: var(--padding);
+            padding-right: var(--padding);
+
+            h4 {
+                font-weight: 400;
+                color: #efefef;
+            }
+
+            span {
+                color: #efefef;
+            }
+        }
+        
+        .memory_container{
+            width: 50%;
+            background-color: #a3a3a350;
+
+            border-radius: 8px;
+            padding-left: var(--padding);
+            padding-right: var(--padding);
+
+            h4 {
+                font-weight: 400;
+                color: #efefef;
+            }
+
+            span {
+                color: #efefef;
+            }
+        }
+    }
+
+    .editor_container {
+        height: 50%;
+
+        padding: 1rem;
+        padding-left: var(--padding);
+        padding-right: var(--padding);
+    }
+}

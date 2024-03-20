@@ -110,6 +110,10 @@ const RightContainer = () => {
         setIsTestTabActive(false);
         setIsResultTabActive(true);
 
+        setEditorContainerHeight("20%");
+        setEditorHeight("70%");
+        setTimeout(() => setConsoleHeight("79%"), 35)
+
         try {
             setToken(["1"]);
             const response = await Request('POST', '/submission', body);
@@ -121,6 +125,10 @@ const RightContainer = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleSubmitPrivateTestCases = () => {
+        
     }
 
     useLayoutEffect(() => {
@@ -202,7 +210,7 @@ const RightContainer = () => {
                 output: testCase.output
             })));
         }
-    })
+    }, [questionId, questionData])
 
     return (
         <>
