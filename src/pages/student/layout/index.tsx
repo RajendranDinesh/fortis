@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-
+import Logo from '../../../assets/logo.svg'
 import styles from './layout.module.css';
 
 type LayoutProps = {
@@ -37,7 +37,7 @@ export default function StudentLayout({ children }: LayoutProps) {
         <div className={styles.layout_container}>
             <header>
                 <div className={styles.header_left}>
-                    <img src="" className={styles.logo} alt="logo" onClick={() => {
+                    <img src={Logo} className={styles.logo} alt="logo" onClick={() => {
                         window.location.href = `/student`;
                     }} />
                 </div>
