@@ -16,7 +16,8 @@ function AdminDashboard() {
     const [isClassModalOpen, setIsClassModalOpen] = useState(false);
     const [isTestModalOpen, setIsTestModalOpen] = useState(false);
 
-    const toggleAddStaffModal = () => {
+
+    const toggleStaffModal = () => {
         setIsStaffModalOpen(!isStaffModalOpen)
     };
 
@@ -24,11 +25,11 @@ function AdminDashboard() {
         setIsStudentModalOpen(!isStudentModalOpen)
     };
 
-    const toggleAddClassModal = () => {
+    const toggleClassModal = () => {
         setIsClassModalOpen(!isClassModalOpen)
     };
 
-    const toggleAddTestModal = () => {
+    const toggleTestModal = () => {
         setIsTestModalOpen(!isTestModalOpen)
     };
 
@@ -41,7 +42,7 @@ function AdminDashboard() {
                 </div>
                 <div className={styles.cards_container}>
                     {/* Teachers */}
-                    <div className={styles.card} onClick={toggleAddStaffModal}>
+                    <div className={styles.card} onClick={toggleStaffModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Teachers</h3>
@@ -63,7 +64,7 @@ function AdminDashboard() {
                     </div>
 
                     {/* Classes */}
-                    <div className={styles.card}>
+                    <div className={styles.card} onClick={toggleClassModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Classes</h3>
@@ -93,7 +94,7 @@ function AdminDashboard() {
                 </div>
             </div>
 
-        <StaffModal modalOpen={isStaffModalOpen} handleModalClick={toggleAddStaffModal} />
+        <StaffModal modalOpen={isStaffModalOpen} handleModalClick={toggleStaffModal} />
         <StudentModal modalOpen={isStudentModalOpen} handleModalClick={toggleAddStudentModal} />
         <ToastContainer />
         </div>

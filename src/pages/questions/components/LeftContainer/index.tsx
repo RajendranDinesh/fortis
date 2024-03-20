@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { QuestionPaneDataContext, questionDataPayload } from '../../context';
+import { QuestionPaneDataContext, questionDataPayload } from '../../questionContext';
 
 import Description from './components/Description';
 import QuestionsPane from './components/Questions';
@@ -10,6 +11,8 @@ import CompletedModal from '../CompletedModal';
 import styles from './left.module.css';
 
 const LeftContainer = () => {
+
+    const navigate = useNavigate();
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -38,12 +41,18 @@ const LeftContainer = () => {
 
     useEffect(() => {
         const updateProgress = () => {
-            const endTime = questionPaneData.endTime;
+            const endTime = questionPaneData?.endTime;
+
+            if (!endTime) {
+                return;
+            }
 
             const now = new Date();
             const remainingTime = endTime.getTime() - now.getTime();
 
-            if (remainingTime <= 0) {
+            if (remainingTime <= -100000) {
+                navigate('/');
+            } else if (remainingTime <= 0) {
                 setIsFinished(true);
                 return;
             }

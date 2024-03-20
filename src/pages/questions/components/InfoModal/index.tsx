@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Modal from '../../../components/Modal';
 import styles from './info.module.css';
 
-import { QuestionPaneDataContext } from '../../context';
+import { QuestionPaneDataContext } from '../../questionContext';
 
 interface Props {
     isInfoModalOpen: boolean;

@@ -21,6 +21,11 @@
   justify-content: center;
   width: 100vw;
   height: 30vh;
+
+  @media screen and (max-width: 512px) {
+    height: 20vh;
+    margin: 2vh 0 0 0;
+  }
 }
 
 .Classroom_title_box {
@@ -79,6 +84,10 @@
   width: 100vw;
   height: 70vh;
   color: var(--text);
+
+  @media screen and (max-width: 512px) {
+    height: 80vh;
+  }
 }
 
 .Classroom_tabs_container {
@@ -101,67 +110,86 @@
   margin: 0 0 0 2.8vw;
   border: 1px dashed var(--accent);
   border-radius: 0 1em 1em 1em;
+
+  @media screen and (max-width: 512px) {
+    height: 68vh;
+    overflow-x: auto;
+  }
 }
 
 .Classroom_students {
-width: 100%;
-height: 100%;
-border-radius: 0 1em 1em 1em;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 1em 1em 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .Add_students_container {
-width: 100%;
-height: 10vh;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: flex-end;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  @media screen and (max-width: 512px) {
+    height: 5vh;
+  }
 }
 
 .Add_students {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-width: 3.5vw;
-height: 7vh;
-margin: 0 1vw 0 0;
-font-size: 5em;
-color: var(--primary);
-border-radius: 10em;
-cursor: pointer;
-transition: all ease-in-out .5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 3.5vw;
+  height: 7vh;
+  margin: 0 1vw 0 0;
+  font-size: 5em;
+  color: var(--primary);
+  border-radius: 10em;
+  cursor: pointer;
+  transition: all ease-in-out .5s;
+
+  @media screen and (max-width: 512px) {
+    margin: 0 3vw 0 0;
+    height: 5vh;
+  }
 }
 
 .Add_students:hover {
-transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .Students_list_container {
-width: 100%;
-height: 90vh;
-border-radius: 0 0 1em 1em;
-margin: 0 0 1vh 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: flex-start;
-overflow-y: auto;
+    width: 100%;
+    height: 90vh;
+    border-radius: 0 0 1em 1em;
+    margin: 0 0 1vh 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+
+    @media screen and (max-width: 512px) {
+      overflow-x: auto;
+      width: 200%;
+    }
 }
 
 /* Student Details header grid */
 
 .Student_header_grid {
-width: 100%;
-height: 10vh;
-display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr;
-grid-template-rows: auto;
-border-bottom: 1px solid var(--accent);
+  width: 100%;
+  height: 10vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  border-bottom: 1px solid var(--accent);
 }
 
 .Student_grid_title {
@@ -182,120 +210,148 @@ grid-template-rows: auto;
 }
 
 .Student_modal_content {
-width: 100%;
-height: 90%;
-margin: -13vh 0 0 -3vw;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-justify-content: flex-start;
+  width: 100%;
+  height: 90%;
+  margin: 0 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .Student_modal_reciever_container {
-width: 100%;
-height: 80%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 512px) {
+    height: 55vh;
+    overflow-y: auto;
+  }
 }
 
 .Student_modal_input_fields {
-width: 100%;
-height: 20%;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-evenly;
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: 512px) {
+    height: 30vh;
+    flex-direction: column;
+  }
+}
+
+.add_in_mobile {
+  display: none;
+
+  @media screen and (max-width: 512px) {
+    display: flex;
+    font-size: 1.5em;
+  }
 }
 
 .Student_modal_mail_list {
-width: 100%;
-height: 80%;
-overflow-y: auto;
-display: flex;
-flex-direction: row;
-align-items: flex-start;
-justify-content: flex-start;
-flex-wrap: wrap;
+  width: 100%;
+  height: 80%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .Student_mail_display {
-width: auto;
-height: auto;
-padding: .5em .5em;
-margin: 0 1vw 0 1vw;
-border-radius: 2em;
-font-size: 1.2em;
-background: var(--text);
-color: var(--background);
-cursor: pointer;
+  width: auto;
+  height: auto;
+  padding: .5em .5em;
+  margin: 1vh 1vw 1vh 1vw;
+  border-radius: 2em;
+  font-size: 1.2em;
+  background: var(--text);
+  color: var(--background);
+  cursor: pointer;
 }
 
 .input_wrapper {
-position: relative;
-width: 12vw;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-evenly;
+  position: relative;
+  width: 12vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: 512px) {
+    width: 60vw;
+    flex-direction: column;
+  }
 }
 
 .input_box {
-font-size: 1.2em;
-padding: 10px 0;
-border: none;
-border-bottom: 2px solid var(--text);
-color: var(--background);
-width: 100%;
-background-color: transparent;
-transition: border-color 0.3s ease-in-out;
+  font-size: 1.2em;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 2px solid var(--text);
+  color: var(--background);
+  width: 100%;
+  background-color: transparent;
+  transition: border-color 0.3s ease-in-out;
 }
 
 .underline {
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
-height: 2px;
-background-color: var(--secondary);
-transform: scaleX(0);
-transition: transform 0.3s ease-in-out;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--secondary);
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
 }
 
 .input_box:focus {
-border-color: #08AEEA;
-outline: none;
+  border-color: #08AEEA;
+  outline: none;
 }
 
 .input_box:focus + .underline {
-transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 .Student_download_container{
-width: 100%;
-height: 20%;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: flex-start;
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .Btn {
-width: 3vw;
-height: 5vh;
-border: none;
-border-radius: 50%;
-background-color: rgb(27, 27, 27);
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-position: relative;
-transition-duration: .3s;
-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
-margin: 0 0 0 1vw;
+  width: 3vw;
+  height: 5vh;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(27, 27, 27);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
+  margin: 0 0 0 1vw;
+
+  @media screen and (max-width: 512px) {
+    width: 10vw;
+  }
 }
 
 .svgIcon {
@@ -417,44 +473,54 @@ display: none;
 }
 
 .Student_modal_button_container {
-width: 100%;
-height: 10vh;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-evenly;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .Student_add_button {
-height: 6vh;
-width: 10vw;
-background: var(--primary);
-color: var(--background);
-font-family: "Poppins", sans-serif;
-font-size: 1.2em;
-font-weight: 700;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-border-radius: 2em;
-cursor: pointer;
+  height: 6vh;
+  width: 10vw;
+  background: var(--primary);
+  color: var(--background);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2em;
+  cursor: pointer;
+
+  @media screen and (max-width: 512px) {
+    width: 20vw;
+    font-size: 1.5em;
+  }
 }
 
 .Student_cancel_button {
-height: 6vh;
-width: 10vw;
-border: 1px solid red;
-color: var(--background);
-font-family: "Poppins", sans-serif;
-font-size: 1.2em;
-font-weight: 700;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-border-radius: 2em;
-cursor: pointer;
+  height: 6vh;
+  width: 10vw;
+  border: 1px solid red;
+  color: var(--background);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2em;
+  cursor: pointer;
+
+  @media screen and (max-width: 512px) {
+    width: 20vw;
+    font-size: 1.5em;
+  }
 }
 
 .Classroom_teachers {
@@ -468,43 +534,19 @@ justify-content: flex-start;
 }
 
 .Add_teachers_container {
-width: 100%;
-height: 10vh;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: flex-end;
-}
-
-.Add_teachers {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-width: 3.5vw;
-height: 7vh;
-margin: 0 1vw 0 0;
-font-size: 5em;
-color: var(--primary);
-border-radius: 10em;
-cursor: pointer;
-transition: all ease-in-out .5s;
-}
-
-.Add_teachers:hover {
-transform: scale(1.05);
-}
-
-.Add_tests_container {
   width: 100%;
   height: 10vh;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+
+  @media screen and (max-width: 512px) {
+    height: 5vh;
+  }
 }
-  
-.Add_tests {
+
+.Add_teachers {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -517,10 +559,15 @@ transform: scale(1.05);
   border-radius: 10em;
   cursor: pointer;
   transition: all ease-in-out .5s;
+
+  @media screen and (max-width: 512px) {
+    margin: 0 3vw 0 0;
+    height: 5vh;
+  }
 }
-  
-.Add_tests:hover {
-  transform: scale(1.05);
+
+.Add_teachers:hover {
+transform: scale(1.05);
 }
 
 .Teachers_list_container {
@@ -533,6 +580,11 @@ flex-direction: column;
 align-items: center;
 justify-content: flex-start;
 overflow-y: auto;
+
+@media screen and (max-width: 512px) {
+  overflow-x: auto;
+  width: 200%;
+}
 }
 
 .Teacher_header_grid {
@@ -561,31 +613,40 @@ grid-template-rows: auto;
 }
 
 .Teacher_modal_content {
-width: 100%;
-height: 90%;
-margin: -13vh 0 0 -3vw;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-justify-content: flex-start;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .Teacher_modal_reciever_container {
-width: 100%;
-height: 80%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 512px) {
+    height: 55vh;
+    overflow-y: auto;
+  }
 }
 
 .Teacher_modal_input_fields {
-width: 100%;
-height: 20%;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-evenly;
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: 512px) {
+    height: 30vh;
+    flex-direction: column;
+  }
 }
 
 .Teacher_modal_mail_list {
@@ -621,35 +682,45 @@ justify-content: space-evenly;
 }
 
 .Teacher_add_button {
-height: 6vh;
-width: 10vw;
-background: var(--primary);
-color: var(--background);
-font-family: "Poppins", sans-serif;
-font-size: 1.2em;
-font-weight: 700;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-border-radius: 2em;
-cursor: pointer;
+  height: 6vh;
+  width: 10vw;
+  background: var(--primary);
+  color: var(--background);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2em;
+  cursor: pointer;
+
+  @media screen and (max-width: 512px) {
+    width: 20vw;
+    font-size: 1.5em;
+  }
 }
 
 .Teacher_cancel_button {
-height: 6vh;
-width: 10vw;
-border: 1px solid red;
-color: var(--background);
-font-family: "Poppins", sans-serif;
-font-size: 1.2em;
-font-weight: 700;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-border-radius: 2em;
-cursor: pointer;
+  height: 6vh;
+  width: 10vw;
+  border: 1px solid red;
+  color: var(--background);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2em;
+  cursor: pointer;
+
+  @media screen and (max-width: 512px) {
+    width: 20vw;
+    font-size: 1.5em;
+  }
 }
 
 .Classroom_tests {
@@ -663,27 +734,36 @@ justify-content: flex-start;
 }
 
 .Add_tests_container {
-width: 100%;
-height: 10vh;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: flex-end;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  @media screen and (max-width: 512px) {
+    height: 5vh;
+  }
 }
 
 .Add_tests {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-width: 3.5vw;
-height: 7vh;
-margin: 0 1vw 0 0;
-font-size: 5em;
-color: var(--primary);
-border-radius: 10em;
-cursor: pointer;
-transition: all ease-in-out .5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 3.5vw;
+  height: 7vh;
+  margin: 0 1vw 0 0;
+  font-size: 5em;
+  color: var(--primary);
+  border-radius: 10em;
+  cursor: pointer;
+  transition: all ease-in-out .5s;
+
+  @media screen and (max-width: 512px) {
+    margin: 0 3vw 0 0;
+    height: 5vh;
+  }
 }
 
 .Add_tests:hover {
@@ -691,15 +771,20 @@ transform: scale(1.05);
 }
 
 .Tests_list_container {
-width: 100%;
-height: 90vh;
-border-radius: 0 0 1em 1em;
-margin: 0 0 1vh 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: flex-start;
-overflow-y: auto;
+  width: 100%;
+  height: 90vh;
+  border-radius: 0 0 1em 1em;
+  margin: 0 0 1vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+
+  @media screen and (max-width: 512px) {
+    overflow-x: auto;
+    width: 200%;
+  }
 }
 
 .Test_header_grid {
@@ -731,65 +816,149 @@ background: #535353a4;
 }
 
 .Test_modal_content {
-width: 100%;
-height: 90%;
-margin: -13vh 0 0 -3vw;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-justify-content: flex-start;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .Test_modal_reciever_container {
-width: 100%;
-height: 80%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-flex-wrap: wrap;
-overflow-y: auto;
+  width: 100%;
+  height: 45vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 512px) {
+    height: 55vh;
+    overflow-y: auto;
+  }
+}
+
+.test_select {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.test_select label {
+  font-size: 1.5em;
+  color: var(--background);
+  margin: 0 2vw 0 1vw;
+
+  @media screen and (max-width: 512px) {
+    font-size: 1.2em;
+  }
+}
+
+.test_select select {
+  width: 30vw;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+
+  @media screen and (max-width: 512px) {
+    width: 60vw;
+  }
+}
+
+.test_select option {
+  font-size: 1em;
+  color: var(--background);
+  background-color: var(--text);
+}
+
+.test_date_time {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.test_date_time label {
+  font-size: 1.2em;
+  color: var(--background);
+  margin: 0 2vw 0 1vw;
+
+  @media screen and (max-width: 512px) {
+    font-size: 1.2em;
+  }
+}
+
+.test_date_time input {
+  width: 30vw;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
 }
 
 .Test_modal_button_container {
-width: 100%;
-height: 10vh;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-evenly;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
-.Test_add_button {
-height: 6vh;
-width: 10vw;
-background: var(--primary);
-color: var(--background);
-font-family: "Poppins", sans-serif;
-font-size: 1.2em;
-font-weight: 700;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-border-radius: 2em;
-cursor: pointer;
+.Test_schedule_button {
+  height: 6vh;
+  width: 10vw;
+  background: var(--primary);
+  color: var(--background);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2em;
+  cursor: pointer;
+  border: none;
+
+  @media screen and (max-width: 512px) {
+    width: 25vw;
+    font-size: 1.5em;
+  }
 }
 
 .Test_cancel_button {
-height: 6vh;
-width: 10vw;
-border: 1px solid red;
-color: var(--background);
-font-family: "Poppins", sans-serif;
-font-size: 1.2em;
-font-weight: 700;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-border-radius: 2em;
-cursor: pointer;
+  height: 6vh;
+  width: 10vw;
+  border: 1px solid red;
+  color: var(--background);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2em;
+  cursor: pointer;
+
+  @media screen and (max-width: 512px) {
+    width: 20vw;
+    font-size: 1.5em;
+  }
 }
 
 

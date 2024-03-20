@@ -68,7 +68,7 @@ export default function AddTestsModal({ modelTestsOpen, handleTestsModalClick, g
 
     return(
         <>
-            <Modal isOpen={modelTestsOpen} onClose={handleTestsModalClick} title="Add Tests">
+            <Modal isOpen={modelTestsOpen} onClose={handleTestsModalClick} title="Add Tests" backgroundColor="#efefef">
                 <div className={styles.Modal_content}>
                     <Box
                     display={"flex"}

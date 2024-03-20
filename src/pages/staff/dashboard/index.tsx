@@ -157,9 +157,9 @@ function StaffDashboard () {
                             aria-haspopup="true"
                             aria-expanded={open ? 'true' : undefined}
                         >
-                            <Avatar sx={{ width: "3.5vw", height: "6vh", 
-                            marginRight: "1vw", fontSize: "1.5em", color: "#1c0523",
-                            background: "#d082ed" }}>A</Avatar>
+                            <div className={styles.account_center}>
+                                <Avatar sx={{ width: "100%", height: "100%", color: "#1c0523", background: "#d082ed" }}>A</Avatar>
+                            </div>
                         </IconButton>
                         </Tooltip>
                     </Box>

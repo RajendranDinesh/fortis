@@ -7,6 +7,7 @@ import Admin from "./pages/admin";
 import Student from "./pages/student";
 import Supervisor from "./pages/supervisor";
 import Staff from "./pages/staff";
+import NotFoundPage from "./pages/404";
 
 // Add the route here if there is no need for user's identity
 function AppRoutes() {
@@ -37,6 +38,7 @@ function ProtectedRoutes() {
                 <Route path="questions/:testId" element={<Questions />} />
 
                 <Route path="logout" element={<Logout />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Route>
         </Routes>
     );

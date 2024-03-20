@@ -34,9 +34,9 @@ type CollectionOfQuestions = {
 
 export interface questionPaneData {
     currentQuestionId: number;
-    startTime: Date;
-    endTime: Date;
-    questions: {
+    startTime?: Date | undefined;
+    endTime?: Date | undefined;
+    questions?: {
         id: number;
         status: string;
         type_name: string;
@@ -44,23 +44,14 @@ export interface questionPaneData {
 }
 
 export interface questionDataPayload {
-    questionPaneData: questionPaneData
+    questionPaneData?: questionPaneData | null
     getSetQuestionPaneData: (testId: string) => void
     setCurrentQuestionId: (questionId: number) => void
     questionData: CollectionOfQuestions | null
 }
 
 export const QuestionPaneDataContext = createContext<questionDataPayload>({
-    questionPaneData: {
-        currentQuestionId: 1,
-        startTime: new Date(),
-        endTime: new Date(),
-        questions: [{
-            id: 1,
-            status: "not_viewed",
-            type_name: "MCQ"
-        }]
-    },
+    questionPaneData: null,
     getSetQuestionPaneData: () => { },
     setCurrentQuestionId: () => { },
     questionData: null
@@ -70,16 +61,7 @@ export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) 
 
     const [testId, setTestId] = useState<string | number>("");
 
-    const [questionPaneData, setQuestionPaneData] = useState<questionPaneData>({
-        currentQuestionId: 1,
-        startTime: new Date(),
-        endTime: new Date(new Date().getTime() + 10000),
-        questions: [{
-            id: 1,
-            status: "not_viewed",
-            type_name: "MCQ"
-        }]
-    });
+    const [questionPaneData, setQuestionPaneData] = useState<questionPaneData | null>(null);
 
     const [questionData, setQuestionData] = useState<CollectionOfQuestions | null>(null);
 
@@ -165,7 +147,7 @@ export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) 
 
     const setCurrentQuestionId = (questionId: number) => {
 
-        if (questionId === questionPaneData.currentQuestionId) {
+        if (questionPaneData && questionId === questionPaneData.currentQuestionId) {
             return;
         }
 

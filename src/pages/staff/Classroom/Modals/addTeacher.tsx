@@ -9,6 +9,8 @@ import { addStaff } from "../Controllers";
 
 import styles from "../Classroom.module.css";
 
+import { VscNewline } from "react-icons/vsc";
+
 interface teacherModalProps {
     isOpen: boolean
     onClose: () => void
@@ -85,8 +87,35 @@ export default function AddTeacherModal({
         setModalOpen(!isOpen);
     };
 
+    const handleAddInMobile = () => {
+        const user_name = teacherNameInput.trim();
+        const faculty_id = teacherFacultyIdInput.trim();
+        const email = teacherEmailInput.trim();
+        const emailRegex = /^[^\s@]+@bitsathy\.ac\.in$/; // Regex for email validation
+        if (user_name && faculty_id && (email && emailRegex.test(email))) {
+            if (teacherDetails.some(teacher => teacher.email === email)) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Mail ID already exists!",
+                });
+            } else {
+                setTeacherDetails([...teacherDetails, { user_name, faculty_id, email }]);
+                setTeacherNameInput('');
+                setTeacherFacultyIdInput('');
+                setTeacherEmailInput('');
+            }
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Enter mail ID that ends with @bitsathy.ac.in",
+            });;
+        }
+    }
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Add Teachers">
+        <Modal isOpen={isOpen} onClose={onClose} title="Add Teachers" backgroundColor="#efefef">
             <div className={styles.Teacher_modal_content}>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TabContext value={"Mail"}>
@@ -117,7 +146,7 @@ export default function AddTeacherModal({
                                 value={teacherFacultyIdInput}
                                 onChange={e => setTeacherFacultyIdInput(e.target.value)}
                                 onKeyDown={handleTeacherKeyDown}
-                                placeholder="Type roll number..."
+                                placeholder="Type ID number..."
                             />
                             <span className={styles.underline}></span>
                         </div>
@@ -132,6 +161,7 @@ export default function AddTeacherModal({
                             />
                             <span className={styles.underline}></span>
                         </div>
+                        <button onClick={handleAddInMobile} className={styles.add_in_mobile}><VscNewline /></button>
                     </div>
                     <div className={styles.Teacher_modal_mail_list}>
                         {teacherDetails.map(teacher => (
@@ -142,7 +172,7 @@ export default function AddTeacherModal({
                     </div>
                 </div>
                 <div className={styles.Teacher_modal_button_container}>
-                    <div className={styles.Teacher_add_button} onClick={handleAddClick}>Add</div>
+                    <div className={styles.Teacher_add_button} onClick={handleAddClick}>Save</div>
                     <div className={styles.Teacher_cancel_button} onClick={handleModalClick}>Cancel</div>
                 </div>
             </div>
