@@ -338,16 +338,7 @@ const StudentDetailsPage = () => {
                                 <h2>Blocked Reason :</h2>
                                 <h3>
                                     {blockReason.length > 0 ? blockReason : 'No reason provided'}
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
-                                    I am monkey D luffy, I am gonna be the king of the pirates 
+
                                 </h3>
                             </div>
                         </>

@@ -17,7 +17,7 @@ function Student() {
                 <Layout>
                     <Class />
                 </Layout>} />
-
+    
             <Route path="test/:testId" element={
                 <Layout>
                     <Test />
