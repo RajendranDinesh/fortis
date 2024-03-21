@@ -18,15 +18,36 @@ interface studentClass {
 export default function ClassBody() {
 
     const navigate = useNavigate();
-    const [studentClasses, setStudentClasses] = useState<studentClass[]>();
+    const [studentClasses, setStudentClasses] = useState<studentClass[]>(
+        [{
+            classroom_id: 1,
+            name: "Mathematics",
+            description: "SF seminar Hall 1",
+            updated_at: new Date(),
+            created_at: new Date()
+        },
+        {
+            classroom_id: 2,
+            name: "Physics",
+            description: "SF seminar Hall 2",
+            updated_at: new Date(),
+            created_at: new Date()
+        },{
+            classroom_id: 3,
+            name: "Chemistry",
+            description: "SF seminar Hall 3",
+            updated_at: new Date(),
+            created_at: new Date()
+        }
+        ]
+    );
     const [loading, setLoading] = useState(false);
 
     const getStudentClassrooms = async () => {
         try {
             setLoading(true);
-            const resposne = await getClassrooms();
-
-            const classrooms = resposne.data.classrooms;
+            const response = await getClassrooms();
+            const classrooms = response.data.classrooms;
             setStudentClasses(classrooms);
         } catch (error) {
             console.log(error);
@@ -49,25 +70,34 @@ export default function ClassBody() {
     }, []);
 
     return (
-        <div className={styles.dashboard_classes}>
-            <h2>Your Classes</h2>
+        <div>
+            <h2 className={styles.classHeading}>Your Classes</h2>
+            <div className={styles.dashboard_classes}>
             {loading ? <div className={styles.dashboard_classes_content}>
                 <p>You are not currently enrolled in any classes.</p>
             </div>
-                :
-                studentClasses && studentClasses.map((studentClass, index) =>
-                    <div className={styles.classes_container} key={index}>
-                        <div className={styles.class_card}>
-                            <div className={styles.class_card_header}>
-                                <h3>{studentClass.name}</h3>
-                            </div>
-                            <div className={styles.class_card_footer}>
-                                <p>{studentClass.description}</p>
-                                <button className={styles.view_button} onClick={() => handleClassNavigate(studentClass.classroom_id)}>View details</button>
-                            </div>
+            :
+                studentClasses && studentClasses.map((studentClass , index)=>
+                <div className={styles.Classes_container}>
+                    <div className={styles.Classroom_display} key={index} onClick={()=> handleClassNavigate(studentClass.classroom_id)}>
+                        <div className={styles.Classroom_display_header}>
+                        <h1>{studentClass.name}</h1>
                         </div>
-                    </div>)
-            }
+                        <div className={styles.Classroom_display_footer}>
+                        <p>{studentClass.description}</p>
+                        </div>
+                    </div>
+                </div>
+                )}
+             {studentClasses.length >= 3 && (
+                <button className={styles.view_all_button}>
+                View All
+                <div className={styles.arrow_wrapper}>
+                    <div className={styles.arrow}></div>
+                </div>
+                </button>
+            )}
+        </div>
         </div>
     )
 }

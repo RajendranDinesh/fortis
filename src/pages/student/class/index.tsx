@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom"
+import styles from './class.module.css'
+
+import Test from './Test'
+import ClassDetails from '../class/classDetails'
+import StaffDetails from '../class/Staff'
 
 export default function Class() {
 
@@ -22,21 +27,13 @@ export default function Class() {
     
     return(
         <div>
-            <h1>Class {classId}</h1>
-
-            <div>
-                {tabContent.map((tab) =>
-                <div>
-                    <button
-                    onClick={() => setActiveTabId(tab.id)}
-                    >{tab.displayString}</button>
-                </div>)}
+            <div className = {styles.class_main_container}>
+                <div className = {styles.class_Top_container}>
+                <ClassDetails />
+                <StaffDetails />
+                </div>
+                <Test />
             </div>
-
-            <div>
-                {tabContent[activeTabId].content}
-            </div>
-
         </div>
     )
 }

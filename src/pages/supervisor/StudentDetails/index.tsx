@@ -330,11 +330,9 @@ const StudentDetailsPage = () => {
                             <div className={styles.test_activity_container}>
                                 <h1>Test Activity</h1>
                             </div>
-                            <div className={styles.test_details_container}>
-                                <h1>Test Details</h1>
-                            </div>
                             <div className={styles.test_Blocked_details}>
-                            <h2>Blocked by: {blockedBy}</h2>
+                            <h2>Blocked by:</h2>
+                                <h2>{blockedBy}</h2>
                                 <h2>Blocked Reason :</h2>
                                 <h3>
                                     {blockReason.length > 0 ? blockReason : 'No reason provided'}
