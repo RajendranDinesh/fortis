@@ -72,7 +72,7 @@ const StudentDetailsPage = () => {
                 const transformedData = response.data.students.map((student: any) => ({
                     id: student.user_id,
                     name: student.user_name,
-                    tabCount: 0, // Set default value or fetch from backend if available
+                    tabCount: student.tab_switch,
                     blocked: student.is_active !== 1, // Convert is_active to blocked status
                     status: student.is_active === 1 ? 'Active' : 'Blocked',
                     blockReason: student.blockReason,
@@ -336,7 +336,6 @@ const StudentDetailsPage = () => {
                                 <h2>Blocked Reason :</h2>
                                 <h3>
                                     {blockReason.length > 0 ? blockReason : 'No reason provided'}
-
                                 </h3>
                             </div>
                         </>
