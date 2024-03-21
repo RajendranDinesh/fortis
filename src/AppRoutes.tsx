@@ -35,7 +35,7 @@ function ProtectedRoutes() {
                 <Route path="student/*" element={<Student />} />
                 <Route path="supervisor/*" element={<Supervisor />} />
 
-                <Route path="questions/:testId" element={<Questions />} />
+                <Route path="questions/:classroomTestId" element={<Questions />} />
 
                 <Route path="logout" element={<Logout />} />
                 <Route path="*" element={<NotFoundPage />} />

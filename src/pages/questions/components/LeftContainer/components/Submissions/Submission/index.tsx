@@ -1,26 +1,77 @@
+import { useContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+
 import { CiCircleChevLeft } from "react-icons/ci";
-import { CiClock1 } from "react-icons/ci";
-import { CiMicrochip } from "react-icons/ci";
 
 import styles from '../submission.module.css';
 import OurEditor from "../../../../../../components/Editor";
-import { useState } from "react";
 
-export default function Submission({
-    currentSubmissionId,
-    setCurrentActiveTab
-}: {
-    currentSubmissionId: number | null,
-    setCurrentActiveTab: (arg0: 'Table' | 'Submission') => void
-}) {
+import { SubmissionContext } from '../../../../../submissionContext';
+import { Request } from '../../../../../../../networking';
+import { programmingLanguages } from '../../../../../../components/Editor';
+
+interface TestCase {
+    time: number;
+    memory: number;
+    status: { description: string };
+}
+
+export default function Submission() {
+
+    const { currentSubmissionId, changeActiveSubmissionTab } = useContext(SubmissionContext);
 
     const [code, setCode] = useState<string | undefined>();
 
     const [lang, setLang] = useState<string>('python');
+
+    const [submissions, setSubmissions] = useState<TestCase[] | null>(null);
+
+    const [created, setCreated] = useState<string>('');
+
+    const [status, setStatus] = useState<string>('Accepted');
+
+    const calculateStatus = (submissions: TestCase[]) => {
+        let status = 'Accepted';
+        for (let i = 0; i < submissions.length; i++) {
+            if (submissions[i].status.description !== 'Accepted') {
+                status = submissions[i].status.description;
+                break;
+            }
+        }
+        setStatus(status);
+    }
+
+    const getSumbission = async () => {
+        try {
+            if (currentSubmissionId !== null) {
+                const response = await Request("GET", "/submission/id/" + currentSubmissionId);
+                if (response.status === 200) {
+                    const data = await response.data.submissions;
+                    const langId = data[0].language_id;
+                    const code = data[0].source_code;
+                    const createdAt = response.data.created_at;
+
+                    setCreated(new Date(createdAt).toLocaleString());
+                    setCode(atob(code));
+                    calculateStatus(data);
+                    setSubmissions(data);
+
+                    setLang(programmingLanguages.find((lan) => lan.id == langId)?.value.toString() || "")
+                }
+            }
+        } catch (error) {
+            toast.error("Failed to fetch submission");
+        }
+    }
+
+    useEffect(() => {
+        getSumbission();
+    }, [currentSubmissionId]);
+
     return (
         <div className={styles.submission}>
             <div>
-                <div className={styles.header} onClick={() => setCurrentActiveTab('Table')}>
+                <div className={styles.header} onClick={() => changeActiveSubmissionTab('Table')}>
                     <button className={styles.back_btn}><CiCircleChevLeft /></button>
                     <span>All Submission</span>
                 </div>
@@ -28,20 +79,31 @@ export default function Submission({
             </div>
 
             <div className={styles.status}>
-                <span className={styles.text}>Accepted</span>
-                <span>submitted at Mar 19, 2024 20:22</span>
+                <span className={styles.text}>{status}</span>
+                <span>submitted at {created}</span>
             </div>
 
-            <div className={styles.timeframe_container}>
-                <div className={styles.runtime_container}>
-                    <h4><CiClock1 />Runtime</h4>
-                    <h3><span>365</span> ms</h3>
-                </div>
-
-                <div className={styles.memory_container}>
-                    <h4><CiMicrochip /> Memory</h4>
-                    <h3><span>17.24</span> MB</h3>
-                </div>
+            <div className={styles.output_table}>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Memory</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {submissions?.map((submission, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td>{submission.time}</td>
+                                    <td>{submission.memory}</td>
+                                    <td>{submission.status.description}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
 
             <div className={styles.editor_container}>

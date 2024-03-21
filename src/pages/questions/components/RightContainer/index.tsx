@@ -1,5 +1,6 @@
 // Module imports
 import { useContext, useState, ChangeEvent, useEffect, useLayoutEffect } from "react";
+import { useParams } from "react-router-dom";
 import * as monaco from 'monaco-editor';
 import { CiCircleChevUp, CiCircleChevDown, CiMaximize1 } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,14 +17,20 @@ import styles from './right.module.css';
 
 import { AnswerDataContext } from "../../answerContext";
 import { QuestionPaneDataContext } from "../../questionContext";
+import { SubmissionContext } from "../../submissionContext";
+import { LeftContainerContext } from "../LeftContainer/context";
 
 const RightContainer = () => {
     const [lang, setLang] = useState([programmingLanguages[0].value, programmingLanguages[0].id.toString()]);
     const [code, setCode] = useState('');
     const [isFullScreen, setIsFullScreen] = useState(false);
 
+    const { classroomTestId } = useParams();
+
     const { answerData, addAnswer, editAnswer } = useContext(AnswerDataContext);
     const { questionPaneData, questionData } = useContext(QuestionPaneDataContext);
+    const { changeActiveSubmissionTab, changeSubmissionId } = useContext(SubmissionContext);
+    const { currentActiveTab, changeActiveTab } = useContext(LeftContainerContext);
 
     const [isTestTabActive, setIsTestTabActive] = useState(true);
     const [isResultTabActive, setIsResultTabActive] = useState(false);
@@ -80,8 +87,7 @@ const RightContainer = () => {
         }
     }
 
-    const handleSubmitPublicTestCase = async () => {
-
+    const checkCodenTestCases = () => {
         if (!code) {
             toast.error("Please write some code to run", {
                 autoClose: 2000,
@@ -98,6 +104,15 @@ const RightContainer = () => {
                 theme: "dark",
                 hideProgressBar: true,
             });
+            return;
+        }
+
+        return true;
+    }
+
+    const handleSubmitPublicTestCase = async () => {
+
+        if (!checkCodenTestCases()) {
             return;
         }
 
@@ -127,8 +142,33 @@ const RightContainer = () => {
         }
     }
 
-    const handleSubmitPrivateTestCases = () => {
-        
+    const handleSubmitPrivateTestCases = async () => {
+
+        if (!checkCodenTestCases()) {
+            return;
+        }
+
+        const body = {
+            "source_code": code,
+            "language_id": lang[1],
+            "test_case": testCases,
+            "question_id": questionId,
+            "classroom_test_id": classroomTestId
+        }
+
+        try {
+            const response = await Request('POST', '/submission', body);
+
+            if (response.status === 201) {
+                if (currentActiveTab !== "Submissions") changeActiveTab("Submissions");
+
+                setTimeout(() => changeSubmissionId(response.data.submissioId), 1000);
+                changeActiveSubmissionTab("Submission");
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useLayoutEffect(() => {
@@ -276,7 +316,7 @@ const RightContainer = () => {
                 </div>
                 <div>
                     <button className={styles.run_button} onClick={handleSubmitPublicTestCase}>Run</button>
-                    <button className={styles.submit_button}>Submit</button>
+                    <button className={styles.submit_button} onClick={handleSubmitPrivateTestCases}>Submit</button>
                 </div>
             </div>
         </div>

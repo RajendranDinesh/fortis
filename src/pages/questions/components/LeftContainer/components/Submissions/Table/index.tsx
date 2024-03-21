@@ -1,54 +1,66 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { Request } from '../../../../../../../networking';
+import { programmingLanguages } from '../../../../../../components/Editor';
 import styles from '../submission.module.css';
+
+interface SubmissionDetail {
+    submission_id: number;
+    created_at: string;
+    language: number;
+}
 
 export default function SubmissionTable({
     changeViewToSubmission
 }: {
     changeViewToSubmission: (id: number) => void
 }) {
+
+    const { classroomTestId } = useParams();
+
+    const [submissions, setSubmissions] = useState<SubmissionDetail[]>([]);
+
+    const getSumbissions = async () => {
+        try {
+            const response = await Request("GET", "/submission/get-all/" + classroomTestId);
+
+            if (response.status === 200) {
+                const data = await response.data;
+                setSubmissions(data.submissions);
+            }
+        } catch (error) {
+            toast.error("Failed to fetch submissions");
+        }
+    }
+
+    useEffect(() => {
+        getSumbissions();
+    }, []);
+
     return (
         <div className={styles.submissions}>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Language</th>
-                        <th>Run Time</th>
-                        <th>Memory</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr onClick={() => changeViewToSubmission(1)}>
-                        <td>Accepted</td>
-                        <td>Python</td>
-                        <td>50ms</td>
-                        <td>17.2MB</td>
-                    </tr>
-                    <tr onClick={() => changeViewToSubmission(2)}>
-                        <td>Accepted</td>
-                        <td>Python</td>
-                        <td>69ms</td>
-                        <td>16.1MB</td>
-                    </tr>
-                    <tr onClick={() => changeViewToSubmission(3)}>
-                        <td>Accepted</td>
-                        <td>Python</td>
-                        <td>42ms</td>
-                        <td>21MB</td>
-                    </tr>
-                    <tr onClick={() => changeViewToSubmission(4)}>
-                        <td>Accepted</td>
-                        <td>Python</td>
-                        <td>54ms</td>
-                        <td>69MB</td>
-                    </tr>
-                    <tr onClick={() => changeViewToSubmission(5)}>
-                        <td>Accepted</td>
-                        <td>Python</td>
-                        <td>21ms</td>
-                        <td>4.2MB</td>
-                    </tr>
-                </tbody>
-            </table>
+            {submissions.length === 0 ? <>Make a submission to view data over here</> :
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Language</th>
+                            <th>Submitted at</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {submissions.map((submission, index) => (
+                            <tr key={submission.submission_id} onClick={() => changeViewToSubmission(submission.submission_id)}>
+                                <td>{index+1}</td>
+                                <td>{programmingLanguages.find((lan) => lan.id == submission.language)?.name.toString() || ""}</td>
+                                <td>{new Date(submission.created_at).toLocaleString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            }
         </div>
     )
 }

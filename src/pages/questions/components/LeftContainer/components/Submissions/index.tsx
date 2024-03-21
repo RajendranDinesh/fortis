@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Table from './Table';
 import Submission from './Submission';
 
+import { SubmissionContext } from '../../../../submissionContext';
+
 const Submissions = () => {
 
-    const [currentSubmissionId, setCurrentSubmissionId] = useState<number | null>(null);
-    const [currentActiveTab, setCurrentActiveTab] = useState<'Table' | 'Submission'>('Table');
+    const { changeSubmissionId, currentActiveSubmissionTab, changeActiveSubmissionTab } = useContext(SubmissionContext);
 
     const changeViewToSubmission = (id: number) => {
-        setCurrentSubmissionId(id);
-        setCurrentActiveTab('Submission');
+        changeSubmissionId(id);
+        changeActiveSubmissionTab('Submission');
     }
 
     return (
         <>
-            {currentActiveTab === 'Table' && <Table changeViewToSubmission={changeViewToSubmission}  />}
-            {currentActiveTab === 'Submission' && <Submission currentSubmissionId={currentSubmissionId} setCurrentActiveTab={setCurrentActiveTab} />}
+            {currentActiveSubmissionTab === 'Table' && <Table changeViewToSubmission={changeViewToSubmission}  />}
+            {currentActiveSubmissionTab === 'Submission' && <Submission />}
         </>
     );
 }

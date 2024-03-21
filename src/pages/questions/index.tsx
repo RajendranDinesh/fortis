@@ -6,6 +6,9 @@ import LeftContainer from './components/LeftContainer';
 
 import { QuestionPaneDataProvider } from './questionContext';
 import { AnswerDataProvider } from './answerContext';
+import { SubmissionProvider } from './submissionContext';
+import { LeftContainerProvider } from './components/LeftContainer/context';
+
 import InfoModal from './components/InfoModal';
 
 const Questions = () => {
@@ -22,17 +25,21 @@ const Questions = () => {
 
             <QuestionPaneDataProvider>
                 <AnswerDataProvider>
-                    {/* Left Container */}
-                    <div className={styles.left_container}>
-                        <LeftContainer />
-                    </div>
+                    <SubmissionProvider>
+                        <LeftContainerProvider>
+                            {/* Left Container */}
+                            <div className={styles.left_container}>
+                                <LeftContainer />
+                            </div>
 
-                    {/* Right Container */}
-                    <div className={styles.right_container}>
-                        <RightContainer />
-                    </div>
+                            {/* Right Container */}
+                            <div className={styles.right_container}>
+                                <RightContainer />
+                            </div>
 
-                    <InfoModal isInfoModalOpen={isInfoModalOpen} handleInfoModal={handleInfoModalClose} />
+                            <InfoModal isInfoModalOpen={isInfoModalOpen} handleInfoModal={handleInfoModalClose} />
+                        </LeftContainerProvider>
+                    </SubmissionProvider>
                 </AnswerDataProvider>
             </QuestionPaneDataProvider>
 
