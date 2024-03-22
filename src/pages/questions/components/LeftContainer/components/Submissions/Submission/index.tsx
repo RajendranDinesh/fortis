@@ -87,6 +87,7 @@ export default function Submission() {
                 <table>
                     <thead>
                         <tr>
+                            <th>Test Case Id</th>
                             <th>Time</th>
                             <th>Memory</th>
                             <th>Status</th>
@@ -96,6 +97,7 @@ export default function Submission() {
                         {submissions?.map((submission, index) => {
                             return (
                                 <tr key={index}>
+                                    <td>{index+1}</td>
                                     <td>{submission.time}</td>
                                     <td>{submission.memory}</td>
                                     <td>{submission.status.description}</td>

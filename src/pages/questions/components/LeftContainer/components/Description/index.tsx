@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import styles from './description.module.css';
 
 import { QuestionPaneDataContext, questionDataPayload, McqQuestion, McqOption } from '../../../../questionContext';
+import MCQ from '../../../RightContainer/components/MCQ';
 
 const Description = () => {
 
@@ -83,12 +84,15 @@ const Description = () => {
                     <div className={styles.option_container}>
                         {currentQuestionId && (questionData[currentQuestionId] as McqQuestion)?.options?.map((option: McqOption, index: number) => (
                             <div className={styles.option} key={index}>
-                                {option.option_text}
+                                <span>{index + 1}. </span>
+                                <span>{option.option_text}</span>
                             </div>
                         ))}
                     </div>
                 }
             </div>
+
+            {questionData && currentQuestionId && (questionData[currentQuestionId] as McqQuestion) && <MCQ />}
         </div>
     );
 }

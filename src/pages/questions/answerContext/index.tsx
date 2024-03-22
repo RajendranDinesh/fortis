@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-interface AnswerData {
+export interface AnswerData {
     answer: string;
     question_id: number;
 }

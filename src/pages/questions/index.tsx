@@ -12,7 +12,7 @@ import { LeftContainerProvider } from './components/LeftContainer/context';
 import InfoModal from './components/InfoModal';
 
 const Questions = () => {
-    document.title = 'Questions | CodeX';
+    document.title = 'Questions | Consus';
 
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
 

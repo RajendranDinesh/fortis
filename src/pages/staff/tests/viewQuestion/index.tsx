@@ -71,11 +71,16 @@ export default function QuestionDetailModal({ modalOpen, handleModalClick, quest
 
     const getQuestionDetails = async () => {
         setLoading(true);
-        const response = await getQuestionDetail(Number(testId), questionId);
-        if (response.status === 200) {
-            setDetails(response.data);
+        try {
+            const response = await getQuestionDetail(Number(testId), questionId);
+            if (response.status === 200) {
+                setDetails(response.data);
+            }
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     const renderHTML = (htmlString: any) => {
