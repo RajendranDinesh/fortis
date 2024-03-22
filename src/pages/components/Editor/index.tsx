@@ -7,6 +7,7 @@ interface EditorProps {
     value?: string;
     lang: string | undefined;
     onChange: (value: string | undefined, event: monaco.editor.IModelContentChangedEvent) => void;
+    readOnly?: boolean;
 }
 
 // Change the languages variable if using a different api provider
@@ -28,7 +29,7 @@ export const programmingLanguages = [
 
 loader.config({ monaco });
 
-const OurEditor = ({ value = "", lang, onChange }: EditorProps) => {
+const OurEditor = ({ value = "", lang, onChange, readOnly = false }: EditorProps) => {
     return (
         <Editor
             value={value}
@@ -49,6 +50,7 @@ const OurEditor = ({ value = "", lang, onChange }: EditorProps) => {
                 minimap: {
                     enabled: false
                 },
+                readOnly: readOnly
             }}
         />
     );

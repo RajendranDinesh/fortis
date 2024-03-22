@@ -5,14 +5,18 @@ import Circle from '../../../../../components/CircularProgress';
 
 import { QuestionPaneDataContext, questionDataPayload } from '../../../../questionContext';
 
-const QuestionsPane = () => {
+const QuestionsPane = ({
+  isFinished,
+  setIsFinished
+}: {
+  isFinished: boolean,
+  setIsFinished: (value: boolean) => void
+}) => {
 
   const { questionPaneData, setCurrentQuestionId } = useContext(QuestionPaneDataContext) as questionDataPayload;
 
   const [progress, setProgress] = useState(0)
   const [labelProgress, setLabelProgress] = useState<string>()
-
-  const [isFinished, setIsFinished] = useState(false);
 
   const formatTime = (time: number) => {
     const totalSeconds = Math.ceil(time / 1000);
@@ -53,8 +57,7 @@ const QuestionsPane = () => {
         setIsFinished(true);
         return;
       }
-
-      isFinished && setIsFinished(false);
+      
       setProgress(percentage > 100 ? 100 : percentage);
       setLabelProgress(formatTime(remainingTime));
     };
@@ -118,6 +121,9 @@ const QuestionsPane = () => {
           />
         </div>
 
+      </div>
+      <div className={styles.bottom_row}>
+        <button onClick={() => setIsFinished(true)} className={styles.finish_btn} title='Submits the answers...'>Finish Test</button>
       </div>
     </div>
   );

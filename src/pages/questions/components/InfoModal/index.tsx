@@ -16,12 +16,12 @@ export default function InfoModal({
     handleInfoModal
 }: Props) {
 
-    const { testId } = useParams();
+    const { classroomTestId } = useParams();
 
     const { getSetQuestionPaneData } = useContext(QuestionPaneDataContext);
 
     const getQuestionPaneData = async () => {
-        if (testId) getSetQuestionPaneData(testId);
+        if (classroomTestId) getSetQuestionPaneData(classroomTestId);
     }
 
     const handleCloseInfoModal = () => {
@@ -30,7 +30,7 @@ export default function InfoModal({
     }
 
     return (
-        <Modal isOpen={isInfoModalOpen} onClose={handleCloseInfoModal}>
+        <Modal isOpen={isInfoModalOpen} onClose={() => {}}>
             <div className={styles.container}>
                 <h1>Instructions</h1>
                 <div className={styles.bottom_row}>
