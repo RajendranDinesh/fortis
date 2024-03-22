@@ -63,6 +63,7 @@
 
 #paraid{
     display: block;
+    font-size: 1.5em;
 
     @media screen and (max-width: 512px){
         display: none;
