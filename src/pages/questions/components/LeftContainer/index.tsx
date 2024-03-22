@@ -15,11 +15,15 @@ const LeftContainer = () => {
 
     const [activeTab, setActiveTab] = useState(0);
 
+    const [isFinished, setIsFinished] = useState(false);
+
+    const navigate = useNavigate();
+
     const tabContent = [
         {
             id: 0,
             name: 'Questions',
-            content: <QuestionsPane />
+            content: <QuestionsPane setIsFinished={setIsFinished} isFinished={isFinished}/>
         },
         {
             id: 1,
@@ -32,9 +36,6 @@ const LeftContainer = () => {
             content: <Submissions />
         }
     ];
-
-
-    const [isFinished, setIsFinished] = useState(false);
 
     const { questionPaneData } = useContext(QuestionPaneDataContext) as questionDataPayload;
 
@@ -57,14 +58,12 @@ const LeftContainer = () => {
             const now = new Date();
             const remainingTime = endTime.getTime() - now.getTime();
 
-            // if (remainingTime <= -100000) {
-            //     navigate('/');
-            // } else if (remainingTime <= 0) {
-            //     setIsFinished(true);
-            //     return;
-            // }
-
-            setIsFinished(false);
+            if (remainingTime <= -100000) {
+                navigate('/');
+            } else if (remainingTime <= 0) {
+                setIsFinished(true);
+                return;
+            }
         };
 
         const progressInterval = setInterval(updateProgress, 1000);
@@ -97,10 +96,10 @@ const LeftContainer = () => {
             </div>
 
             <div className={styles.bottom_container}>
-                Copyright ©️ 2023 HexaVert
+                Copyright ©️ 2023-2024 Consus
             </div>
 
-            <CompletedModal isFinished={isFinished} />
+            <CompletedModal isFinished={isFinished} setIsFinished={setIsFinished} />
         </>
     );
 }

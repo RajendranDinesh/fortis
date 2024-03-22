@@ -73,8 +73,8 @@ const Description = () => {
                     {questionData && <p><span>Question Type:</span> {currentQuestionType}</p>}
                     {questionData && <p><span>Marks:</span> {currentQuestionId && questionData[currentQuestionId]?.marks}</p>}
                     <div className={styles.next_prev_container}>
-                        <button onClick={handlePrevQuestion} className={styles.next_prev_button}>&lt;</button>
-                        <button onClick={handleNextQuestion} className={styles.next_prev_button}>&gt;</button>
+                        <button onClick={handlePrevQuestion} className={styles.next_prev_button} title='Go to previous question'>&lt;</button>
+                        <button onClick={handleNextQuestion} className={styles.next_prev_button} title='Go to the next question'>&gt;</button>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@ const Description = () => {
                 }
             </div>
 
-            {questionData && currentQuestionId && (questionData[currentQuestionId] as McqQuestion) && <MCQ />}
+            {questionData && currentQuestionId && (questionData[currentQuestionId] as McqQuestion) && 'options' in questionData[currentQuestionId] && <MCQ />}
         </div>
     );
 }

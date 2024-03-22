@@ -47,8 +47,9 @@ export default function Submission() {
                 const response = await Request("GET", "/submission/id/" + currentSubmissionId);
                 if (response.status === 200) {
                     const data = await response.data.submissions;
-                    const langId = data[0].language_id;
-                    const code = data[0].source_code;
+                    
+                    const langId = response.data.language_id;
+                    const code = response.data.source_code;
                     const createdAt = response.data.created_at;
 
                     setCreated(new Date(createdAt).toLocaleString());

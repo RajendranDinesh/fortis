@@ -287,7 +287,9 @@ export default function Code() {
                             onClick={() => {
                                 setIsTestTabActive(true);
                                 setIsResultTabActive(false)
-                            }}>
+                            }}
+                            title="Opens public testcase view"
+                            >
                             Testcase</div>
 
                         <div
@@ -296,7 +298,9 @@ export default function Code() {
                             onClick={() => {
                                 setIsTestTabActive(false);
                                 setIsResultTabActive(true)
-                            }}>
+                            }}
+                            title="Opens the result tab"
+                            >
                             Result</div>
                     </div>
                 </div>
@@ -312,11 +316,11 @@ export default function Code() {
                 {/* Bottom Container in the Console */}
                 <div style={consoleVisible ? { height: "8%" } : { height: "100%" }} className={styles.bottom_container}>
                     <div>
-                        <button className={styles.console_button} onClick={handleConsoleToggle}>Console {consoleVisible ? <CiCircleChevDown color="#a3a3a3" strokeWidth={'1px'} /> : <CiCircleChevUp color="#a3a3a3" strokeWidth={'1px'} />} </button>
+                        <button className={styles.console_button} onClick={handleConsoleToggle} title="Toggles the console">Console {consoleVisible ? <CiCircleChevDown color="#a3a3a3" strokeWidth={'1px'} /> : <CiCircleChevUp color="#a3a3a3" strokeWidth={'1px'} />} </button>
                     </div>
                     <div>
-                        <button className={styles.run_button} onClick={handleSubmitPublicTestCase}>Run</button>
-                        <button className={styles.submit_button} onClick={handleSubmitPrivateTestCases}>Submit</button>
+                        <button className={styles.run_button} onClick={handleSubmitPublicTestCase} title="Runs public test cases">Run</button>
+                        <button className={styles.submit_button} onClick={handleSubmitPrivateTestCases} title="Runs private test cases">Submit Code</button>
                     </div>
                 </div>
             </div>

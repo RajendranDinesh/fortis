@@ -53,3 +53,27 @@
         }
     }
 }
+
+.sub_btn_container {
+    display: flex;
+    gap: 2rem;
+
+    margin-top: 2rem;
+
+    button {
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        background-color: #363636;
+        color: #efefef;
+        border: none;
+
+        cursor: pointer;
+        user-select: none;
+
+        font-size: larger;
+
+        &:hover {
+            background-color: #333;
+        }
+    }
+}
