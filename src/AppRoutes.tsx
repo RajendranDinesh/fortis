@@ -7,6 +7,7 @@ import Admin from "./pages/admin";
 import Student from "./pages/student";
 import Supervisor from "./pages/supervisor";
 import Staff from "./pages/staff";
+import Users from "./pages/users";
 import NotFoundPage from "./pages/404";
 
 // Add the route here if there is no need for user's identity
@@ -29,11 +30,13 @@ function ProtectedRoutes() {
                 <Route path="staff" element={<Navigate to={"dashboard"} />} />
                 <Route path="student" element={<Navigate to={"dashboard"} />} />
                 <Route path="supervisor" element={<Navigate to={"dashboard"} />} />
+                <Route path="users" element={<Navigate to={"profile"} />} />
                 
                 <Route path="admin/*" element={<Admin />} />
                 <Route path="staff/*" element={<Staff />} />
                 <Route path="student/*" element={<Student />} />
                 <Route path="supervisor/*" element={<Supervisor />} />
+                <Route path="users/*" element={<Users />} />
 
                 <Route path="questions/:testId" element={<Questions />} />
 

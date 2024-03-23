@@ -11,6 +11,7 @@ import Backdrop from '@mui/material/Backdrop';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
+import { useNavigate } from "react-router-dom";
 
 //Styles
 
@@ -57,6 +58,7 @@ function StaffDashboard () {
     const [openSpeadDial, setOpenSpeedDial] = React.useState(false);
     const handleSpeedDialOpen = () => setOpenSpeedDial(true);
     const handleSpeedDialClose = () => setOpenSpeedDial(false);
+    const navigate = useNavigate();
 
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -66,6 +68,10 @@ function StaffDashboard () {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleProfile = () => {
+        navigate("/users");
+    }
 
     const handleModalClick = () => {
         setModelOpen(!modelOpen);
@@ -198,7 +204,7 @@ function StaffDashboard () {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={handleProfile}>
                         Profile
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
