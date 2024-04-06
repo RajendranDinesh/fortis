@@ -72,32 +72,27 @@ export default function ClassBody() {
     return (
         <div>
             <h2 className={styles.classHeading}>Your Classes</h2>
-            <div className={styles.dashboard_classes}>
-            {loading ? <div className={styles.dashboard_classes_content}>
-                <p>You are not currently enrolled in any classes.</p>
-            </div>
-            :
-                studentClasses && studentClasses.map((studentClass , index)=>
-                <div className={styles.Classes_container}>
-                    <div className={styles.Classroom_display} key={index} onClick={()=> handleClassNavigate(studentClass.classroom_id)}>
-                        <div className={styles.Classroom_display_header}>
-                        <h1>{studentClass.name}</h1>
-                        </div>
-                        <div className={styles.Classroom_display_footer}>
-                        <p>{studentClass.description}</p>
-                        </div>
-                    </div>
+            {loading ? 
+                <div className={styles.dashboard_classes_content}>
+                    <p>You are not currently enrolled in any classes.</p>
                 </div>
-                )}
-             {studentClasses.length >= 3 && (
-                <button className={styles.view_all_button}>
-                View All
-                <div className={styles.arrow_wrapper}>
-                    <div className={styles.arrow}></div>
+                :
+                <div className={styles.dashboard_classes}>
+                    {studentClasses && studentClasses.map((studentClass , index)=>
+                        <div className={styles.Classes_container}>
+                            <div className={styles.Classroom_display} key={index} onClick={()=> handleClassNavigate(studentClass.classroom_id)}>
+                                <div className={styles.Classroom_display_header}>
+                                    <h1>{studentClass.name}</h1>
+                                </div>
+                                <div className={styles.Classroom_display_footer}>
+                                    <p>{studentClass.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+    
                 </div>
-                </button>
-            )}
-        </div>
+            }
         </div>
     )
 }

@@ -110,7 +110,7 @@ const Login = () => {
         <div className={styles.main_container}>
             <form action="" method="post" className={styles.form} onSubmit={handleLogin}>
             <div className={styles.heading_container}>
-                <div className={styles.heading}>Spotify</div>
+                <div className={styles.heading}>Consus</div>
                 <div className={styles.sub_heading}>Login to your account</div>
             </div>
             <div className={styles.input_area}>
