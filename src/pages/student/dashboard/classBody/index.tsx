@@ -18,23 +18,7 @@ interface studentClass {
 export default function ClassBody() {
 
     const navigate = useNavigate();
-    const [studentClasses, setStudentClasses] = useState<studentClass[]>(
-        [{
-            classroom_id: 1,
-            name: "Mathematics",
-            description: "SF seminar Hall 1"
-        },
-        {
-            classroom_id: 2,
-            name: "Physics",
-            description: "SF seminar Hall 2"
-        },{
-            classroom_id: 3,
-            name: "Chemistry",
-            description: "SF seminar Hall 3"
-        }
-        ]
-    );
+    const [studentClasses, setStudentClasses] = useState<studentClass[]>([]);
     const [loading, setLoading] = useState(false);
 
     const getStudentClassrooms = async () => {

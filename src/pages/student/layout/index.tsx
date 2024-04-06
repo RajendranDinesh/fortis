@@ -30,7 +30,10 @@ export default function StudentLayout({ children }: LayoutProps) {
     };
 
     const handleLogout = () => {
-        navigate("/logout");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
+        setAnchorEl(null);
+        window.location.reload();
     }
 
     return (
