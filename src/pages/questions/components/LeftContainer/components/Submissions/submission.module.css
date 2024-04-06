@@ -1,0 +1,141 @@
+.submissions {
+    table {
+        user-select: none;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+
+        tr {
+            cursor: pointer;
+        }
+
+        thead {
+
+            tr:first-child {
+                background-color: transparent;
+            }
+
+            th {
+                font-weight: 400;
+                border-bottom: 2px solid #e0e0e050;
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: #262626;
+        }
+
+        tr:nth-child(odd) {
+            background-color: transparent;
+        }
+
+        td {
+            text-align: center;
+
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+    }
+}
+
+.submission {
+
+    --padding: 2rem;
+
+    height: 100%;
+
+    .header {
+        display: flex;
+        width: 100%;
+        align-items: flex-end;
+
+        color: #a3a3a3;
+
+        span {
+            margin-right: 1rem;
+        }
+
+        .back_btn {
+            display: flex;
+            align-items: flex-end;
+
+            background-color: transparent;
+            color: #a3a3a3;
+
+            outline: none;
+            border: none;
+
+            font-size: large;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .status {
+        display: flex;
+        justify-content: space-between;
+
+        padding-top: 1rem;
+        padding-left: var(--padding);
+        padding-right: var(--padding);
+
+        .text {
+            font-size: larger;
+        }
+    }
+
+    .output_table{
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+
+        tr {
+            cursor: pointer;
+        }
+        
+        table {
+            width: 100%;
+        }
+
+        thead {
+
+            tr:first-child {
+                background-color: transparent;
+            }
+
+            th {
+                font-weight: 400;
+                border-bottom: 2px solid #e0e0e050;
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: #262626;
+        }
+
+        tr:nth-child(odd) {
+            background-color: transparent;
+        }
+
+        td {
+            text-align: center;
+
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+    }
+
+    .editor_container {
+        height: 50%;
+
+        padding: 1rem;
+        padding-left: var(--padding);
+        padding-right: var(--padding);
+    }
+}

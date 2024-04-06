@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { QuestionPaneDataContext, questionDataPayload } from '../../questionContext';
+import { LeftContainerContext } from './context';
 
 import Description from './components/Description';
 import QuestionsPane from './components/Questions';
@@ -12,15 +13,17 @@ import styles from './left.module.css';
 
 const LeftContainer = () => {
 
-    const navigate = useNavigate();
-
     const [activeTab, setActiveTab] = useState(0);
+
+    const [isFinished, setIsFinished] = useState(false);
+
+    const navigate = useNavigate();
 
     const tabContent = [
         {
             id: 0,
             name: 'Questions',
-            content: <QuestionsPane />
+            content: <QuestionsPane setIsFinished={setIsFinished} isFinished={isFinished}/>
         },
         {
             id: 1,
@@ -34,10 +37,15 @@ const LeftContainer = () => {
         }
     ];
 
-
-    const [isFinished, setIsFinished] = useState(false);
-
     const { questionPaneData } = useContext(QuestionPaneDataContext) as questionDataPayload;
+
+    const { changeActiveTab, currentActiveTab } = useContext(LeftContainerContext);
+
+    const handleTabChange = (tabId: number) => {
+        setActiveTab(tabId);
+        const tab = tabContent.find(tab => tab.id === tabId);
+        changeActiveTab(tab?.name as "Questions" | "Description" | "Submissions");
+    }
 
     useEffect(() => {
         const updateProgress = () => {
@@ -56,8 +64,6 @@ const LeftContainer = () => {
                 setIsFinished(true);
                 return;
             }
-
-            setIsFinished(false);
         };
 
         const progressInterval = setInterval(updateProgress, 1000);
@@ -67,6 +73,12 @@ const LeftContainer = () => {
         };
     }, [questionPaneData]);
 
+    useEffect(() => {
+        const tab = tabContent.find((tab) => tab.name === currentActiveTab);
+        setActiveTab(tab?.id as number);
+        
+    }, [currentActiveTab]);
+
     return (
         <>
             <div className={styles.top_container}>
@@ -74,7 +86,7 @@ const LeftContainer = () => {
                     <div key={tab.id}>
                         <button
                             className={activeTab === tab.id ? styles.active_tab : ""}
-                            onClick={() => setActiveTab(tab.id)}
+                            onClick={() => handleTabChange(tab.id)}
                         >{tab.name}</button>
                     </div>)}
             </div>
@@ -84,10 +96,10 @@ const LeftContainer = () => {
             </div>
 
             <div className={styles.bottom_container}>
-                Copyright ©️ 2023 HexaVert
+                Copyright ©️ 2023-2024 Consus
             </div>
 
-            <CompletedModal isFinished={isFinished} />
+            <CompletedModal isFinished={isFinished} setIsFinished={setIsFinished} />
         </>
     );
 }

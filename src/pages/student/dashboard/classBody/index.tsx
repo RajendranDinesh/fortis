@@ -6,13 +6,13 @@ import { getClassrooms } from '../controllers';
 
 import styles from '../dashboard.module.css';
 
+import { useParams } from 'react-router-dom';
+
 
 interface studentClass {
     classroom_id: number
     name: string
     description: string
-    updated_at: Date
-    created_at: Date
 }
 
 export default function ClassBody() {
@@ -22,22 +22,16 @@ export default function ClassBody() {
         [{
             classroom_id: 1,
             name: "Mathematics",
-            description: "SF seminar Hall 1",
-            updated_at: new Date(),
-            created_at: new Date()
+            description: "SF seminar Hall 1"
         },
         {
             classroom_id: 2,
             name: "Physics",
-            description: "SF seminar Hall 2",
-            updated_at: new Date(),
-            created_at: new Date()
+            description: "SF seminar Hall 2"
         },{
             classroom_id: 3,
             name: "Chemistry",
-            description: "SF seminar Hall 3",
-            updated_at: new Date(),
-            created_at: new Date()
+            description: "SF seminar Hall 3"
         }
         ]
     );
@@ -66,8 +60,17 @@ export default function ClassBody() {
     };
 
     useEffect(() => {
-        getStudentClassrooms();
+        fetchclassrooms();
     }, []);
+
+    const fetchclassrooms = async () => {
+        try {
+            const response = await getClassrooms();
+            setStudentClasses(response.data.classrooms.map((classroom: any) => classroom));
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div>

@@ -1,0 +1,218 @@
+.profile_container_whole {
+    --text: #b3b3b3;
+    --background: #121212;
+    --primary: #1db954;
+    --secondary: #212121;
+    --accent: #535353;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100vw;
+    height: 100vh;
+    background: var(--background);
+}
+
+.profile_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10vh;
+    color: var(--text);
+}
+
+.profile_header h1 {
+    font-size: 2em;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: .3em;
+}
+
+.profile_top_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 30vh;
+}
+
+.profile_top_primary_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 65vw;
+    height: 100%;
+    border-radius: 2em;
+    box-shadow: 0 0 3px 1px var(--accent);
+    background: var(--secondary);
+}
+
+.profile_top_primary_container_left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25vw;
+    height: 100%;
+    border-right: 1px solid var(--accent);
+    border-radius: 2em 0 0 2em;
+    
+}
+
+.profile_top_primary_details_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 8vh;
+}
+
+.profile_top_primary_details_container h1 {
+    font-size: 1.5em;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: .3em;
+    color: var(--text);
+    margin: 0 0 0 2vw;
+}
+
+.profile_top_primary_container_right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 65vw;
+    height: 100%;
+    border-radius: 0 2em 2em 0;
+}
+
+.profile_top_pic_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30vw;
+    height: 100%;
+}
+
+.profile_img_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 16vw;
+    height: 26vh;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px dashed var(--accent);
+    color: var(--text);
+    font-size: 2em;
+    position: relative;
+}
+
+.profile_img_container .icon {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 2em;
+    transition: transform 0.3s ease;
+}
+
+.profile_img_container:hover {
+    cursor: pointer;
+    background: var(--secondary);
+    opacity: 0.8;
+}
+
+.profile_img_container:hover .icon {
+    display: block;
+    font-size: 2em;
+    transform: scale(0.2);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+}
+
+.profile_second_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 96vw;
+    height: 20vh;
+    margin: 2vh 2vw 2vh 2vw;
+    border-radius: 2em;
+    background: var(--secondary);
+}
+
+.profile_second_top_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 10vh;
+    border-bottom: 1px solid var(--accent);
+}
+
+.profile_second_top_container_left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25vw;
+    height: 100%;
+    border-right: 1px solid var(--accent);
+    border-radius: 2em 0 0 2em;   
+}
+
+.profile_second_top_container_right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 65vw;
+    height: 100%;
+    border-radius: 0 2em 2em 0;
+}
+
+.profile_second_bottom_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 10vh;
+    cursor: pointer;
+    border-radius: 0 0 2em 2em;
+}
+
+.profile_second_bottom_container h1 {
+    font-size: 1.2em;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: .3em;
+    color: var(--text);
+    margin: 0 0 0 2vw;
+}
+
+.profile_second_bottom_container_icon {
+    font-size: 2em;
+    color: var(--text);
+    margin: 0 2vw 0 0;
+}
+
+.profile_second_bottom_container:hover {
+    background: var(--accent);
+}

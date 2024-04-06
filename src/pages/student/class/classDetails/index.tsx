@@ -1,6 +1,10 @@
+
 import React, { useState } from 'react';
 import styles from '../class.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
+import { getClassroomTitle, getStaffDetails, getClassroomTests } from '../controllers';
 
 interface ClassDetails {
     name: string;
@@ -65,6 +69,14 @@ export default function ClassDetails() {
             navigate(`/student/programming/${testId}`);
         }
     };
+    useEffect(() => {
+        getClassroomTitle(13);
+        getStaffDetails(13);
+        getClassroomTests(13);
+    }
+    , [])
+
+
     return (
         <div className={styles.main_container}>
         <div className ={styles.class_Top_container}>

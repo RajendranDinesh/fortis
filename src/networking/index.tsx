@@ -37,7 +37,7 @@ const RemoveHeader = (key: string) => {
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const Request = async (method: RequestMethod, url: string, body?: any, params?: any) => {
-    console.log(process.env.REACT_APP_ENV)
+    
     const requestOptions = {
         method: method,
         url: url,

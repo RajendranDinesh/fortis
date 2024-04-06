@@ -66,6 +66,7 @@
     font-size: 2em;
     margin: 2vh 0 0 1vw;
 
+
     @media screen and (max-width: 512px){
         display: none;
     }
