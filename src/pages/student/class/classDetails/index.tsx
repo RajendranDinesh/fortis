@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styles from '../class.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -11,56 +11,23 @@ interface ClassDetails {
 }
 interface StaffDetails {
     id: number;
-    name: string;
+    user_name: string;
 }
 interface TestDetails {
-    id: number;
-    name: string;
-    createdBy: string;
-    date: string;
+    test_id: number;
+    title: string;
+    created_by: string;
+    scheduled_at: string;
     status: string;
     category: string;
 }
 
 export default function ClassDetails() {
 
-    const [classDetails, setClassDetails] = useState<ClassDetails>({
-        name: "Mathematics"
-    })
+    const [classDetails, setClassDetails] = useState<ClassDetails>({ name: ""});
     const navigate = useNavigate();
-    const [staffDetails, setStaffDetails] = useState<StaffDetails[]>([
-        {
-            id : 1,
-            name : "Monkey D Luffy"
-        },
-        {
-            id : 2,
-            name : "Roronoa Zoro"
-        },
-        {
-            id : 4,
-            name : "Nico Robin"
-        },
-    ])
-
-    const [testDetails, setTestDetails] = useState<TestDetails[]>([
-        {
-            id : 1,
-            name : "Periodical Test",
-            createdBy : "Monkey D Luffy",
-            date : "12/24/24",
-            category : "MCQ",
-            status : "Active"
-        },
-        {
-            id : 2,
-            name : "Periodical Test-2",
-            createdBy : "Roronoa Zoro",
-            date : "12/24/24",
-            category : "Programming",
-            status : "Attempted"
-        }
-    ])
+    const [staffDetails, setStaffDetails] = useState<StaffDetails[]>([])
+    const [testDetails, setTestDetails] = useState<TestDetails[]>([])
 
     const handleTestNavigate = (testId: number, testCat: string) => {
         if(testCat === "MCQ") {
@@ -69,12 +36,32 @@ export default function ClassDetails() {
             navigate(`/student/programming/${testId}`);
         }
     };
+
+    const { classId } = useParams();
+
     useEffect(() => {
-        getClassroomTitle(13);
-        getStaffDetails(13);
-        getClassroomTests(13);
-    }
-    , [])
+        const fetchData = async () => {
+            if (classId) {
+                const numericId = parseInt(classId, 10);
+    
+                try {
+                    const classResponse = await getClassroomTitle(numericId);
+                    setClassDetails({ name: classResponse.data.classroom.name });
+    
+                    const staffResponse = await getStaffDetails(numericId);
+                    setStaffDetails(staffResponse.data.staff)
+    
+                    const testResponse = await getClassroomTests(numericId);
+                    setTestDetails(testResponse.data.tests);
+
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }
+        };
+    
+        fetchData();
+    }, [classId]);
 
 
     return (
@@ -94,7 +81,7 @@ export default function ClassDetails() {
                 { staffDetails && staffDetails.map((staffDetail,index)=>
                     <div className={styles.staff_details}>
                     <p>{index+1}.</p>
-                    <p>{staffDetail.name}</p>
+                    <p>{staffDetail.user_name}</p>
                     </div>
                 )}
             </div>
@@ -104,18 +91,18 @@ export default function ClassDetails() {
                 <div className={styles.staff_Testheader_title}>Sl.no</div>
                 <div className={styles.staff_Testheader_title}>Test Name</div>
                 <div className={styles.staff_Testheader_title}>Created By</div>
-                <div className ={styles.staff_Testheader_title}>category</div>
                 <div className={styles.staff_Testheader_title}>Date & Time</div>
+                <div className ={styles.staff_Testheader_title}>category</div>
                 <div className={styles.staff_Testheader_title}>Status</div>
             </div>
             <div className ={styles.Test_list_container}>
             {testDetails && testDetails.map((testDetail,index)=>
-                 <div className={styles.Test_list} key={index} onClick={()=>{handleTestNavigate(testDetail.id,testDetail.category)}}>
-                    <div className ={styles.staff_Testheader_title}>{testDetail.id}</div>
-                    <div className ={styles.staff_Testheader_title}>{testDetail.name}</div>
-                    <div className ={styles.staff_Testheader_title}>{testDetail.createdBy}</div>
+                 <div className={styles.Test_list} key={index} onClick={()=>{handleTestNavigate(testDetail.test_id,testDetail.category)}}>
+                    <div className ={styles.staff_Testheader_title}>{testDetail.test_id}</div>
+                    <div className ={styles.staff_Testheader_title}>{testDetail.title}</div>
+                    <div className ={styles.staff_Testheader_title}>{testDetail.created_by}</div>
+                    <div className ={styles.staff_Testheader_title}>{testDetail.scheduled_at}</div>
                     <div className ={styles.staff_Testheader_title}>{testDetail.category}</div>
-                    <div className ={styles.staff_Testheader_title}>{testDetail.date}</div>
                     <div className ={styles.Test_list_Activedetails}>{testDetail.status}</div>
                  </div>
             )}
