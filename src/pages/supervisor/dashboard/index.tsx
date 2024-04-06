@@ -5,14 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import styles from './supervisorDashboard.module.css'
 import { FaCalendarCheck } from "react-icons/fa";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
-import { FaSpotify } from "react-icons/fa";
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useState, useEffect } from 'react';
 import { Request } from '../../../networking';
-
+import { ReactComponent as Consuslogo } from '../../../assets/logo.svg';
 
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
@@ -76,8 +75,7 @@ const SupervisorDashboard = () => {
         <div className={styles.main_container}>
             <div className={styles.header_container}>
                 <div className={styles.DashBoard_header_left}>
-                <FaSpotify className={styles.header_image} />
-                <h1 className={styles.header_title}>Spotify</h1>
+                <Consuslogo className={styles.header_image}/>
                 </div>
                 
                 <div className={styles.DashBoard_header_right}>

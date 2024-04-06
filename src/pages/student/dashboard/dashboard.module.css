@@ -63,7 +63,9 @@
 
 #paraid{
     display: block;
-    font-size: 1.5em;
+    font-size: 2em;
+    margin: 2vh 0 0 1vw;
+
 
     @media screen and (max-width: 512px){
         display: none;
@@ -104,6 +106,7 @@
     background : var(--background);
     color : var(--text);
     justify-content: flex-start;
+    margin-top: 2rem;
 
     @media screen and (max-width: 512px){
         height: 100%;

@@ -9,8 +9,8 @@ const StudentDashboard = () => {
             <div className={styles.dashboard_body}>
                 <h1>Welcome to the Student Dashboard</h1>
                 <div className={styles.dashboard_body_content}>
-                    <p id ={styles.paraid}>Here you can view your courses, grades, and other such information.</p>
-                    <p>Good luck!</p>
+                    <h1 id ={styles.paraid}>Here you can view your courses, grades, and other such information.</h1>
+                    <h1 id={styles.paraid}>Good luck!</h1>
                 </div>
                 <div className={styles.dashboard_body_container}>
                 <ClassBody />

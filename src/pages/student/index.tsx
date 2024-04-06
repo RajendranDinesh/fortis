@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layout";
 import StudentDashboard from "./dashboard";
 import Class from "./class";
-import Test from './test';
+import Test from './test/mcq';
+import ProgrammingAnswer from "./test/programming";
 import NotFoundPage from "../404";
 
 function Student() {
@@ -19,11 +20,16 @@ function Student() {
                     <Class />
                 </Layout>} />
     
-            <Route path="test/:testId" element={
+            <Route path="mcq/:testId" element={
                 <Layout>
                     <Test />
                 </Layout>} />
 
+            <Route path="programming/:testId" element={
+                <Layout>
+                    <ProgrammingAnswer />
+                </Layout>} />
+            
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
