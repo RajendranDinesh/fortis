@@ -1,6 +1,15 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:5000/api/';
+interface urlCollection {
+    [key: string]: string | undefined
+}
+
+const IgressURLs: urlCollection = {
+    "dev": "http://127.0.0.1:5000/api/",
+    "prod": "https://igress.vercel.app/api/",
+}
+
+const BASE_URL = process.env.REACT_APP_ENV ? IgressURLs[process.env.REACT_APP_ENV] : IgressURLs["dev"];
 
 const instance = axios.create({
   baseURL: BASE_URL,
@@ -27,17 +36,32 @@ const RemoveHeader = (key: string) => {
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-const Request = async (method: RequestMethod, url: string, body?: any) => {
+const Request = async (method: RequestMethod, url: string, body?: any, params?: any) => {
+    
     const requestOptions = {
         method: method,
         url: url,
         data: body,
+        params: params,
     };
+
+
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        SetHeader('Authorization', `Bearer ${token}`);
+    }
 
     try {
         const response = await instance.request(requestOptions);
         return response;
     } catch (error) {
+
+        if ((error as any).response && (error as any).response.status === 498) {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userRole');
+            window.location.href = '/login';
+        }
+
         throw error;
     }
 }

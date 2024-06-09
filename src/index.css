@@ -1,4 +1,24 @@
+:root {
+  font-family: 'Nunito Sans', sans-serif;
+
+  font-size: 14px;
+  line-height: 19.1px;
+
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+style,
+script,
+title {
+    display: none;
+}
+
 body {
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

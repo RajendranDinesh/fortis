@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# fortis
 
 ## Available Scripts
 
@@ -12,35 +10,33 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You will also see lint errors in the console.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production to the `build` folder.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Stuff that would save you time
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- inside the _`src/networking/index.tsx`_ file, you can:
+    - find the Request function configured with axios's instance. You can use it to make requests to the server.
 
-### `npm run eject`
+    - edit Igress's dev url to quickly switch between your local IP address and localhost, to view previews on other devices in your network.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- inside _`src/pages/components/`_ folder, you can find:
+    - <ins>__CircularProgress__</ins>, a component that you can use to show a loading spinner.
+    - <ins>__Editor__</ins>, a component that has base monaco-editor configuration, you can use it to create a code editor.
+    - <ins>__joditEditor__</ins>, a component that has base jodit-editor configuration, you can use it to create a rich text editor.
+    - <ins>__Modal__</ins>, a component that you can use to create a modal.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+            Play with the props to see how all of these components work.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- inside _`src/AppRoutes.tsx`_ file, you can:
+    - find the routes configuration.
+    
+    - add new routes here. ( We have nested routes, each module has its own route configuration. )
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    - add protected routes here. ( We have a `ProtectedRoute` component that you can use to protect routes. )
 
-## Learn More
+    - logout user using the `logout` function.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

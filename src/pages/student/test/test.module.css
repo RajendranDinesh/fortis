@@ -1,0 +1,305 @@
+.test_mainContainer{
+    --text: #b3b3b3;
+    --background: #121212;
+    --primary: #1db954;
+    --secondary: #212121;
+    --accent: #535353;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+}
+
+.test_headingContainer{
+    display : flex;
+    width:100%;
+    height: 8vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: transparent;  
+
+    h2{
+        font-size: 2.2rem;
+        color: var(--text);
+        margin : 3vh 0 0 2vw ;
+    }
+}
+
+.QuestionContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--background);
+    overflow-y: auto;
+    margin: 2vh 0 0 0;
+    margin-bottom: 2rem;
+}
+
+.accordComponent{
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary);
+    margin: 1rem 0 1rem 0;
+}
+
+.options{
+    li{
+        font-size: 1.5rem;
+        line-height: 2.5rem;
+        margin-left: 2.7rem;
+
+        @media screen and (max-width:512px){
+            font-size: 1.5rem;
+            line-height: 2rem;
+            margin-left: 2rem;
+        }
+    }
+}
+.incorrectOption{
+    color: red;
+    font-size: 1.4rem;
+    margin: 1rem 0 1rem 0;
+}
+.correctOption{
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin: 1rem 0 1rem 0;
+}
+.correctAnswer{
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin: 1rem 0 1rem 0;
+
+}
+
+
+/* Programming Answer Page */
+.programHeading{
+    display : flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 7vh;
+    background-color: var(--background);
+    h1{
+        font-size: 1.7rem;
+        color: var(--text);
+        margin : 3vh 0 0 2vw ;
+    }
+}
+.programmingContainer{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+
+    @media screen and (max-width:512px){
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.programLeftContainer{
+    display: flex;
+    flex-direction: column;
+    width:50vw;
+    height: 85vh;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--background);
+    overflow-y: auto;
+    margin: 2vh 0 0 0;
+    margin-bottom: 2rem;
+    border-right: 10px solid var(--secondary);
+    border-bottom: 10px solid var(--secondary);
+
+    @media screen and (max-width:512px){
+        width: 90vw;
+        height: 70vh;
+        border-left: 10px solid var(--secondary);
+    }
+}
+
+.programSwitch{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 5vh;
+    background-color: var(--secondary);
+
+    button{
+        width: 7vw;
+        height: 4vh;
+        background-color:transparent;
+        color: var(--text);
+        font-size: 1.2rem;
+        font-family: "Poppins", sans-serif;
+        margin: 0 0 0 1vw;
+        border: none;
+        cursor: pointer;
+
+        &:hover{
+            background-color:#a8a4a4;
+            color: var(--background);
+            transform: scale(1.1);
+            border-radius: 1rem;
+        }
+
+        @media screen and (max-width:512px){
+            font-size: 1rem;
+            margin: 0 0 0 4vw;
+
+            &:hover{
+                width: 28%;
+                align-items: center;
+            }
+        }
+    }
+
+    @media screen and (max-width:512px){
+        justify-content: space-around;
+    }
+}
+.programNav{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 5vh;
+    background-color: var(--secondary);
+
+    button{
+        width: 3vw;
+        height: 4vh;
+        background-color:transparent;
+        color: var(--text);
+        font-size: 1.2rem;
+        font-family: "Poppins", sans-serif;
+        margin: 0 1vw 0 0vw;
+        border: none;
+        cursor: pointer;
+
+        &:hover{
+            background-color:#a8a4a4;
+            color: var(--background);
+            transform: scale(1.1);
+            border-radius: 1rem;
+        }
+
+        @media screen and (max-width:512px){
+            width: 8vw;
+            align-items: center;
+            height: 4vh;
+
+            &:hover{
+                width:50%;
+
+            }
+        }
+    }
+
+
+    @media screen and (max-width:512px){
+        width : 20%;
+        justify-content: space-around;
+    }
+
+}
+
+
+.programQuestionContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 2vh 0 0 0;
+    margin-bottom: 2rem;
+
+    h2{
+        font-size: 1.5rem;
+        color: var(--text);
+        margin: 1rem 0 1rem 0;
+        line-height: 2rem;
+        margin-left: 3rem;
+        font-weight: 500;
+
+        @media screen and (max-width:512px){
+            font-size:1.3rem;
+            margin-left: 0.5rem;
+        }
+    }
+
+
+}
+
+.programAnswerContainer{
+    display: flex;
+    flex-direction: column;
+    width:50vw;
+    height: 85vh;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+    overflow-y: auto;
+
+    @media screen and (max-width:512px){
+        width:100%;
+        height: 100%;
+    }
+}
+
+.programRightContainer{
+    display: flex;
+    flex-direction: column;
+    width:50vw;
+    height: 85vh;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--background);
+    overflow-y: auto;
+    margin: 2vh 0 0 0;
+    margin-bottom: 2rem;
+    border-bottom: 10px solid var(--secondary);
+    h2{
+        display:none;
+
+        @media screen and (max-width:512px){
+            display: flex;
+        }
+    }
+    @media screen and (max-width:512px){
+        width:90vw;
+        height: 50vh;
+        border-left: 10px solid var(--secondary);
+        border-right: 10px solid var(--secondary);
+        border-top: 10px solid var(--secondary);
+    }
+}
+
+.submittedCodeContainer{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    height: 90vh;
+    background-color: transparent;
+
+    @media screen and (max-width:512px){
+        width: 90vw;
+        height: 50vh;
+    }
+}

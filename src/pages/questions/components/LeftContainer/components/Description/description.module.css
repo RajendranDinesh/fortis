@@ -1,0 +1,80 @@
+.main_container {
+    padding: 10px;
+}
+
+.title_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding-left: 14px;
+
+    .info_container {
+        border: 1px solid #efefef;
+        border-radius: 4px;
+        padding-left: 2px;
+        padding-right: 4px;
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+
+        h1 {
+            line-height: normal;
+        }
+
+        p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            span {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+        }
+
+        .next_prev_container {
+            display: flex;
+            align-items: center;
+
+            border: 1px solid #efefef50;
+            border-radius: 4px;
+
+            button {
+                padding: 0.2rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                font-size: large;
+
+                border: none;
+                color: #efefef50;
+                background-color: transparent;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    color: #000;
+                    background-color: #e0e0e0;
+                } 
+            }
+        }
+    }
+}
+
+.description_container {
+    height: 10%;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    pre {
+        overflow: auto;
+        text-wrap:wrap;
+    }
+
+    word-spacing: 4px;
+}

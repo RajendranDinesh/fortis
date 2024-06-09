@@ -1,0 +1,76 @@
+.svg_pi_wrapper {
+    position: relative;
+
+
+    svg {
+        max-width: 100%;
+        vertical-align: middle;
+    }
+}
+
+.svg_pi {
+    transform: rotate(-90deg);
+}
+
+/* Define the size */
+.svg_indicator {
+    width: 100px;
+    height: 100px;
+}
+
+/* 
+   * Add the center and the radius using the size 
+   * and `stroke-width` values.
+   */
+.svg_indicator_track,
+.svg_indicator_indication {
+    fill: transparent;
+    stroke-width: 10px;
+}
+
+/* Some color to highlight the rings */
+.svg_indicator_track {
+    stroke: #ddd;
+}
+
+.svg_indicator_indication {
+    stroke: #07c;
+}
+
+.svg_pi_indicator__spinner {
+    animation: spinner .75s linear infinite;
+    transform-origin: center;
+}
+
+.svg_pi_label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.svg_pi_label__loading {
+    font-size: 0.75em;
+}
+
+.svg_pi_label__progress {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.svg_pi_label__loading,
+.svg_pi_label__progress {
+    display: block;
+}
+
+/* Spinner animation */
+@keyframes spinner {
+    0% {
+        transform: rotate(0)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
