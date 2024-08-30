@@ -49,12 +49,23 @@ const Login = () => {
     useEffect(() => {
         const authToken = localStorage.getItem("authToken");
         const userRole = localStorage.getItem("userRole");
+        
+        let userRoles: string[] = [];
+        
+        if (userRole !== null) {
+            userRole.split(",").forEach((role: string) => {
+                if (role !== "") {
+                    userRoles.push(role);
+                }
+            })
+        }
+
         document.title = "Login Page"
 
-        if (userRole !== null && authToken !== null){
-            redirect({userRole});
+        if (userRoles.length > 0 && authToken !== null){
+            redirect({userRole: userRoles[0]});
         }
-    });
+    }, []);
 
     const handlePasswordChange = (e: any) => {
         if (e.target.key === "Enter") {

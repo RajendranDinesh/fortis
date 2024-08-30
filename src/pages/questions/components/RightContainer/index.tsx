@@ -24,7 +24,7 @@ const RightContainer = () => {
 
     return (
         <>
-            {/* {questionType === 'mcq' && <MCQ />} */}
+            {questionType === 'mcq' && <MCQ />}
             {questionType === 'code' && <Code />}
             <ToastContainer />
         </>
