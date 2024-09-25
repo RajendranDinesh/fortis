@@ -48,7 +48,7 @@ function AdminDashboard() {
                                     <img width="50" height="50" src="https://img.icons8.com/ios/50/teacher.png" alt="teacher"/>
                                 </div>
                                 <h3 className={styles.heading}>Teachers</h3>
-                                <p className={styles.count}>View | Edit</p>
+                                <h4 className={styles.count}>404</h4>
                             </div>
                         </div>
                     </div>
@@ -57,28 +57,11 @@ function AdminDashboard() {
                     <div className={styles.card} onClick={toggleAddStudentModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
+                                <div className={styles.ico_container}>
+                                    <img width="48" height="48" src="https://img.icons8.com/pulsar-line/48/student-male.png" alt="student-male"/>
+                                </div>
                                 <h3 className={styles.heading}>Students</h3>
-                                <p className={styles.count}>Count: 5</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Classes */}
-                    <div className={styles.card} onClick={toggleClassModal}>
-                        <div className={styles.top_row}>
-                            <div className={styles.info}>
-                                <h3 className={styles.heading}>Classes</h3>
-                                <p className={styles.count}>Count: 5</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Tests */}
-                    <div className={styles.card}>
-                        <div className={styles.top_row}>
-                            <div className={styles.info}>
-                                <h3 className={styles.heading}>Tests</h3>
-                                <p className={styles.count}>Count: 5</p>
+                                <h4 className={styles.count}>3329</h4>
                             </div>
                         </div>
                     </div>

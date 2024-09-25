@@ -59,7 +59,8 @@ const Request = async (method: RequestMethod, url: string, body?: any, params?: 
         if ((error as any).response && (error as any).response.status === 498) {
             localStorage.removeItem('authToken');
             localStorage.removeItem('userRole');
-            window.location.href = '/login';
+
+            if (!window.location.href.includes('/login')) window.location.href = '/login';
         }
 
         throw error;

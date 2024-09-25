@@ -138,10 +138,31 @@
         }
     }
 
-    
 }
 
 /* End of View Module */
+
+/* Start of Block Module */
+
+.blockButton {
+    background-color: transparent;
+
+    color: var(--active-text);
+
+    border: 2px solid var(--active-text);
+    border-radius: 8px;
+
+    padding: 1rem;
+    padding-inline: 2rem;
+
+    margin-top: 2rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+/* End of Block Module */
 
 @media (max-width: 768px) {
 
