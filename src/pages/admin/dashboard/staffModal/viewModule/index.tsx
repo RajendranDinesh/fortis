@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import styles from '../addStaffModal.module.css'
+import styles from '../addStaffModal.module.css';
+
+import { getStaffs } from '../../controllers';
+import { toast } from "react-toastify";
 
 type staffDetails = {
     email: string
-    userName: string
-    facultyId: string
+    user_name: string
+    roll_no: string
 }
 
 export default function ViewModule() {
     const [staff, setStaff] = useState<staffDetails[]>([]);
+
+    const getSetStaff = async () => {
+        try {
+            const data = await getStaffs();
+
+            setStaff(data.staffs);
+        } catch (error) {
+            toast.error((error as any).response.data.error, {
+                autoClose: 2000,
+                theme: "dark",
+            });
+        }
+    }
+
+    useEffect(() => {
+        getSetStaff();
+    }, [])
 
     return(
         <div className={styles.view_container}>
@@ -25,9 +45,9 @@ export default function ViewModule() {
                 <tbody>
                     {staff.map((staff, index) => (
                         <tr key={index}>
-                            <td>{staff.userName}</td>
+                            <td>{staff.user_name}</td>
                             <td>{staff.email}</td>
-                            <td>{staff.facultyId}</td>
+                            <td>{staff.roll_no}</td>
                         </tr>
                     ))}
                 </tbody>

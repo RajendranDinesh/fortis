@@ -26,7 +26,7 @@ import AddTestModal from "./addTestModal";
 
 //Assets
 
-import { FaSpotify } from "react-icons/fa";
+import logo from "../../../assets/logo.svg";
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -148,9 +148,11 @@ function StaffDashboard () {
             <div className={styles.DashBoard_header}>
                 <div className={styles.DashBoard_header_left}>
                     <div className={styles.Logo_container}>
-                        <FaSpotify />
+                    <img src={logo} className={styles.logo} alt="logo" onClick={() => {
+                        window.location.href = `/staff`;
+                    }}/>
                     </div>
-                    <h1>Spotify</h1>
+                    <h1>Consus</h1>
                 </div>
                 <div className={styles.DashBoard_header_right}>
                     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>

@@ -82,6 +82,9 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
 
         setLoading(true);
 
+        let hasErred = false;
+        let errCount = 0;
+
         for (let i = 0; i < students.length; i++) {
             const student = {
                 userName: students[i].user_name,
@@ -104,7 +107,18 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
                     const progressValue = Math.min(100, Math.max(1, roundedProgress));
                     setProgress(progressValue);
                     toast.error(error.response.data.message);
+
+                    errCount++;
+                    hasErred = true;
                 });
+        }
+
+        if (hasErred)
+        {
+            toast.info(`Out of ${students.length} Students only ${students.length-errCount} were inserted, Contact System Admin to resolve the issue.`);
+        } else
+        {
+            toast.success(`Added ${students.length} student(s).`);
         }
 
         setTimeout(() => {
