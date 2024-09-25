@@ -5,9 +5,9 @@ import { getOngoingTest } from '../controllers';
 
 interface StudentTest {
     test_id: number;
-    test_name: string;
-    className: string;
-    duration: string;
+    test_title: string;
+    class_name: string;
+    duration_in_minutes: string;
 }
 
 export default function OngoingTestBody() {
@@ -53,11 +53,11 @@ export default function OngoingTestBody() {
                     <div className={styles.Classes_container} key={index}>
                         <div className={styles.Classroom_display}>
                             <div className={styles.Classroom_display_header}>
-                                <h1>{studentTest.test_name}</h1>
+                                <h1>{studentTest.test_title}</h1>
                             </div>
                             <div className={styles.Classroom_display_footer}>
-                                <p>{studentTest.className}</p>
-                                <p>Duration: {studentTest.duration} mins</p>
+                                <p>{studentTest.class_name}</p>
+                                <p>Duration: {studentTest.duration_in_minutes} mins</p>
                             </div>
                         </div>
                     </div>

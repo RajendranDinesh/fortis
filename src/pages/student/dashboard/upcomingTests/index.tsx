@@ -11,11 +11,11 @@ import { getUpcomingTests } from "../controllers";
 
 interface UpcomingTest {
     test_id: number;
-    title: string;
-    date: string;
-    duration: string;
+    test_title: string;
+    scheduled_at: string;
+    duration_in_minutes: string;
     type: string;
-    subjectName: string;
+    class_name: string;
 }
 
 export default function UpcomingTest() {
@@ -30,6 +30,7 @@ export default function UpcomingTest() {
             const response = await getUpcomingTests();
             if (response && response.data && Array.isArray(response.data.tests)) {
                 setUpcomingTests(response.data.tests);
+                console.log(response.data.tests);
             } else {
                 console.error('API response is not an array:', response?.data);
                 setUpcomingTests([]);
@@ -50,25 +51,21 @@ export default function UpcomingTest() {
                     <div key={test.test_id} className={styles.upcomingTests}>
                         <div className={styles.upcomingClassHeader}>
                             <MdGroups className={styles.testImages} />
-                            <h2 className={styles.upcomingTestTitle}>{test.title}</h2>
+                            <h2 className={styles.upcomingTestTitle}>{test.test_title}</h2>
                         </div>
                         <hr className={styles.testHr} />
                         <div className={styles.upcomingDetailsContainer}>
                             <div className={styles.IndividualTestDetails}>
                                 <CiCalendarDate className={styles.IndividualTestImage} />
-                                <h2 className={styles.upcomingdetails}>{test.date}</h2>
+                                <h2 className={styles.upcomingdetails}>{new Date(test.scheduled_at).toISOString().slice(0, 10)}</h2>
                             </div>
                             <div className={styles.IndividualTestDetails}>
                                 <IoIosTimer className={styles.IndividualTestImage} />
-                                <h2 className={styles.upcomingdetails}>{test.duration}</h2>
-                            </div>
-                            <div className={styles.IndividualTestDetails}>
-                                <TfiWrite className={styles.IndividualTestImage} />
-                                <h2 className={styles.upcomingdetails}>{test.type}</h2>
+                                <h2 className={styles.upcomingdetails}>{test.duration_in_minutes} mins</h2>
                             </div>
                             <div className={styles.IndividualTestDetails}>
                                 <FaBookReader className={styles.IndividualTestImage} />
-                                <h2 className={styles.upcomingdetails}>{test.subjectName}</h2>
+                                <h2 className={styles.upcomingdetails}>{test.class_name}</h2>
                             </div>
                         </div>
                     </div>
