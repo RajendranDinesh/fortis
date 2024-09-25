@@ -10,10 +10,10 @@
     align-items: center;
     justify-content: center;
     width: 100vw;
-    height : 100%;
+    height :100%;
     background-color: var(--background);
     font-family: "Poppins", sans-serif;
-
+    overflow-x: hidden;
     @media screen and (max-width: 512px){
         height: 100%;
         overflow-x : hidden;
@@ -27,6 +27,7 @@
     align-items: flex-start;
     width: 100%;
     height:100%;
+    overflow-x: hidden;
     background: transparent;
     color: var(--text);
 
@@ -101,8 +102,8 @@
 .dashboard_body_container{
     display : flex;
     flex-direction : column;
-    width : 100vw;
-    height: 90vh;
+    width : 97vw;
+    height: 100%;
     background : var(--background);
     color : var(--text);
     justify-content: flex-start;
@@ -147,6 +148,11 @@
     }
 }
 
+.classCardContainer{
+    width : 100%;
+    height : 28rem;    
+}
+
 .Classroom_display_header {
     width: 100%;
     height: 22vh;
@@ -181,6 +187,29 @@
     background-size: calc(1.732 * var(--s)) var(--s);
 }
 
+.no_content_container{
+    display: flex;
+    flex-direction: column;
+    width: 99vw;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    align-items: center;
+    justify-content: center;
+    @media screen and (max-width: 512px){
+        height: 100%;
+        overflow-x : hidden;
+        overflow-y:auto;
+    }
+}
+.no_content_message{
+        font-size : 1.5em;
+        font-weight: 600;
+        margin: 1vw 0 2vw 5vw;
+        @media screen and (max-width: 512px){
+            font-size:1.3rem;
+        }
+}
+
 .Classes_container {
     display: flex;
     margin: 5vh 0 5vh 0;
@@ -204,15 +233,13 @@
     height: 10vh;
     border-radius: 0 0 1em 1em;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
 
     p{
         font-size : 1.5em;
-        margin-right: 1vw;
         font-weight: 600;
-
+        margin: 0 0 1vw 1vw;
         @media screen and (max-width: 512px){
             font-size:1.3rem;
         }

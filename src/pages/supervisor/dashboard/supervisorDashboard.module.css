@@ -470,7 +470,23 @@
 
 }
 
+.no_Test{
+    font-size: 1.5rem;
+    color: -var(--text);
+    margin-top: 1rem;
+
+    @media screen and (max-width:768px){
+        font-size: 1.2rem;
+    }
+
+    @media screen and (max-width:512px){
+        font-size: 1.2rem;
+    }
+}
+
 
 ::-webkit-scrollbar{
     display: none;
 }
+
+

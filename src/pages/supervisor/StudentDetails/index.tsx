@@ -78,7 +78,6 @@ const StudentDetailsPage = () => {
                     blockReason: student.blockReason,
                 }));
                 setStudents(transformedData);
-
             } else {
                 console.error('Failed to fetch test data');
             }
@@ -182,6 +181,10 @@ const StudentDetailsPage = () => {
             // Clear the input value and disable block input
             setInputValue('');
             setIsBlockInputEnabled(false);
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 1200);
         } catch (error) {
 
             console.error('Error blocking student:', error);
@@ -256,7 +259,11 @@ const StudentDetailsPage = () => {
                             <h1>Tab Count</h1>
                         </div>
                     </div>
-                    {active && students
+                                      {active && (
+                        students.filter(student => student.status === 'Active').length === 0 ? (
+                            <p className={styles.zero_activeList}>No active students found</p>
+                        ) : (
+                            students
                                 .filter(student => student.status === 'Active')
                                 .map(student => (
                                     <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
@@ -264,40 +271,44 @@ const StudentDetailsPage = () => {
                                         <h1 className={styles.tab_count}>{student.tabCount}</h1>
                                     </div>
                                 ))
-                            }
-                    {blocked && students
-                        .filter(student => student.status === 'Blocked')
-                        .map(student => (
-                            <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
-                                <h1 className={styles.student_name}>{student.name}</h1>
-                                <h1 className={styles.tab_count}>{student.tabCount}</h1>
-                            </div>
-                        ))
-                    }
+                        )
+                    )}
+                    
+                    {blocked && (
+                        students.filter(student => student.status === 'Blocked').length === 0 ? (
+                            <p className={styles.zero_activeList}>No blocked students found</p>
+                        ) : (
+                            students
+                                .filter(student => student.status === 'Blocked')
+                                .map(student => (
+                                    <div key={student.id} className={styles.student_container} onClick={() => handleStudentClick(student.id)}>
+                                        <h1 className={styles.student_name}>{student.name}</h1>
+                                        <h1 className={styles.tab_count}>{student.tabCount}</h1>
+                                    </div>
+                                ))
+                        )
+                    )}
                 </div>
-                <div className={styles.middle_container}>
-                    {selectedStudent && (
+                               <div className={styles.middle_container}>
+                    {selectedStudent ? (
                         <div className={styles.content_container}>
                             <hr className={styles.hr_line} />
                             <div className={styles.content_studentname}>
                                 <h1 className={styles.content_details}>Student Name:</h1>
                                 <h2 className={styles.content_details}>{selectedStudent.name}</h2>
                             </div>
-
+                
                             {selectedStudent.status === 'Active' && (
                                 <>
-                                {
-                                    hideBlockButton ? null :
-                                    <div className={styles.content_student}>
-                                        <h1 className={styles.content_details}>Block:</h1>
-                                        <button className={styles.main_button} onClick={() => handleReasonSubmit(selectedStudent.id)}>Block</button>
-                                    </div>
-                                }
+                                    {hideBlockButton ? null : (
+                                        <div className={styles.content_student}>
+                                            <h1 className={styles.content_details}>Block:</h1>
+                                            <button className={styles.main_button} onClick={() => handleReasonSubmit(selectedStudent.id)}>Block</button>
+                                        </div>
+                                    )}
                                 </>
                             )}
-                          
-
-
+                
                             {isBlockInputEnabled && (
                                 <div className={styles.block_input_container}>
                                     <h1 className={styles.content_details}>Reason:</h1>
@@ -310,7 +321,7 @@ const StudentDetailsPage = () => {
                                         placeholder="Enter the reason"
                                     />
                                     <button className={styles.main_button} onClick={submitReason}>Submit</button>
-                                    <button className={styles.main_button} onClick={handleCancel}>cancel</button>
+                                    <button className={styles.main_button} onClick={handleCancel}>Cancel</button>
                                 </div>
                             )}
                             <div className={styles.content_student}>
@@ -322,6 +333,8 @@ const StudentDetailsPage = () => {
                                 <h1 className={styles.student_status}>{selectedStudent.status}</h1>
                             </div>
                         </div>
+                    ) : (
+                        <p className={styles.zero_activeList}>No students found</p>
                     )}
                 </div>
                 <div className={styles.right_container}>
