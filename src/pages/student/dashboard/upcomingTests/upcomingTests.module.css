@@ -1,0 +1,94 @@
+.Upcoming_Testcontainer{
+    --text: #b3b3b3;
+    --background: #121212;
+    --primary: #1db954;
+    --secondary: #212121;
+    --accent: #535353;
+
+    display: flex;
+    flex-direction: column;
+    width: 99vw;
+    background-color: var(--background);
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    @media screen and (max-width: 512px){
+        height: 100%;
+        overflow-x : hidden;
+        overflow-y:auto;
+    }
+}
+
+.upcomingTests{
+    width : 80vw;
+    height: 100%;
+    background-color: var(--secondary);
+    border-radius:1rem;
+    cursor: pointer;
+     margin : 2rem 2rem 2rem 2rem;
+}
+
+.upcomingClassHeader{
+    width : 80vw;
+    height: 4vh;
+    border: 1px solid var(--secondary);
+    display: flex;
+    align-items: center;
+    /* border-bottom: 1px solid var(--accent); */
+}
+.testHr{
+    width : 79vw;
+    background-color: var(--accent);
+    margin-bottom: 1rem;
+}
+.upcomingTestTitle{
+    font-size: 1.5rem;
+    color: var(--text);
+    margin : 0 0 0 2rem;
+}
+
+.testImages{
+    width: 32px;
+    height: 30px;
+    margin : 0 0 0 2rem;
+}
+.IndividualTestImage{
+    width: 28px;
+    height: 28px;
+    margin : 0 0 0 0rem;
+    /* margin-top: -0.8rem; */
+}
+.IndividualTestDetails{
+    width : 15vw;
+    height: 1vh;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.upcomingDetailsContainer{
+    width : 100%;
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.upcomingdetails{
+    font-size: 1.2rem;
+    color: var(--text);
+    margin : 0.2rem 1rem 0rem 3rem;
+}
+
+
+.no_content_message{
+        font-size : 1.5em;
+        font-weight: 600;
+        margin: 0 0 vw 1vw;
+        @media screen and (max-width: 512px){
+            font-size:1.3rem;
+        }
+}
