@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { CiCircleChevRight } from "react-icons/ci";
 import { Avatar } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
@@ -38,16 +37,18 @@ function AdminDashboard() {
 
             <div className={styles.left_container}>
                 <div className={styles.title_container}>
-                    <h2>Metrics</h2>
+                    <h2>Dashboard</h2>
                 </div>
                 <div className={styles.cards_container}>
                     {/* Teachers */}
                     <div className={styles.card} onClick={toggleStaffModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
+                                <div className={styles.ico_container}>
+                                    <img width="50" height="50" src="https://img.icons8.com/ios/50/teacher.png" alt="teacher"/>
+                                </div>
                                 <h3 className={styles.heading}>Teachers</h3>
-                                <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
+                                <p className={styles.count}>View | Edit</p>
                             </div>
                         </div>
                     </div>
@@ -58,7 +59,6 @@ function AdminDashboard() {
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Students</h3>
                                 <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,6 @@ function AdminDashboard() {
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Classes</h3>
                                 <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
                         </div>
                     </div>
@@ -80,7 +79,6 @@ function AdminDashboard() {
                             <div className={styles.info}>
                                 <h3 className={styles.heading}>Tests</h3>
                                 <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
                             </div>
                         </div>
                     </div>
