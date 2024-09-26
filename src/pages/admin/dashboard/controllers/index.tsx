@@ -3,6 +3,16 @@ import { Request } from "../../../../networking";
 
 import { staffDetails } from "../staffModal";
 
+export async function getDashboardData() {
+    try {
+        const response = await Request("GET", `/admin/dashboard`);
+
+        if (response.status === HttpStatusCode.Ok)  return response.data;
+    } catch (error) {
+        throw new Error(error as any);
+    }
+}
+
 export async function getStaffs() {
     try {
         const response = await Request("GET", `/staff/all`);

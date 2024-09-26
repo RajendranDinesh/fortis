@@ -83,6 +83,11 @@
         padding: 10px;
         background-color: #ececec80;
         border-radius: 1rem;
+
+        .icon {
+            width: 2.4rem;
+            height: 2.4rem;
+        }
     }
 }
 
