@@ -52,7 +52,7 @@ export default function UnBlockModule() {
         let erred = false;
 
         try {
-            unBlockStaff(blockId);
+            await unBlockStaff(blockId);
         } catch (error) {
             erred = true;
 

@@ -5,7 +5,7 @@ interface urlCollection {
 }
 
 const IgressURLs: urlCollection = {
-    "dev": "http://127.0.0.1:5001/api/",
+    "dev": "http://127.0.0.1:5000/api/",
     "prod": "https://igress.vercel.app/api/",
 }
 

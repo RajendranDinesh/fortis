@@ -36,7 +36,7 @@ export default function BlockModule() {
         let erred = false;
 
         try {
-            blockStaff(staff.roll_no, staff.reason);
+            await blockStaff(staff.roll_no, staff.reason);
         } catch (error) {
             erred = true;
 
