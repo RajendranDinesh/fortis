@@ -9,9 +9,11 @@ export async function getDashboardData() {
 
         if (response.status === HttpStatusCode.Ok)  return response.data;
     } catch (error) {
-        throw new Error(error as any);
+        throw error;
     }
 }
+
+// Staffs Starts
 
 export async function getStaffs() {
     try {
@@ -19,7 +21,7 @@ export async function getStaffs() {
 
         if (response.status === HttpStatusCode.Ok)  return response.data;
     } catch (error) {
-        throw new Error(error as any);
+        throw error;
     }
 }
 
@@ -29,7 +31,7 @@ export async function getBlockedStaffs() {
 
         if (response.status === HttpStatusCode.Ok)  return response.data;
     } catch (error) {
-        throw new Error(error as any);
+        throw error;
     }
 }
 
@@ -37,7 +39,7 @@ export async function unBlockStaff(blockId: number) {
     try {
         await Request("PUT", `/staff/unblock/${blockId}`);
     } catch (error) {
-        throw new Error(error as any);
+        throw error;
     }
 }
 
@@ -45,7 +47,7 @@ export async function blockStaff(facultyId: string, reason: string) {
     try {
         await Request("POST", `/staff/block/${facultyId}`, {reason: reason});
     } catch (error) {
-        throw new Error(error as any);
+        throw error;
     }
 }
 
@@ -58,9 +60,13 @@ export async function addStaff(userDetails: staffDetails) {
         }
 
     } catch (error) {
-        throw new Error (error as any);
+        throw error;
     }
 }
+
+// Staffs Ends
+
+// Student Starts
 
 export async function addStudents(studentDetails: staffDetails) {
     try{
@@ -71,6 +77,33 @@ export async function addStudents(studentDetails: staffDetails) {
         }
 
     } catch (error) {
-        throw new Error (error as any);
+        throw error;
     }
 }
+
+export async function blockStudent(rollNumber: string, reason: string) {
+    await Request("POST", `/admin/block/student/${rollNumber}`,
+        {
+            reason: reason
+        });
+}
+
+export async function getBlockedStudents() {
+    try {
+        const response = await Request("GET", `/admin/blocked/student`);
+
+        if (response.status === HttpStatusCode.Ok)  return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function unBlockStudents(blockId: number) {
+    try {
+        await Request("PUT", `/admin/unblock/student/${blockId}`);
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Student Ends

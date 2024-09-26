@@ -1,28 +1,29 @@
 // external modules
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { toast } from 'react-toastify';
 
 // internal modules
-import { blockStaff } from '../../controllers';
+import { blockStudent } from '../../controllers';
 
 // assets
-import styles from '../addStaffModal.module.css';
+import styles from '../addStudent.module.css';
 
-type staffDetails = {
+type studentDetails = {
     roll_no: string
     reason: string
 }
 
 export default function BlockModule() {
-    const [staff, setStaff] = useState<staffDetails>({
+    const [student, setStudent] = useState<studentDetails>({
         roll_no: '',
         reason: ''
     });
 
     const block = async () => {
 
-        if (staff.reason.trim.length === 0) {
+        if (student.reason.trim.length === 0) {
             toast.error("Reason can not be empty",
                 {
                     autoClose: 2000,
@@ -36,13 +37,24 @@ export default function BlockModule() {
         let erred = false;
 
         try {
-            blockStaff(staff.roll_no, staff.reason);
+            await blockStudent(student.roll_no, student.reason);
         } catch (error) {
             erred = true;
 
+            if ((error as AxiosError).response?.status === HttpStatusCode.NotFound) {
+
+                Swal.fire(
+                    'Failed!',
+                    `${(error as any).response.data.error}.`,
+                    'error'
+                );
+
+                return;
+            }
+
             Swal.fire(
                 'Failed!',
-                `The Requested Staff's account remains intact, contact support if this persists.`,
+                `The Requested Student's account remains intact, contact support if this persists.`,
                 'error'
             )
         }
@@ -50,7 +62,7 @@ export default function BlockModule() {
         if (!erred) {
             Swal.fire(
                 'Blocked!',
-                `The Requested Staff's account has been blocked.`,
+                `The Requested Student's account has been blocked.`,
                 'success'
             )
         }
@@ -60,21 +72,21 @@ export default function BlockModule() {
         <div className={styles.view_container}>
             <div className={styles.title_container}>
                 <div>
-                    <h1 className={styles.staff_title}>Enter Staff Detail to Block</h1>
+                    <h1 className={styles.staff_title}>Enter Student Detail to Block</h1>
                 </div>
 
                 <div>
-                    <input placeholder="Faculty Id" onChange={(e) => setStaff({...staff, roll_no: e.target.value})} value={staff?.roll_no} name="rollNumber" className={styles.name_input} autoComplete="off" autoCorrect="off" />
+                    <input placeholder="Roll Number" onChange={(e) => setStudent({...student, roll_no: e.target.value})} value={student?.roll_no} name="rollNumber" className={styles.name_input} autoComplete="off" autoCorrect="off" />
                 </div>
             </div>
             <div>
                 <div>
-                    <textarea onChange={(e) => setStaff({...staff, reason: e.target.value})} placeholder="Reason" name="reason" className={styles.reason} autoComplete='off' />
+                    <textarea onChange={(e) => setStudent({...student, reason: e.target.value})} placeholder="Reason" name="reason" className={styles.reason} autoComplete='off' />
                 </div>
                 <button className={styles.blockButton} onClick={() => {
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: `This will block staff with Id ${staff.roll_no} for ${staff.reason}`,
+                        text: `This will block student with Id ${student.roll_no} for ${student.reason}`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: 'green',
