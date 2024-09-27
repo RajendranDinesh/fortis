@@ -76,6 +76,7 @@ const SupervisorDashboard = () => {
             <div className={styles.header_container}>
                 <div className={styles.DashBoard_header_left}>
                 <Consuslogo className={styles.header_image}/>
+                <h2 className={styles.header_title}>Consus</h2>
                 </div>
                 
                 <div className={styles.DashBoard_header_right}>
@@ -146,27 +147,30 @@ const SupervisorDashboard = () => {
                 </div>
             </div>
             <div className={styles.body_container} >
-
-            {tests.map((test, index) => (
-                <div className={styles.card_container} key={test.test_id ?? 0} onClick={() => handleCardClick(test.test_id ?? 0)}>
-                    <div className={styles.card_pattern}></div>
-                    <div className={styles.text_container}>
-                        <div>
-                        <div className={styles.card_nameContainer}>
-                            <h1 className={styles.card_name}>{test.title}</h1>
-                        </div>
-                        <div className={styles.card_dateContainer}>
-                            <FaCalendarCheck />
-                            <p className={styles.card_date}>{test.scheduled_at}</p>
-                        </div>
-                        </div>
-                        <div className={styles.card_NumberContainer}>
-                            <MdOutlineSupervisorAccount className={styles.count_image} />
-                            <h1 className={styles.card_number}>{test.total_students}</h1>
-                        </div>
+                { tests.length === 0 ? (
+                    <h2 className={styles.no_Test}>No Tests Found</h2>
+                ) :(
+                    tests.map((test, index) => (
+                        <div className={styles.card_container} key={test.test_id ?? 0} onClick={() => handleCardClick(test.test_id ?? 0)}>
+                            <div className={styles.card_pattern}></div>
+                            <div className={styles.text_container}>
+                                <div>
+                                <div className={styles.card_nameContainer}>
+                                    <h1 className={styles.card_name}>{test.title}</h1>
+                                </div>
+                                <div className={styles.card_dateContainer}>
+                                    <FaCalendarCheck />
+                                    <p className={styles.card_date}>{test.scheduled_at}</p>
+                                </div>
+                                </div>
+                                <div className={styles.card_NumberContainer}>
+                                    <MdOutlineSupervisorAccount className={styles.count_image} />
+                                    <h1 className={styles.card_number}>{test.total_students}</h1>
+                                </div>
+                            </div>
                     </div>
-            </div>
-            ))}
+                    ))
+                )}
         </div>
         </div>
     );

@@ -82,7 +82,8 @@ export default function AddModule({ handleModalClick }: Props) {
         }
     }
     return (
-        <div>
+        <div className={styles.addStaffModal}>
+            <h1>Enter Staff Details</h1>
             <div className={styles.details_container}>
                 <div className={styles.left_container}>
                     <div className={styles.input_container}>

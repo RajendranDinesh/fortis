@@ -4,8 +4,8 @@
     min-height: 100vh;
     width: 100vw;
 
-    background-color: #121212;
-    color: #b3b3b3;
+    background-color: #eaeaea;
+    color: #050404;
 }
 
 header {
@@ -14,8 +14,8 @@ header {
     align-items: center;
     padding: 0 20px;
     height: 60px;
-    background-color: #1f1f1f;
-    color: #b3b3b3;
+    background-color: #eaeaea;
+    color: #050404;
 }
 
 .header_left {

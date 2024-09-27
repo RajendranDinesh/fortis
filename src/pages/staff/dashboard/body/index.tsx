@@ -120,7 +120,7 @@ function Body({ classroomList, getClassrooms, testList, getTests }: Props) {
                                                 handleDeleteClassroom({ classroomId: classroom.classroom_id });
                                                 Swal.fire(
                                                     'Deleted!',
-                                                    'Your file has been deleted.',
+                                                    'The Requested Classroom has been deleted.',
                                                     'success'
                                                 )
                                             }

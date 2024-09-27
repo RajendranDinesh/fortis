@@ -49,12 +49,23 @@ const Login = () => {
     useEffect(() => {
         const authToken = localStorage.getItem("authToken");
         const userRole = localStorage.getItem("userRole");
+        
+        let userRoles: string[] = [];
+        
+        if (userRole !== null) {
+            userRole.split(",").forEach((role: string) => {
+                if (role !== "") {
+                    userRoles.push(role);
+                }
+            })
+        }
+
         document.title = "Login Page"
 
-        if (userRole !== null && authToken !== null){
-            redirect({userRole});
+        if (userRoles.length > 0 && authToken !== null){
+            redirect({userRole: userRoles[0]});
         }
-    });
+    }, []);
 
     const handlePasswordChange = (e: any) => {
         if (e.target.key === "Enter") {
@@ -93,13 +104,14 @@ const Login = () => {
             if (userRoles?.length === 1) {
                 const userRole = userRoles[0];
                 redirect({userRole});
-            }
-            else {
+            } else {
                 setUserRoles({roles: userRoles});
                 setShowLoginButton(false);
             }
     
         } catch (error: any) {
+            if ((error as any).response && (error as any).response.status === 401) toast.error(<p>You have entered wrong password!</p>);
+            if ((error as any).response && (error as any).response.status === 498) toast.error(<p>Your account is suspended.</p>);
             console.log(`[Login] ${error.message}`);
         }
 

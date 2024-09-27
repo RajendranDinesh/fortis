@@ -1,21 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { CiCircleChevRight } from "react-icons/ci";
 import { Avatar } from "@mui/material";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import styles from './dashboard.module.css';
 import handWave from '../../../assets/hand_wave.svg';
+
 import StaffModal from "./staffModal";
 import StudentModal from "./studentModal";
+import { getDashboardData } from "./controllers";
+import { AxiosError } from "axios";
+import { FaSpinner } from "react-icons/fa";
+
+interface DashboardData {
+    role: string;
+    staff_count: number;
+}
+
+interface DataError {
+    error: string;
+}
 
 function AdminDashboard() {
 
     const [isStaffModalOpen, setIsStaffModalOpen] = useState(false);
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
-    const [isClassModalOpen, setIsClassModalOpen] = useState(false);
-    const [isTestModalOpen, setIsTestModalOpen] = useState(false);
 
+    const [dashboardData, setDashboardData] = useState<DashboardData[]>();
 
     const toggleStaffModal = () => {
         setIsStaffModalOpen(!isStaffModalOpen)
@@ -25,29 +36,52 @@ function AdminDashboard() {
         setIsStudentModalOpen(!isStudentModalOpen)
     };
 
-    const toggleClassModal = () => {
-        setIsClassModalOpen(!isClassModalOpen)
+    const getSetData = async () => {
+        try {
+            const { dashboard } = await getDashboardData();
+
+            setDashboardData(dashboard);
+
+        } catch (error) {
+            const response = (error as AxiosError).response;
+
+            if (response) {
+                const err = response.data as DataError
+
+                toast.error(err.error, {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            } else {
+                toast.error("Could not establish a connection to the server, Contact developer ASAP.", {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            }
+        }
     };
 
-    const toggleTestModal = () => {
-        setIsTestModalOpen(!isTestModalOpen)
-    };
+    useEffect(() => {
+        getSetData();
+    }, []);
 
     return (
         <div className={styles.dashboard}>
 
             <div className={styles.left_container}>
                 <div className={styles.title_container}>
-                    <h2>Metrics</h2>
+                    <h2>Dashboard</h2>
                 </div>
                 <div className={styles.cards_container}>
                     {/* Teachers */}
                     <div className={styles.card} onClick={toggleStaffModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
+                                <div className={styles.ico_container}>
+                                    <img className={styles.icon} src="https://img.icons8.com/ios/50/teacher.png" alt="teacher"/>
+                                </div>
                                 <h3 className={styles.heading}>Teachers</h3>
-                                <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
+                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "staff")[0].staff_count || <FaSpinner className="spinner" />}</h4>
                             </div>
                         </div>
                     </div>
@@ -56,31 +90,11 @@ function AdminDashboard() {
                     <div className={styles.card} onClick={toggleAddStudentModal}>
                         <div className={styles.top_row}>
                             <div className={styles.info}>
+                                <div className={styles.ico_container}>
+                                    <img className={styles.icon} src="https://img.icons8.com/pulsar-line/48/student-male.png" alt="student-male"/>
+                                </div>
                                 <h3 className={styles.heading}>Students</h3>
-                                <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Classes */}
-                    <div className={styles.card} onClick={toggleClassModal}>
-                        <div className={styles.top_row}>
-                            <div className={styles.info}>
-                                <h3 className={styles.heading}>Classes</h3>
-                                <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Tests */}
-                    <div className={styles.card}>
-                        <div className={styles.top_row}>
-                            <div className={styles.info}>
-                                <h3 className={styles.heading}>Tests</h3>
-                                <p className={styles.count}>Count: 5</p>
-                                <CiCircleChevRight className={styles.right_angle_bracket} />
+                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "student")[0].staff_count || <FaSpinner className="spinner" />}</h4>
                             </div>
                         </div>
                     </div>

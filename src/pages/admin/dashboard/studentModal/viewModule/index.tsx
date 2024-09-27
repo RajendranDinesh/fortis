@@ -1,13 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 import styles from '../addStaffModal.module.css';
-import { FaSpinner } from "react-icons/fa";
 
 import { getStaffs } from '../../controllers';
 
-interface staffDetails {
+type staffDetails = {
     email: string
     user_name: string
     roll_no: string
@@ -23,36 +21,18 @@ export default function ViewModule() {
     const [staff, setStaff] = useState<staffDetails[]>([]);
     const [staffSearch, setStaffSearch] = useState<string>('');
 
-    const [isLoading, setIsLoading] = useState(false);
-
     const getSetStaff = async () => {
-        
-        setIsLoading(true);
-        
         try {
             const data = await getStaffs();
 
             setOriginal(data.staffs);
             setStaff(data.staffs);
         } catch (error) {
-            const response = (error as AxiosError).response;
-
-            if (response) {
-                const err = response.data as {error: string}
-
-                toast.error(err.error, {
-                    autoClose: 2000,
-                    theme: "dark",
-                });
-            } else {
-                toast.error("Could not establish a connection to the server, Contact developer ASAP.", {
-                    autoClose: 2000,
-                    theme: "dark",
-                });
-            }
+            toast.error((error as any).response.data.error, {
+                autoClose: 2000,
+                theme: "dark",
+            });
         }
-
-        setIsLoading(false);
     }
 
     const changeInSearch = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +49,7 @@ export default function ViewModule() {
 
     useEffect(() => {
         getSetStaff();
-    }, []);
+    }, [])
 
     return(
         <div className={styles.view_container}>
@@ -107,7 +87,7 @@ export default function ViewModule() {
                         </tr>
                     ))}
                 </tbody>
-            </table> : isLoading ? <FaSpinner className="spinner" /> : <>No staffs to show</>}
+            </table> : <>No staffs to show</>}
         </div>
     );
 }

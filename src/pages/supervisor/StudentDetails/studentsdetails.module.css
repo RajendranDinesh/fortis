@@ -815,3 +815,10 @@
     overflow-x: auto;
   }
 }
+
+
+.zero_activeList{
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-top: 1rem;
+}

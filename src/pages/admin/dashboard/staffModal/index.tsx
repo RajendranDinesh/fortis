@@ -7,7 +7,9 @@ import styles from './addStaffModal.module.css';
 // Components
 import Modal from "../../../components/Modal";
 import AddModule from './addModule';
+import UnBlockModule from './unBlockModule';
 import ViewModule from './viewModule';
+import BlockModule from './blockModule';
 
 interface Props {
     modalOpen: boolean
@@ -42,10 +44,24 @@ export default function AddStaffModal({ modalOpen, handleModalClick }: Props) {
                             className={activeTab === 'add' ? styles.active_tab : ""}
                         >Add</button>
                     </div>
+                    <div>
+                        <button
+                            onClick={() => setActiveTab('blockMenu')}
+                            className={activeTab === 'blockMenu' ? styles.active_tab : ""}
+                        >Block</button>
+                    </div>
+                    <div>
+                        <button
+                            onClick={() => setActiveTab('blocked')}
+                            className={activeTab === 'blocked' ? styles.active_tab : ""}
+                        >Blocked Staffs</button>
+                    </div>
                 </div>
                 <div>
                     {activeTab === 'view' && <ViewModule />}
                     {activeTab === 'add' && <AddModule handleModalClick={handleModalClick} />}
+                    {activeTab === 'blockMenu' && <BlockModule />}
+                    {activeTab === 'blocked' && <UnBlockModule />}
                 </div>
             </div>
         </Modal>
