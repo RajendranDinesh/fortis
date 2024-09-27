@@ -8,6 +8,7 @@ import { blockStaff } from '../../controllers';
 
 // assets
 import styles from '../addStaffModal.module.css';
+import { AxiosError, HttpStatusCode } from 'axios';
 
 type staffDetails = {
     roll_no: string
@@ -22,7 +23,7 @@ export default function BlockModule() {
 
     const block = async () => {
 
-        if (staff.reason.trim.length === 0) {
+        if (staff.reason.trim().length === 0) {
             toast.error("Reason can not be empty",
                 {
                     autoClose: 2000,
@@ -36,9 +37,30 @@ export default function BlockModule() {
         let erred = false;
 
         try {
-            await blockStaff(staff.roll_no, staff.reason);
+            await toast.promise(
+                blockStaff(staff.roll_no, staff.reason),
+                {
+                    pending: `Blocking Staff (${staff.roll_no}).`,
+                    success: "Blocked Staff.",
+                    error: "Something went wrong",
+                }, {
+                    theme: "dark",
+                }
+            );
         } catch (error) {
             erred = true;
+
+            const response = (error as AxiosError).response;
+
+            if (response && response.status === HttpStatusCode.NotFound) {
+                Swal.fire(
+                    'Failed!',
+                    `${(response.data as {error: string}).error}.`,
+                    'error'
+                );
+
+                return;
+            }
 
             Swal.fire(
                 'Failed!',

@@ -5,14 +5,20 @@ import { toast, ToastContainer } from "react-toastify";
 
 import styles from './dashboard.module.css';
 import handWave from '../../../assets/hand_wave.svg';
+
 import StaffModal from "./staffModal";
 import StudentModal from "./studentModal";
 import { getDashboardData } from "./controllers";
+import { AxiosError } from "axios";
 import { FaSpinner } from "react-icons/fa";
 
 interface DashboardData {
     role: string;
     staff_count: number;
+}
+
+interface DataError {
+    error: string;
 }
 
 function AdminDashboard() {
@@ -37,10 +43,21 @@ function AdminDashboard() {
             setDashboardData(dashboard);
 
         } catch (error) {
-            toast.error((error as any).response.data.error, {
-                autoClose: 2000,
-                theme: "dark",
-            });
+            const response = (error as AxiosError).response;
+
+            if (response) {
+                const err = response.data as DataError
+
+                toast.error(err.error, {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            } else {
+                toast.error("Could not establish a connection to the server, Contact developer ASAP.", {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            }
         }
     };
 
@@ -64,7 +81,7 @@ function AdminDashboard() {
                                     <img className={styles.icon} src="https://img.icons8.com/ios/50/teacher.png" alt="teacher"/>
                                 </div>
                                 <h3 className={styles.heading}>Teachers</h3>
-                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "staff")[0].staff_count}</h4>
+                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "staff")[0].staff_count || <FaSpinner className="spinner" />}</h4>
                             </div>
                         </div>
                     </div>
@@ -77,7 +94,7 @@ function AdminDashboard() {
                                     <img className={styles.icon} src="https://img.icons8.com/pulsar-line/48/student-male.png" alt="student-male"/>
                                 </div>
                                 <h3 className={styles.heading}>Students</h3>
-                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "student")[0].staff_count}</h4>
+                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "student")[0].staff_count || <FaSpinner className="spinner" />}</h4>
                             </div>
                         </div>
                     </div>

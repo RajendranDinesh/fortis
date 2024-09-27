@@ -23,7 +23,7 @@ export default function BlockModule() {
 
     const block = async () => {
 
-        if (student.reason.trim.length === 0) {
+        if (student.reason.trim().length === 0) {
             toast.error("Reason can not be empty",
                 {
                     autoClose: 2000,
@@ -41,11 +41,12 @@ export default function BlockModule() {
         } catch (error) {
             erred = true;
 
-            if ((error as AxiosError).response?.status === HttpStatusCode.NotFound) {
+            const response = (error as AxiosError).response;
 
+            if (response && response.status === HttpStatusCode.NotFound) {
                 Swal.fire(
                     'Failed!',
-                    `${(error as any).response.data.error}.`,
+                    `${(response.data as {error: string}).error}.`,
                     'error'
                 );
 

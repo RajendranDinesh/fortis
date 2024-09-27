@@ -1,13 +1,15 @@
 // external modules
 import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import { AxiosError } from 'axios';
 
 // internal modules
 import { getBlockedStaffs, unBlockStaff } from '../../controllers';
 
 // assets
 import styles from '../addStaffModal.module.css';
-import Swal from 'sweetalert2';
+import { FaSpinner } from 'react-icons/fa';
 
 type staffDetails = {
     user_name: string
@@ -20,19 +22,35 @@ export default function UnBlockModule() {
     const [original, setOriginal] = useState<staffDetails[]>([]);
     const [staffs, setStaff] = useState<staffDetails[]>([]);
     const [staffSearch, setStaffSearch] = useState<string>('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const getSetStaff = async () => {
+        setIsLoading(true);
+
         try {
             const data = await getBlockedStaffs();
 
             setOriginal(data.staffs);
             setStaff(data.staffs);
         } catch (error) {
-            toast.error((error as any).response.data.error, {
-                autoClose: 2000,
-                theme: "dark",
-            });
+            const response = (error as AxiosError).response;
+
+            if (response)
+            {
+                toast.error((response.data as {error: string}).error, {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            } else
+            {
+                toast.error("Could not establish a connection to the server, Contact developer ASAP.", {
+                    autoClose: 2000,
+                    theme: "dark",
+                });
+            }
         }
+
+        setIsLoading(false);
     }
 
     const changeInSearch = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +70,16 @@ export default function UnBlockModule() {
         let erred = false;
 
         try {
-            await unBlockStaff(blockId);
+            await toast.promise(
+                unBlockStaff(blockId),
+                {
+                    pending: `Un blocking Staff.`,
+                    success: "Un blocked Staff.",
+                    error: "Something went wrong",
+                }, {
+                    theme: "dark",
+                }
+            );
         } catch (error) {
             erred = true;
 
@@ -70,6 +97,8 @@ export default function UnBlockModule() {
                 'success'
             )
         }
+
+        await getSetStaff();
     }
 
     useEffect(() => {
@@ -125,7 +154,7 @@ export default function UnBlockModule() {
                     </tr>)}
                 </tbody>
             </table>
-            : <>No staffs to show</>}
+            : isLoading ? <FaSpinner className="spinner" /> : <>No staffs to show</>}
         </div>
     );
 }

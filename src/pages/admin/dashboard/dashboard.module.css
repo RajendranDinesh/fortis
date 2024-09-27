@@ -35,8 +35,9 @@
     flex-wrap: wrap;
     background-color: #ffffff;
 
-    width: 9vw;
-    height: 16vh; 
+    aspect-ratio: 1/1;
+    height: 10rem;
+
     border-radius: 1.6rem;
     padding: 1em;
 
