@@ -104,13 +104,14 @@ const Login = () => {
             if (userRoles?.length === 1) {
                 const userRole = userRoles[0];
                 redirect({userRole});
-            }
-            else {
+            } else {
                 setUserRoles({roles: userRoles});
                 setShowLoginButton(false);
             }
     
         } catch (error: any) {
+            if ((error as any).response && (error as any).response.status === 401) toast.error(<p>You have entered wrong password!</p>);
+            if ((error as any).response && (error as any).response.status === 498) toast.error(<p>Your account is suspended.</p>);
             console.log(`[Login] ${error.message}`);
         }
 

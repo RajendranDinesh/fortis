@@ -15,6 +15,7 @@ const NotFoundPage = lazy(() => import("./pages/404"));
 function AppRoutes() {
     return (
         <Routes>
+            <Route path="/" element={<Navigate to={'/login'} />} />
             <Route path="/login"
                 element={
                     <Suspense fallback={<>Loading</>}>

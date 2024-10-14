@@ -88,7 +88,7 @@ const StudentDetailsPage = () => {
 
     const block_Student = async (studentId : any , blockReason : string) => {
         try {
-            const response = await Request("POST",`/supervisor/block-student/${id}`,{student_id: studentId, block_reason: blockReason});
+            const response = await Request("POST",`/supervisor/block-student`,{student_id: studentId, block_reason: blockReason});
             if (response.status === 200) {
                 console.log("Blocked student successfully");
             } else {

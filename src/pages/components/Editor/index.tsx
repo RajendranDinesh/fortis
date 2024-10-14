@@ -11,21 +11,21 @@ interface EditorProps {
 }
 
 // Change the languages variable if using a different api provider
-export const programmingLanguages = [
-    { id: 92, name: 'Python', value: 'python' },
-    { id: 50, name: 'C', value: 'c' },
-    { id: 54, name: 'C++', value: 'c++' },
-    { id: 91, name: 'Java', value: 'java' },
-    { id: 93, name: 'JavaScript', value: 'javascript' },
-];
-
-// const languages = [
-//     { id: 71, name: 'Python', value: 'python' },
+// export const programmingLanguages = [
+//     { id: 92, name: 'Python', value: 'python' },
 //     { id: 50, name: 'C', value: 'c' },
-//     { id: 54, name: 'C++', value: 'cpp' },
-//     { id: 62, name: 'Java', value: 'java' },
-//     { id: 63, name: 'JavaScript', value: 'javascript' },
+//     { id: 54, name: 'C++', value: 'c++' },
+//     { id: 91, name: 'Java', value: 'java' },
+//     { id: 93, name: 'JavaScript', value: 'javascript' },
 // ];
+
+export const programmingLanguages = [
+    { id: 71, name: 'Python', value: 'python' },
+    { id: 50, name: 'C', value: 'c' },
+    { id: 54, name: 'C++', value: 'cpp' },
+    { id: 62, name: 'Java', value: 'java' },
+    { id: 63, name: 'JavaScript', value: 'javascript' },
+];
 
 loader.config({ monaco });
 
