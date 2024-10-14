@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../dashboard.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { getOngoingTest } from '../controllers';
 
 interface StudentTest {
-    test_id: number;
+    classroom_test_id: number;
     test_title: string;
     class_name: string;
     duration_in_minutes: string;
@@ -13,7 +13,6 @@ interface StudentTest {
 export default function OngoingTestBody() {
     const navigate = useNavigate();
     const [studentTests, setStudentTests] = useState<StudentTest[]>([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchOngoingTests();
@@ -24,6 +23,7 @@ export default function OngoingTestBody() {
             const response = await getOngoingTest();
             if (response && response.data && Array.isArray(response.data.tests)) {
                 setStudentTests(response.data.tests);
+                console.log(response.data.tests);
             } else {
                 console.error('API response is not an array:', response?.data);
                 setStudentTests([]);
@@ -31,8 +31,6 @@ export default function OngoingTestBody() {
         } catch (err) {
             console.error('Error fetching ongoing tests:', err);
             setStudentTests([]);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -45,12 +43,16 @@ export default function OngoingTestBody() {
         );
     }
 
+    const handleClassClick = (testId: number) => {
+        navigate(`/questions/${testId}`);
+    }
+
     return (
         <div className={styles.classCardContainer}>
             <h2 className={styles.classHeading}>Ongoing Tests</h2>
             <div className={styles.dashboard_classes}>
                 {studentTests.map((studentTest, index) => (
-                    <div className={styles.Classes_container} key={index}>
+                    <div className={styles.Classes_container} key={index} onClick = {() => handleClassClick(studentTest.classroom_test_id)}>
                         <div className={styles.Classroom_display}>
                             <div className={styles.Classroom_display_header}>
                                 <h1>{studentTest.test_title}</h1>
