@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import styles from './description.module.css';
 
-import { QuestionPaneDataContext, questionDataPayload, McqQuestion, McqOption } from '../../../../questionContext';
+import { QuestionPaneDataContext, questionDataPayload, McqQuestion, McqOption, questionStatus } from '../../../../questionContext';
 import MCQ from '../../../RightContainer/components/MCQ';
 
 const Description = () => {
@@ -29,10 +29,10 @@ const Description = () => {
             return;
         }
 
-        const questionStatus = questionMetaData.find((question) => question.id === questionId)?.status;
+        const questionStatuse = questionMetaData.find((question) => question.id === questionId)?.status;
 
-        if (questionStatus === "not_viewed") {
-            questionMetaData.find((question) => question.id === questionId)!.status = "not_attempted";
+        if (questionStatuse === questionStatus.not_viewed) {
+            questionMetaData.find((question) => question.id === questionId)!.status = questionStatus.not_attempted;
         }
 
         setCurrentQuestionId(questionId);

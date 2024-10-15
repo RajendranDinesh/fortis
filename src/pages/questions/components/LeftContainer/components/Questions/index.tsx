@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import styles from './questions.module.css';
 import Circle from '../../../../../components/CircularProgress';
 
-import { QuestionPaneDataContext, questionDataPayload } from '../../../../questionContext';
+import { QuestionPaneDataContext, questionDataPayload, questionStatus } from '../../../../questionContext';
 
 const QuestionsPane = ({
   isFinished,
@@ -77,10 +77,10 @@ const QuestionsPane = ({
       return;
     }
 
-    const questionStatus = questions.find((question) => question.id === questionId)?.status;
+    const questionStatuse = questions.find((question) => question.id === questionId)?.status;
 
-    if (questionStatus === "not_viewed") {
-      questions.find((question) => question.id === questionId)!.status = "not_attempted";
+    if (questionStatuse === questionStatus.not_viewed) {
+      questions.find((question) => question.id === questionId)!.status = questionStatus.not_attempted;
     }
 
     setCurrentQuestionId(questionId);
@@ -95,10 +95,10 @@ const QuestionsPane = ({
             <div
               key={question.id}
               className={`${question.id === questionPaneData.currentQuestionId ? `${styles.selected}` :
-                (question.status === "error" ? `${styles.error}` :
-                  (question.status === "attempted" ? `${styles.success}` :
-                    (question.status === "not_viewed" ? `${styles.info}` :
-                      (question.status === "not_attempted" ? `${styles.warning}` :
+                (question.status === questionStatus.error ? `${styles.error}` :
+                  (question.status === questionStatus.attempted ? `${styles.success}` :
+                    (question.status === questionStatus.not_viewed ? `${styles.info}` :
+                      (question.status === questionStatus.not_attempted ? `${styles.warning}` :
                         `${styles.info}`
                       )
                     )

@@ -32,13 +32,20 @@ type CollectionOfQuestions = {
     [key: number]: McqQuestion | CodeQuestion;
 };
 
+export enum questionStatus {
+    'error',
+    'not_viewed',
+    'attempted',
+    'not_attempted'
+}
+
 export interface questionPaneData {
     currentQuestionId: number;
     startTime?: Date | undefined;
     endTime?: Date | undefined;
     questions?: {
         id: number;
-        status: string;
+        status: questionStatus;
         type_name: string;
     }[];
 }
@@ -48,13 +55,15 @@ export interface questionDataPayload {
     getSetQuestionPaneData: (testId: string) => void
     setCurrentQuestionId: (questionId: number) => void
     questionData: CollectionOfQuestions | null
+    setQuestionStatus: (status: questionStatus) => void
 }
 
 export const QuestionPaneDataContext = createContext<questionDataPayload>({
     questionPaneData: null,
     getSetQuestionPaneData: () => { },
     setCurrentQuestionId: () => { },
-    questionData: null
+    questionData: null,
+    setQuestionStatus: () => { },
 });
 
 export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) => {
@@ -101,6 +110,14 @@ export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) 
                 draggable: true
             });
         }
+    }
+
+    const setQuestionStatus = (status: questionStatus) => {
+        const questions = questionPaneData?.questions;
+
+        if (!questions) return;
+
+        questions.find((question) => question.id === questionPaneData.currentQuestionId)!.status = status;
     }
 
     const getSetQuestionPaneData = async (testId: string) => {
@@ -166,7 +183,8 @@ export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) 
             questionPaneData,
             getSetQuestionPaneData,
             setCurrentQuestionId,
-            questionData
+            questionData,
+            setQuestionStatus
         }}>
             {children}
         </QuestionPaneDataContext.Provider>

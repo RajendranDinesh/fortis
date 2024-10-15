@@ -6,7 +6,7 @@ import styles from './finished.module.css';
 import Modal from "../../../components/Modal"
 
 import { AnswerDataContext } from '../../answerContext';
-import { QuestionPaneDataContext, questionDataPayload } from '../../questionContext';
+import { QuestionPaneDataContext, questionDataPayload, questionStatus } from '../../questionContext';
 import { Request } from '../../../../networking';
 
 export default function CompletedModal({
@@ -26,7 +26,6 @@ export default function CompletedModal({
     const [summary, setSummary] = useState({
         totalQuestions: 0,
         questionsAttempted: 0,
-        questionsWithErrors: 0,
         questionsNotViewed: 0
     });
 
@@ -70,33 +69,34 @@ export default function CompletedModal({
         try {
             const mcqAnswers = getMCQAnswers();
             const response = await Request("POST", '/submission/submit/'+classroomTestId, {mcqAnswers});
-            console.log(response)
+
+            if (response.status === 200) {
+                window.location.href = '/student'
+            }
         } catch (error) {
             toast.error("Some error occurred");
             console.log(error)
         }
 
-        // setIsSubmitted(true);
+        setIsSubmitted(true);
     }
 
     useEffect(() => {
-        if (!questionData) {
+        if (!questionPaneData) {
             return;
         }
 
         const totalQuestions = questionPaneData?.questions?.length;
-        const questionsAttempted = questionPaneData?.questions?.filter(q => q.status === 'attempted').length;
-        const questionsWithErrors = questionPaneData?.questions?.filter(q => q.status === 'error').length;
-        const questionsNotViewed = (totalQuestions || 0) - (questionsAttempted || 0) - (questionsWithErrors || 0);
+        const questionsAttempted = questionPaneData?.questions?.filter(q => q.status === questionStatus.attempted).length;
+        const questionsNotViewed = (totalQuestions || 0) - (questionsAttempted || 0);
 
-        if (totalQuestions === undefined || questionsAttempted === undefined || questionsWithErrors === undefined || questionsNotViewed === undefined) {
+        if (totalQuestions === undefined || questionsAttempted === undefined || questionsNotViewed === undefined) {
             return;
         }
 
         setSummary({
             totalQuestions,
             questionsAttempted,
-            questionsWithErrors,
             questionsNotViewed
         });
 
@@ -127,10 +127,6 @@ export default function CompletedModal({
                     <div>
                         <h5>Questions not attempted</h5>
                         <p>{summary.questionsNotViewed}</p>
-                    </div>
-                    <div>
-                        <h5>Questions with errors</h5>
-                        <p>{summary.questionsWithErrors}</p>
                     </div>
                 </div>
 

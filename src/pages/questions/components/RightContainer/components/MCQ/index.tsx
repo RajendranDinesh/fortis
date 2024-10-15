@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 
 import { AnswerData, AnswerDataContext } from "../../../../answerContext";
-import { McqQuestion, McqOption, QuestionPaneDataContext } from "../../../../questionContext";
+import { McqQuestion, McqOption, QuestionPaneDataContext, questionStatus } from "../../../../questionContext";
 
 import styles from './mcq.module.css';
 
@@ -24,7 +24,7 @@ export default function MCQ() {
 
         if (!questions) return;
 
-        questions.find((question) => question.id === currentQuestionId)!.status = "attempted";
+        questions.find((question) => question.id === currentQuestionId)!.status = questionStatus.attempted;
 
         if (answer || answer !== undefined) {
             if (multiCorrect) {

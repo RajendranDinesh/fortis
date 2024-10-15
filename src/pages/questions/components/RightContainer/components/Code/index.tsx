@@ -16,7 +16,7 @@ import { programmingLanguages } from "../../../../../components/Editor";
 import styles from '../../right.module.css';
 
 import { AnswerDataContext } from "../../../../answerContext";
-import { QuestionPaneDataContext } from "../../../../questionContext";
+import { QuestionPaneDataContext, questionStatus } from "../../../../questionContext";
 import { SubmissionContext } from "../../../../submissionContext";
 import { LeftContainerContext } from "../../../LeftContainer/context";
 
@@ -28,7 +28,7 @@ export default function Code() {
     const { classroomTestId } = useParams();
 
     const { answerData, addAnswer, editAnswer } = useContext(AnswerDataContext);
-    const { questionPaneData, questionData } = useContext(QuestionPaneDataContext);
+    const { questionPaneData, questionData, setQuestionStatus } = useContext(QuestionPaneDataContext);
     const { changeActiveSubmissionTab, changeSubmissionId } = useContext(SubmissionContext);
     const { currentActiveTab, changeActiveTab } = useContext(LeftContainerContext);
 
@@ -137,6 +137,8 @@ export default function Code() {
                 setToken(response.data.tokens);
             }
 
+            setQuestionStatus(questionStatus.attempted);
+
         } catch (error) {
             console.log(error)
         }
@@ -164,6 +166,8 @@ export default function Code() {
 
                 setTimeout(() => changeSubmissionId(response.data.submissioId), 1000);
                 changeActiveSubmissionTab("Submission");
+
+                setQuestionStatus(questionStatus.attempted);
             }
 
         } catch (error) {
