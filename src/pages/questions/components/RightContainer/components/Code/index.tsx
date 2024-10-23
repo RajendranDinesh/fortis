@@ -164,8 +164,8 @@ export default function Code() {
             if (response.status === 201) {
                 if (currentActiveTab !== "Submissions") changeActiveTab("Submissions");
 
-                setTimeout(() => changeSubmissionId(response.data.submissioId), 1000);
-                changeActiveSubmissionTab("Submission");
+                changeSubmissionId(Number(response.data.submissionId));
+                setTimeout(() => changeActiveSubmissionTab("Submission"), 1250);
 
                 setQuestionStatus(questionStatus.attempted);
             }

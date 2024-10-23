@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { addHours } from '../../../../../../../utils';
 import { Request } from '../../../../../../../networking';
 import { programmingLanguages } from '../../../../../../components/Editor';
 
@@ -35,7 +36,9 @@ export default function SubmissionTable({
         return -1;
     }
 
-    const getSumbissions = async () => {
+    
+
+    useEffect(() => {const getSumbissions = async () => {
         try {
             const response = await Request("GET", "/submission/get-all/" + classroomTestId);
 
@@ -51,12 +54,9 @@ export default function SubmissionTable({
         } catch (error) {
             console.log(error)
             toast.error("Failed to fetch submissions");
-        }
-    }
-
-    useEffect(() => {
+        }}
         getSumbissions();
-    }, []);
+    }, [classroomTestId]);
 
     return (
         <div className={styles.submissions}>
@@ -75,8 +75,8 @@ export default function SubmissionTable({
                             <tr key={submission.submission_id} onClick={() => changeViewToSubmission(submission.submission_id)}>
                                 <td>{index+1}</td>
                                 <td>{getIndexOfQuestionFromPaneData(submission.question_id) + 1}</td>
-                                <td>{programmingLanguages.find((lan) => lan.id == submission.language)?.name.toString() || ""}</td>
-                                <td>{new Date(submission.created_at).toLocaleString()}</td>
+                                <td>{programmingLanguages.find((lan) => lan.id === Number(submission.language))?.name.toString() || ""}</td>
+                                <td>{addHours(new Date(submission.created_at), 5.5).toLocaleString()}</td>
                             </tr>
                         ))}
                     </tbody>

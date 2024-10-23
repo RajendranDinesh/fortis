@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 import { CiCircleChevLeft } from "react-icons/ci";
 
+import { addHours } from '../../../../../../../utils';
 import styles from '../submission.module.css';
 import OurEditor from "../../../../../../components/Editor";
 
@@ -28,7 +29,7 @@ export default function Submission() {
 
     const [created, setCreated] = useState<string>('');
 
-    const [status, setStatus] = useState<string>('Accepted');
+    const [status, setStatus] = useState<string>('Loading..');
 
     const calculateStatus = (submissions: TestCase[]) => {
         let status = 'Accepted';
@@ -41,31 +42,31 @@ export default function Submission() {
         setStatus(status);
     }
 
-    const getSumbission = async () => {
-        try {
-            if (currentSubmissionId !== null) {
-                const response = await Request("GET", "/submission/id/" + currentSubmissionId);
-                if (response.status === 200) {
-                    const data = await response.data.submissions;
-                    
-                    const langId = response.data.language_id;
-                    const code = response.data.source_code;
-                    const createdAt = response.data.created_at;
-
-                    setCreated(new Date(createdAt).toLocaleString());
-                    setCode(atob(code));
-                    calculateStatus(data);
-                    setSubmissions(data);
-
-                    setLang(programmingLanguages.find((lan) => lan.id == langId)?.value.toString() || "")
-                }
-            }
-        } catch (error) {
-            toast.error("Failed to fetch submission");
-        }
-    }
-
     useEffect(() => {
+        const getSumbission = async () => {
+            try {
+                if (currentSubmissionId !== null && currentSubmissionId !== undefined) {
+                    const response = await Request("GET", "/submission/id/" + currentSubmissionId);
+                    if (response.status === 200) {
+                        const data = await response.data.submissions;
+                        
+                        const langId = response.data.language_id;
+                        const code = response.data.source_code;
+                        const createdAt = response.data.created_at;
+    
+                        setCreated(addHours(new Date(createdAt), 5.5).toLocaleString());
+                        setCode(atob(code));
+                        calculateStatus(data);
+                        setSubmissions(data);
+    
+                        setLang(programmingLanguages.find((lan) => lan.id === langId)?.value.toString() || "")
+                    }
+                }
+            } catch (error) {
+                toast.error("Failed to fetch submission");
+            }
+        }
+
         getSumbission();
     }, [currentSubmissionId]);
 
