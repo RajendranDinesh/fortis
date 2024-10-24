@@ -18,6 +18,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 
 interface Test {
+    id: number;
     scheduled_at: string;
     test_id: number;
     title: string;
@@ -53,6 +54,7 @@ const SupervisorDashboard = () => {
                         scheduled_at: new Date(test.scheduled_at).toLocaleDateString(), // Format date
                     }));
                     setTests(testData);
+                    console.log(testData);
                 } else {
                     console.error('Failed to fetch test data');
                 }
@@ -151,7 +153,7 @@ const SupervisorDashboard = () => {
                     <h2 className={styles.no_Test}>No Tests Found</h2>
                 ) :(
                     tests.map((test, index) => (
-                        <div className={styles.card_container} key={test.test_id ?? 0} onClick={() => handleCardClick(test.test_id ?? 0)}>
+                        <div className={styles.card_container} key={test.test_id ?? 0} onClick={() => handleCardClick(test.id ?? 0)}>
                             <div className={styles.card_pattern}></div>
                             <div className={styles.text_container}>
                                 <div>
