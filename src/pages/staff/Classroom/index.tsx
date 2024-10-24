@@ -21,6 +21,7 @@ import StudentList from "./ListItems/studentList";
 import { IoIosAddCircle } from 'react-icons/io';
 import TeacherList from "./ListItems/teacherList";
 import TestList from "./ListItems/testList";
+import CompletedTestList from "./ListItems/completedTestList"
 import AddStudentModal from "./Modals/addStudent";
 import AddTeacherModal from "./Modals/addTeacher";
 import ScheduleTest from "./Modals/scheduleTest";
@@ -103,6 +104,7 @@ function Classroom() {
                                 <Tab label="Students" value="1" style={{color: "white", fontSize: "1.2em"}} />
                                 <Tab label="Teachers" value="2" style={{color: "white", fontSize: "1.2em"}} />
                                 <Tab label="Tests" value="3" style={{color: "white", fontSize: "1.2em"}} />
+                                <Tab label="Completed Tests" value="4" style={{color: "white", fontSize: "1.2em"}} />
                             </TabList>
                             </Box>
                         </TabContext>
@@ -155,6 +157,15 @@ function Classroom() {
                                 </div>
                             </div>
                             <ScheduleTest isOpen={testModalOpen} onClose={handleTestModalClick} />
+                        </>
+                    }
+                    {value === "4" &&
+                        <>
+                            <div className={styles.Classroom_tests}>
+                                <div className={styles.Tests_list_container}>
+                                    <CompletedTestList />
+                                </div>
+                            </div>
                         </>
                     }
                 </div>
