@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 import Modal from "../../../components/Modal";
 import { getAvailableTests, scheduleTest } from "../Controllers";
+import CustomDropdown from "./component/dropdown";
 
 import styles from "../Classroom.module.css";
 
@@ -25,6 +26,7 @@ export default function ScheduleTest({ isOpen, onClose }: Props) {
     const [selectedDateAndTime, setSelectedDateAndTime] = useState<Date | null>(null);
     const [availableTests, setAvailableTests] = useState<AvailableTest[]>([]);
     const [selectedTest, setSelectedTest] = useState<AvailableTest | null>(null);
+    const [supervisorId, setSupervisorId] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleTestChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,9 +74,17 @@ export default function ScheduleTest({ isOpen, onClose }: Props) {
                 return;
             }
 
-            await scheduleTest(Number(id), test_id, date);
+            if (supervisorId) await scheduleTest(Number(id), test_id, date, supervisorId);
+            else {
+                toast.error("Please select a supervisor", {
+                    autoClose: 2000,
+                    theme: "dark",
+                    hideProgressBar: true,
+                });
+                return;
+            }
 
-            toast.success("Test scheduled successfully", {
+            toast.success("Test scheduled successfully, please refresh to see changes.", {
                 autoClose: 2000,
                 theme: "dark",
                 hideProgressBar: true,
@@ -113,6 +123,10 @@ export default function ScheduleTest({ isOpen, onClose }: Props) {
                         <div className={styles.test_date_time}>
                             <label htmlFor="date">Select Date and Time: </label>
                             <input type="datetime-local" onChange={(e) => setSelectedDateAndTime(new Date(e.target.value))} />
+                        </div>
+                        <div className={styles.test_date_time}>
+                            <label>Select Supervisor</label>
+                            <CustomDropdown setSupervisorId={setSupervisorId} />
                         </div>
                     </div>
                     <div className={styles.Test_modal_button_container}>
