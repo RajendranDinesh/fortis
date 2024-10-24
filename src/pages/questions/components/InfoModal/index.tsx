@@ -1,10 +1,13 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { HttpStatusCode } from 'axios';
 
 import Modal from '../../../components/Modal';
 import styles from './info.module.css';
 
 import { QuestionPaneDataContext } from '../../questionContext';
+import { Request } from '../../../../networking';
 
 interface Props {
     isInfoModalOpen: boolean;
@@ -25,8 +28,27 @@ export default function InfoModal({
     }
 
     const handleCloseInfoModal = () => {
+        const checkAttendence = async () => {
+            try {
+                const response = await Request("GET", `/test/${classroomTestId}/metadata`);
+
+                if (response.status === HttpStatusCode.Ok) {
+                    const isPresent = response.data.is_present;
+
+                    if (isPresent) {
+                        setTimeout(() => handleInfoModal(), 1000);
+                    } else {
+                        toast.warning("Attendence has not yet been marked...");
+                    }
+                }
+
+            } catch (error) {
+                toast.error("Check Network Connection.");
+            }
+        }
+
+        checkAttendence();
         getQuestionPaneData();
-        handleInfoModal();
     }
 
     return (
