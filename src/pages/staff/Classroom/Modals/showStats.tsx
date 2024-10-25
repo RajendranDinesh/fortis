@@ -13,15 +13,17 @@ interface TestsModalProps {
     isOpen: boolean
     onClose: () => void
     setModalOpen: (value: boolean) => void
+    testId: number
 }
 
 export default function ShowStatsModal({
     isOpen,
     onClose,
     setModalOpen,
+    testId
 }: TestsModalProps) {
 
-    const { testId } = useParams();
+    // const { testId } = useParams();
 
     const [staffData, setStaffData] = useState<{ name: string }[]>([
         { name: 'Staff Testing name 1'},
@@ -87,7 +89,6 @@ export default function ShowStatsModal({
             const response = await Request("GET", `/test/${testId}/staff`);
             if (response.status === HttpStatusCode.Ok) {
                 setStaffData(response.data.map((staff_name: any) => ({ name: staff_name.staff_name })));
-                console.log(response.data);
             }
         } catch(error) {
             console.log(error);
@@ -138,7 +139,7 @@ export default function ShowStatsModal({
         fetchSupervisorData();
         fetchPresentAbsentData();
         fetchMarksData();
-    }, []);
+    }, [testId]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Stats" backgroundColor="#efefef">

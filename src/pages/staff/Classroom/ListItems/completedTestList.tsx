@@ -7,7 +7,7 @@ import TestStatsModal from '../Modals/showStats';
 
 interface Test {
     id: number;
-    test_id: number;
+    classroom_test_id: number;
     test_title: string;
     test_duration: number;
     scheduled_time: string;
@@ -18,6 +18,7 @@ export default function TestList() {
     const [isLoading, setIsLoading] = useState(false);
     const [tests, setTests] = useState<Test[]>();
     const [statsmodal, setStatsModal] = useState(false);
+    const [selectedTestId, setSelectedTestId] = useState<number | null>(null);
 
     const getSetData = async (id: Number) => {
         try {
@@ -31,8 +32,10 @@ export default function TestList() {
         }
     };
 
-    const handleTestClick = () => {
-        setStatsModal(!statsmodal);
+    const handleTestClick = (test_id: number) => {
+        setSelectedTestId(test_id);
+        console.log("Selected test id", test_id);
+        setStatsModal(true);
     }
 
     useEffect(() => {
@@ -55,7 +58,7 @@ export default function TestList() {
             {tests && tests.length > 0 ? tests.map((test: Test, index) => {
                 return (
                     <>
-                    <div className={styles.Test_list_grid} key={index} onClick={handleTestClick}>
+                    <div className={styles.Test_list_grid} key={index} onClick={() => handleTestClick(test.classroom_test_id)}>
                         <div className={styles.Test_grid_title}>{index + 1}</div>
                         <div className={styles.Test_grid_title}>{test.test_title}</div>
                         <div className={styles.Test_grid_title}>{test. test_duration}</div>
@@ -67,7 +70,9 @@ export default function TestList() {
                             minute: '2-digit',
                         })}</div>
                     </div>
-                    <TestStatsModal isOpen={statsmodal} onClose={handleTestClick} setModalOpen = {setStatsModal} />
+                    {selectedTestId !== null && (
+                        <TestStatsModal isOpen={statsmodal} onClose={() => setStatsModal(false)} setModalOpen={setStatsModal} testId={selectedTestId} />
+                    )}
                     </>
                 )
             }) : <>No tests schedules for this class</>}
