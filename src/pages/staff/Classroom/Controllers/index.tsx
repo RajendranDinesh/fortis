@@ -66,6 +66,19 @@ export async function getClassroomTests(classRoomId: Number) {
     }
 }
 
+export async function getClassroomCompletedTests(classRoomId: Number) {
+    try {
+        const response = await Request("GET", `/test/${classRoomId}/completed-test`);
+
+        if (response.status === HttpStatusCode.Ok) {
+            return response.data
+        }
+
+    } catch (error) {
+        throw new Error (error as any);
+    }
+}
+
 export async function addStudents(id: Number, students: Array<{user_name: string, roll_number: string, email: string}>) {
     try {
         const response = await Request("POST", `/classroom/${id}/students`, {students: students});

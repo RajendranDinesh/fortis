@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from '../Classroom.module.css';
-import { getClassroomTests, cancelScheduledTest } from '../Controllers';
+import { getClassroomCompletedTests } from '../Controllers';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TestStatsModal from '../Modals/showStats';
@@ -8,9 +8,9 @@ import TestStatsModal from '../Modals/showStats';
 interface Test {
     id: number;
     test_id: number;
-    title: string;
-    duration_in_minutes: number;
-    scheduled_at: string;
+    test_title: string;
+    test_duration: number;
+    scheduled_time: string;
 }
 
 export default function TestList() {
@@ -22,7 +22,7 @@ export default function TestList() {
     const getSetData = async (id: Number) => {
         try {
             setIsLoading(true);
-            const data = await getClassroomTests(id);
+            const data = await getClassroomCompletedTests(id);
             setTests(data);
         } catch (error) {
             toast.error("Error fetching tests");
@@ -57,9 +57,9 @@ export default function TestList() {
                     <>
                     <div className={styles.Test_list_grid} key={index} onClick={handleTestClick}>
                         <div className={styles.Test_grid_title}>{index + 1}</div>
-                        <div className={styles.Test_grid_title}>{test.title}</div>
-                        <div className={styles.Test_grid_title}>{test.duration_in_minutes}</div>
-                        <div className={styles.Test_grid_title}>{new Date(test.scheduled_at).toLocaleString('en-GB', {
+                        <div className={styles.Test_grid_title}>{test.test_title}</div>
+                        <div className={styles.Test_grid_title}>{test. test_duration}</div>
+                        <div className={styles.Test_grid_title}>{new Date(test.scheduled_time).toLocaleString('en-GB', {
                             day: '2-digit',
                             month: '2-digit',
                             year: '2-digit',
