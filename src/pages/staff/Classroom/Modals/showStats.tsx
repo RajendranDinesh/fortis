@@ -1,7 +1,10 @@
 import Modal from "../../../components/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import { toast } from 'react-toastify';
+import { HttpStatusCode } from 'axios';
+import { Request } from '../../../../networking';
 
 import styles from "../Classroom.module.css";
 import { useParams } from "react-router-dom";
@@ -17,6 +20,8 @@ export default function ShowStatsModal({
     onClose,
     setModalOpen,
 }: TestsModalProps) {
+
+    const { testId } = useParams();
 
     const [staffData, setStaffData] = useState<{ name: string }[]>([
         { name: 'Staff Testing name 1'},
@@ -76,6 +81,64 @@ export default function ShowStatsModal({
           }
         ]
       };
+
+    const fetchStaffData = async () => {
+        try {
+            const response = await Request("GET", `/test/${testId}/staff`);
+            if (response.status === HttpStatusCode.Ok) {
+                setStaffData(response.data.map((staff_name: any) => ({ name: staff_name.staff_name })));
+                console.log(response.data);
+            }
+        } catch(error) {
+            console.log(error);
+            toast.error("Failed to fetch staff data");
+        }
+    }
+
+    const fetchSupervisorData = async () => {
+        try {
+            const response = await Request("GET", `/test/${testId}/supervisor`);
+            if (response.status === HttpStatusCode.Ok) {
+                setSupervisorData(response.data.map((supervisor_name: any) => ({ name: supervisor_name.supervisor_name })));
+            }
+        } catch(error) {
+            console.log(error);
+            toast.error("Failed to fetch supervisor data");
+        }
+    }
+
+    const fetchPresentAbsentData = async () => {
+        try {
+            const response = await Request("GET", `/test/${testId}/present-absent`);
+            if (response.status === HttpStatusCode.Ok) {
+                setPresentAbsentData(response.data[0]);
+            }
+        } catch(error) {
+            console.log(error);
+            toast.error("Failed to fetch present absent data");
+        }
+    }
+
+    const fetchMarksData = async () => {
+        try {
+            const response = await Request("GET", `/test/${testId}/marks`);
+            if (response.status === HttpStatusCode.Ok) {
+                setMarksData(response.data.marks.map((mark: any) => ({ user_name: mark.user_name, total_marks: mark.total_marks })));
+                const average_Marks = Number(response.data.averageMarks[0].overall_average_marks);
+                setAverageMarks(Number(average_Marks.toFixed(2)));
+            }
+        } catch(error) {
+            console.log(error);
+            toast.error("Failed to fetch marks data");
+        }
+    }
+
+    useEffect(() => {
+        fetchStaffData();
+        fetchSupervisorData();
+        fetchPresentAbsentData();
+        fetchMarksData();
+    }, []);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Stats" backgroundColor="#efefef">
