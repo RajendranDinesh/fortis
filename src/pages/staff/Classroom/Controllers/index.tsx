@@ -14,6 +14,19 @@ export async function getClassroom(id: Number) {
     }
 }
 
+export async function getAllSupervisors() {
+    try {
+        const response = await Request("GET", `/supervisor/all`);
+
+        if (response.status === HttpStatusCode.Ok) {
+            return response.data
+        }
+
+    } catch (error) {
+        throw new Error (error as any);
+    }
+}
+
 export async function getClassroomStudents(id: Number) {
     try {
         const response = await Request("GET", `/classroom/${id}/students`);
@@ -92,12 +105,13 @@ export async function getAvailableTests() {
     }
 }
 
-export async function scheduleTest(classId: Number, test_id: string, date: string) {
+export async function scheduleTest(classId: Number, test_id: string, date: string, supervisor_id: number) {
     try {
         const response = await Request("POST", `/test/schedule`, {
             classroom_id: classId,
             test_id: test_id,
-            scheduled_at: date
+            scheduled_at: date,
+            supervisor_id: supervisor_id
         });
 
         if (response.status === HttpStatusCode.Created) {

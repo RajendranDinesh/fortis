@@ -74,6 +74,8 @@ export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) 
 
     const [questionData, setQuestionData] = useState<CollectionOfQuestions | null>(null);
 
+    const [isPaneDataFetched, setIsPaneDataFetched] = useState<boolean>(false);
+
     const getSetQuestionData = async (testId: string | number, questionId: string | number) => {
         try {
             const response = await getCurrentQuestion(testId, questionId);
@@ -121,44 +123,48 @@ export const QuestionPaneDataProvider = ({ children }: React.PropsWithChildren) 
     }
 
     const getSetQuestionPaneData = async (testId: string) => {
-        try {
-            setTestId(testId);
-            const id = testId;
-            const response = await getQuestionsMetadata(id);
+        if (!isPaneDataFetched) {
+            try {
+                setTestId(testId);
+                const id = testId;
+                const response = await getQuestionsMetadata(id);
 
-            if (response.status === 200) {
-                let data = response.data;
+                if (response.status === 200) {
+                    let data = response.data;
 
-                data.startTime = new Date(data.startTime);
-                data.endTime = new Date(data.endTime);
+                    data.startTime = new Date(data.startTime);
+                    data.endTime = new Date(data.endTime);
 
-                data.questions[0].status = "not_attempted";
+                    data.questions[0].status = "not_attempted";
 
-                for (let i = 1; i < data.questions.length; i++) {
-                    data.questions[i].status = "not_viewed";
+                    for (let i = 1; i < data.questions.length; i++) {
+                        data.questions[i].status = "not_viewed";
+                    }
+
+                    data.currentQuestionId = data.questions[0].id;
+
+                    setQuestionPaneData(data);
+
+                    setIsPaneDataFetched(true);
+
+                    getSetQuestionData(id, data.currentQuestionId);
+
+                } else {
+                    throw new Error("Failed to fetch questions metadata");
                 }
 
-                data.currentQuestionId = data.questions[0].id;
-
-                setQuestionPaneData(data);
-
-                getSetQuestionData(id, data.currentQuestionId);
-
-            } else {
-                throw new Error("Failed to fetch questions metadata");
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to fetch questions metadata", {
+                    position: "top-right",
+                    theme: "colored",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             }
-
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to fetch questions metadata", {
-                position: "top-right",
-                theme: "colored",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            });
         }
     }
 

@@ -58,7 +58,7 @@ export default function ViewModule() {
     const changeInSearch = async (e: ChangeEvent<HTMLInputElement>) => {
         setStaffSearch(e.target.value);
 
-        if (e.target.value.trim().length == 0) {
+        if (e.target.value.trim().length === 0) {
             setStaff(original);
         } else {
             setStaff(original.filter(item => {
