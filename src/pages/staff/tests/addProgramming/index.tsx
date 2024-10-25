@@ -462,7 +462,7 @@ function AddProgramming() {
                         <div className={styles.addProgramming_header_bottom_right}>
                             <h1>Mark:</h1>
                             <div className={styles.marks_container}>
-                                <input type="text" id="input" placeholder='Add test mark here' onChange={handleMarksChange} disabled={!isEditMarks} />
+                                <input type="text" id="input" placeholder='Add question mark here' onChange={handleMarksChange} disabled={!isEditMarks} />
                                 <div className={styles.underline}></div>
                             </div>
 

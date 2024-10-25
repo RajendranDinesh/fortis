@@ -8,7 +8,7 @@ import { QuestionPaneDataContext } from "../../questionContext";
 
 const RightContainer = () => {
 
-    const { questionData, questionPaneData } = useContext(QuestionPaneDataContext);
+    const { questionPaneData } = useContext(QuestionPaneDataContext);
 
     const [questionType, setQuestionType] = useState<string | null>(null);
 

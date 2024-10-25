@@ -27,6 +27,10 @@ export default function InfoModal({
         if (classroomTestId) getSetQuestionPaneData(classroomTestId);
     }
 
+    const handleFullScreen = () => {
+        document.documentElement.requestFullscreen();
+    }
+
     const handleCloseInfoModal = () => {
         const checkAttendence = async () => {
             try {
@@ -36,6 +40,7 @@ export default function InfoModal({
                     const isPresent = response.data.is_present;
 
                     if (isPresent) {
+                        handleFullScreen();
                         setTimeout(() => handleInfoModal(), 1000);
                     } else {
                         toast.warning("Attendence has not yet been marked...");
@@ -50,6 +55,8 @@ export default function InfoModal({
         checkAttendence();
         getQuestionPaneData();
     }
+
+    
 
     return (
         <Modal isOpen={isInfoModalOpen} onClose={() => {}}>

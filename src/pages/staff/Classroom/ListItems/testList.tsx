@@ -18,11 +18,23 @@ export default function TestList() {
     const [isLoading, setIsLoading] = useState(false);
     const [tests, setTests] = useState<Test[]>();
 
+    function addMinutes(date: Date, minutes: number) {
+        date.setMinutes(date.getMinutes() + minutes);
+        return date;
+    }
+
     const getSetData = async (id: Number) => {
         try {
             setIsLoading(true);
             const data = await getClassroomTests(id);
-            setTests(data);
+
+            let result: any = [];
+
+            for (let i = 0; i < data.length; i++) {
+                if (addMinutes(new Date(data[i].scheduled_at), Number(data[i].duration_in_minutes)) > new Date()) result.push(data[i]);
+            }
+
+            setTests(result);
         } catch (error) {
             toast.error("Error fetching tests");
         } finally {

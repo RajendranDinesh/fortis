@@ -14,7 +14,7 @@ import { FaSpinner } from "react-icons/fa";
 
 interface DashboardData {
     role: string;
-    staff_count: number;
+    count: number;
 }
 
 interface DataError {
@@ -81,7 +81,7 @@ function AdminDashboard() {
                                     <img className={styles.icon} src="https://img.icons8.com/ios/50/teacher.png" alt="teacher"/>
                                 </div>
                                 <h3 className={styles.heading}>Teachers</h3>
-                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "staff")[0].staff_count || <FaSpinner className="spinner" />}</h4>
+                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "staff") ? dashboardData?.filter((data) => data.role === "staff").length > 0 ? dashboardData?.filter((data) => data.role === "staff")[0].count : 0 : 0 || <FaSpinner className="spinner" />}</h4>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ function AdminDashboard() {
                                     <img className={styles.icon} src="https://img.icons8.com/pulsar-line/48/student-male.png" alt="student-male"/>
                                 </div>
                                 <h3 className={styles.heading}>Students</h3>
-                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "student")[0].staff_count || <FaSpinner className="spinner" />}</h4>
+                                <h4 className={styles.count}>{dashboardData?.filter((data) => data.role === "student") ? dashboardData?.filter((data) => data.role === "student").length > 0 ? dashboardData?.filter((data) => data.role === "student")[0].count : 0 : 0 || <FaSpinner className="spinner" />}</h4>
                             </div>
                         </div>
                     </div>

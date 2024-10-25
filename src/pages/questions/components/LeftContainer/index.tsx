@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { QuestionPaneDataContext, questionDataPayload } from '../../questionContext';
@@ -11,7 +11,7 @@ import CompletedModal from '../CompletedModal';
 
 import styles from './left.module.css';
 
-const LeftContainer = () => {
+function LeftContainer() {
 
     const [activeTab, setActiveTab] = useState(0);
 

@@ -44,13 +44,14 @@ export default function StudentList() {
                 <div className={styles.Student_grid_title}>Roll.No</div>
                 <div className={styles.Student_grid_title}>Email</div>
             </div>
-            {students.map((student: Student, index) => {
+            {students && students.length > 0 ?
+            students.map((student: Student, index) => {
             return (<div className={styles.Student_list_grid} key={index}>
                 <div className={styles.Student_grid_title}>{index+1}</div>
                 <div className={styles.Student_grid_title}>{student.user_name}</div>
                 <div className={styles.Student_grid_title}>{student.roll_no}</div>
                 <div className={styles.Student_grid_title}>{student.email}</div>
-            </div>)})}
+            </div>)}) : <>Invite Students to your class, to view them here..</>}
         </>
     );
 }

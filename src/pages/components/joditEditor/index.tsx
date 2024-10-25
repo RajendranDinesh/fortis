@@ -12,7 +12,6 @@ interface Props {
 function Jodit({ value, setValue, placeholder, width=1000, height=500 }: Props) {
 
 const editor = useRef(null);
-console.log(height, width)
 
 const config = useMemo(
     () => ({
