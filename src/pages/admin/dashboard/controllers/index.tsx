@@ -68,6 +68,16 @@ export async function addStaff(userDetails: staffDetails) {
 
 // Student Starts
 
+export async function getStudents() {
+    try {
+        const response = await Request("GET", `/student/all`);
+
+        if (response.status === HttpStatusCode.Ok)  return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function addStudents(studentDetails: staffDetails) {
     try{
         const response = await Request("POST", `/auth/register`, studentDetails);

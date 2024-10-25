@@ -1,9 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import styles from '../addStaffModal.module.css';
+import { FaSpinner } from "react-icons/fa";
+import styles from '../addStudent.module.css';
 
-import { getStaffs } from '../../controllers';
+import { getStudents } from '../../controllers';
 
 type staffDetails = {
     email: string
@@ -21,9 +22,14 @@ export default function ViewModule() {
     const [staff, setStaff] = useState<staffDetails[]>([]);
     const [staffSearch, setStaffSearch] = useState<string>('');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const getSetStaff = async () => {
+        
+        setIsLoading(true);
+
         try {
-            const data = await getStaffs();
+            const data = await getStudents();
 
             setOriginal(data.staffs);
             setStaff(data.staffs);
@@ -33,18 +39,23 @@ export default function ViewModule() {
                 theme: "dark",
             });
         }
+
+        setIsLoading(false);
     }
 
     const changeInSearch = async (e: ChangeEvent<HTMLInputElement>) => {
+        setIsLoading(true);
         setStaffSearch(e.target.value);
 
-        if (e.target.value.trim().length == 0) {
+        if (e.target.value.trim().length === 0) {
             setStaff(original);
         } else {
             setStaff(original.filter(item => {
                 if (item.user_name.toLowerCase().includes(e.target.value.toLowerCase()) || item.email.split('@')[0].toLowerCase().includes(e.target.value.toLowerCase()) || item.roll_no.toLowerCase().includes(e.target.value.toLowerCase())) return item
         }))
         }
+        
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -54,7 +65,7 @@ export default function ViewModule() {
     return(
         <div className={styles.view_container}>
             <div className={styles.title_container}>
-                <h1 className={styles.staff_title}>Staffs</h1>
+                <h1 className={styles.staff_title}>Student</h1>
                 <div>
                     <input placeholder="Search" onChange={changeInSearch} value={staffSearch} name="staffName" className={styles.name_input} autoComplete="off" autoCorrect="off" />
                 </div>
@@ -65,10 +76,7 @@ export default function ViewModule() {
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Staff Id</th>
-                        <th>No. of Classes Assigned</th>
-                        <th>No. of Tests Created</th>
-                        <th>No. of Tests Assigned</th>
+                        <th>Student Id</th>
                         <th>Joined On</th>
                         <th>Status</th>
                     </tr>
@@ -79,15 +87,12 @@ export default function ViewModule() {
                             <td>{staff.user_name}</td>
                             <td>{staff.email}</td>
                             <td>{staff.roll_no}</td>
-                            <td>{staff.class_count}</td>
-                            <td>{staff.test_created}</td>
-                            <td>{staff.test_assigned}</td>
                             <td>{new Date(staff.created_at).toString().split(" ", 5).join(" ")}</td>
                             <td>{staff.status === 1 ? 'Active' : 'In Active'}</td>
                         </tr>
                     ))}
                 </tbody>
-            </table> : <>No staffs to show</>}
+            </table> : isLoading ? <FaSpinner className="spinner" /> : <>No students to show</>}
         </div>
     );
 }

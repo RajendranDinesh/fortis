@@ -1,14 +1,15 @@
 // external modules
+import { AxiosError, HttpStatusCode } from 'axios';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { FaSpinner } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 // internal modules
 import { getBlockedStudents, unBlockStudents } from '../../controllers';
 
 // assets
 import styles from '../addStudent.module.css';
-import Swal from 'sweetalert2';
-import { AxiosError, HttpStatusCode } from 'axios';
 
 type studentDetails = {
     user_name: string
@@ -22,8 +23,12 @@ export default function UnBlockModule() {
     const [students, setStudents] = useState<studentDetails[]>([]);
     const [studentSearch, setStudentSearch] = useState<string>('');
 
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const getSetStudent = async () => {
         try {
+            setIsLoading(true);
+
             const data = await getBlockedStudents();
 
             setOriginal(data.students);
@@ -34,12 +39,14 @@ export default function UnBlockModule() {
                 theme: "dark",
             });
         }
+
+        setIsLoading(false);
     }
 
     const changeInSearch = async (e: ChangeEvent<HTMLInputElement>) => {
         setStudentSearch(e.target.value);
 
-        if (e.target.value.trim().length == 0) {
+        if (e.target.value.trim().length === 0) {
             setStudents(original);
         } else {
             setStudents(original.filter(item => {
@@ -95,7 +102,7 @@ export default function UnBlockModule() {
             <div className={styles.title_container}>
                 <div>
                     <h1 className={styles.staff_title}>Students</h1>
-                    {students.length != 0 && <p>The list of students whose id is in block state.</p>}
+                    {students.length !== 0 && <p>The list of students whose id is in block state.</p>}
                 </div>
 
                 <div>
@@ -139,7 +146,7 @@ export default function UnBlockModule() {
                     </tr>)}
                 </tbody>
             </table>
-            : <>No students to show</>}
+            : isLoading ? <FaSpinner className="spinner" /> : <>No students to show</>}
         </div>
     );
 }

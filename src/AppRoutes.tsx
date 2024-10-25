@@ -93,7 +93,9 @@ function ProtectedRoute() {
 
 function Logout() {
     localStorage.removeItem("authToken");
-    return <Navigate to="/login" />;
+    window.location.href = "/login";
+
+    return <></>
 }
 
 export { AppRoutes, ProtectedRoutes };

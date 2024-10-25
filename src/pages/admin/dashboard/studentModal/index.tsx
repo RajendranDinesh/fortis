@@ -6,6 +6,7 @@ import AddModule from './addModule';
 import styles from './addStudent.module.css';
 import BlockModule from './blockModule';
 import UnBlockModule from './unBlockModule';
+import ViewModule from './viewModule';
 
 interface Props {
     modalOpen: boolean
@@ -52,7 +53,7 @@ export default function AddStudentModal({ modalOpen, handleModalClick }: Props) 
                     </div>
                 </div>
                 <div>
-                    {/* {activeTab === 'view' && <ViewModule />} */}
+                    {activeTab === 'view' && <ViewModule />}
                     {activeTab === 'add' && <AddModule handleModalClick={handleModalClick} />}
                     {activeTab === 'blockMenu' && <BlockModule />}
                     {activeTab === 'blocked' && <UnBlockModule />}

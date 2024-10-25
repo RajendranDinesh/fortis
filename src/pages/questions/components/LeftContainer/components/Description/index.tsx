@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import styles from './description.module.css';
 
 import { QuestionPaneDataContext, questionDataPayload, McqQuestion, McqOption, questionStatus } from '../../../../questionContext';
-import MCQ from '../../../RightContainer/components/MCQ';
+// import MCQ from '../../../RightContainer/components/MCQ';
 
 const Description = () => {
 
@@ -92,7 +92,7 @@ const Description = () => {
                 }
             </div>
 
-            {questionData && currentQuestionId && (questionData[currentQuestionId] as McqQuestion) && 'options' in questionData[currentQuestionId] && <MCQ />}
+            {/* {questionData && currentQuestionId && (questionData[currentQuestionId] as McqQuestion) && 'options' in questionData[currentQuestionId] && <MCQ />} */}
         </div>
     );
 }

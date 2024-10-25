@@ -103,7 +103,7 @@ function AdminDashboard() {
 
             <div className={styles.right_container}>
                 <div className={styles.title_container}>
-                    <h2>Hi <img alt="hand wave" src={handWave} height={"30rem"} width={"30rem"} /> admin name</h2>
+                    <h2>Hi <img alt="hand wave" src={handWave} height={"30rem"} width={"30rem"} /></h2>
                     <Avatar alt="Admin" sx={{ width: 100, height: 100 }}><h1>A</h1></Avatar>
                 </div>
             </div>
